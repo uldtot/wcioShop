@@ -7,7 +7,7 @@ This system have been in use for since 2013 but never made public, this github p
 Not right now.
 
 #### Where is the SQL?
-SQL is on its way. SQL will be available when i have fixed specific parts
+SQL structure and demo content can be found in SQL.
 
 #### How do i make my own theme?
 In the directory /templates/ you will find a theme called default. This is a bootstrap theme you can edit if you want. TO make your own theme you need to know how Smarty template engine works (Not hard at all). Here is a link for the Smarty template engine documentation: https://www.smarty.net/documentation
