@@ -26,7 +26,7 @@ $smarty->assign('template_dir', $smartyTemplateDir);
 // Load all shop settings from databse
 $stmt = $dbh->prepare("SELECT columnName,columnValue FROM wcio_se_settings");
 $result = $stmt->execute();
-while($setting = $stmt->fetch( PDO::FETCH_ASSOC ))
+while($setting = $stmt->fetch( PDO::FETCH_ASSOC )) {
 
       // Assign values to be used in files
       $_SETTING[$setting['columnName']] = $setting['columnValue'];
