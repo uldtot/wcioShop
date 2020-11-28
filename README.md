@@ -16,8 +16,8 @@ What the administraiton needs is:
 ## Documentation
 There will be made two documentations, one for users and one for developers.
 
-User documentation:
-Developer documentation:
+- User documentation:
+- Developer documentation:
 
 ### Want to know more?
 Contact me at support@websitecare.io 
