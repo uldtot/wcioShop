@@ -2,6 +2,9 @@
 A ecommerce solution focused on speed and reliability. Long story short, the first version of this system was built in 4 day non stop coding (YES i did not sleep for days coding this). 
 This system have been in use for since 2013 but never made public, this github project will fix that. I will be making a lot of changes to this before adding files to GitHub. Expecting 300 hours of coding for a working version. 
 
+## Requirements
+PHP 7.4+ (Developed on APache with PHP 7.4)
+
 ## FAQ
 ### Is there a live demo
 Not right now.
