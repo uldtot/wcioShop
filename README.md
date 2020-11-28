@@ -15,6 +15,9 @@ In /inc/template-functions/ you will find some .php files. THeese are functions 
 If you write {$maintenanceMode} in your template, the file /inc/template-functions/maintenanceMode.php will be loaded into the code and available on the site. The same if you use the section function from smarty. 
 Much more detals will be available on this in the future. PLease ask if you need help with this (Use issue tracker)
 
+#### What about SEO
+SEO is important and i will implement as much as i can to make this a none issue for you who work with SEO to implement what you need. 
+
 ## Issues / Bug report
 If you experience any errors, please report htem at the link below. If you can provide screenshots too.
 Go here for issues or bug report: https://github.com/websitecareio/wcioShop/issues
