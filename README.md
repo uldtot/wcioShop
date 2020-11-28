@@ -3,7 +3,8 @@ A ecommerce solution focused on speed and reliability. Long story short, the fir
 This system have been in use for since 2013 but never made public, this github project will fix that. I will be making a lot of changes to this before adding files to GitHub. 
 
 ## Requirements
-- PHP 7.4+ (Developed on Apache with PHP 7.4)
+- PHP 7.4+ (Developed on PHP 7.4)
+- Apache web server (Should work on NGINX or LiteSpeed but without the .htaccess)
 - A valid and working SSL certificate
 
 ## FAQ
