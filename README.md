@@ -31,12 +31,7 @@ If you experience any errors, please report htem at the link below. If you can p
 Go here for issues or bug report: https://github.com/websitecareio/wcioShop/issues
 
 ## Want to help?
-There is currently TWO diffent administrations made, and there will be made another one. While i code this new version i will be using PHPmyAdmin to add / edit content.
-
-What the administraiton needs is:
-1) A coded design in bootstrap 4 (Got something i like, just need to code it)
-2) Working PHP code
-3) Working temaplte files (Using smarty template engine).
+I would like help with this. Currently my biggest problem is the administration template. I know what i want it to look like, but need it coded in Bootstrap 4. Let me know if you want to help :)
 
 ## Documentation
 There will be made several documentations. All can be found at link below:
