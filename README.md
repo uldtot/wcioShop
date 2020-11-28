@@ -31,10 +31,9 @@ What the administraiton needs is:
 3) Working temaplte files (Using smarty template engine).
 
 ## Documentation
-There will be made two documentations, one for users and one for developers.
+There will be made several documentations. All can be found at link below:
 
-- User documentation:
-- Developer documentation:
+https://github.com/websitecareio/wcioShop/wiki
 
 ### Want to know more?
 Contact me at support@websitecare.io 
