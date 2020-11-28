@@ -1,7 +1,7 @@
 <?php
 
-// In case the SEO function does not include remplate file, then its a 404
-if(!$smartyTemplateFile) { $smartyTemplateFile = "404.tpl" }
+// In case the SEO function does not include template file, then its a 404
+if(!$smartyTemplateFile) { $smartyTemplateFile = "404.tpl"; }
 
 // Load only the template-fucntions that is used in the template files.
 $templateFiles = array(
@@ -24,13 +24,13 @@ foreach ($templateFiles as $key => $templateFile) {
 
           foreach ($data as $templateFunction) {
 
-             $templateFunctionFile = dirname(__FILE__) . "/inc/template-functions/$templateFunction.php";
+             $templateFunctionFile = dirname(__FILE__) . "/template-functions/$templateFunction.php";
 
              if (file_exists($templateFunctionFile)) {
 
                   // Inclkue the php file to be used in template..
                   include($templateFunctionFile);
-             }
+            }
           }
     }
 }
