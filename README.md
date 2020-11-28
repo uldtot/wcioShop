@@ -4,7 +4,7 @@ This system have been in use for since 2013 but never made public, this github p
 
 ## Requirements
 - PHP 7.4+ (Developed on PHP 7.4)
-- Apache web server (Should work on NGINX or LiteSpeed but without the .htaccess)
+- Apache 2.4+ web server (Should work on NGINX or LiteSpeed but without the .htaccess)
 - A valid and working SSL certificate
 
 ## FAQ
