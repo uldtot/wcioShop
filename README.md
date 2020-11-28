@@ -45,4 +45,5 @@ Contact me at support@websitecare.io
 - Needs SEO system. Specificcally a permalink system to handle the URLs. Old one used something really bad. 
 - Redirect module (301 or 302)
 - Make sure the cache work for headerCart
+- AppStore to show what can be done with the modules available.
 - And a lot more...
