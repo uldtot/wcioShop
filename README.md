@@ -9,7 +9,7 @@ SQL is on its way. SQL will be available when i have fixed specific parts
 #### How do i make my own theme?
 In the directory /templates/ you will find a theme called default. This is a bootstrap theme you can edit if you want. TO make your own theme you need to know how Smarty template engine works (Not hard at all). Here is a link for the Smarty template engine documentation: https://www.smarty.net/documentation
 
-### I need a new function how do it add one
+#### I need a new function how do it add one
 This will be explained in the documentation at some point, but here is a quick one.
 In /inc/template-functions/ you will find some .php files. THeese are functions that auto loads IF they are used in a .tpl file. 
 If you write {$maintenanceMode} in your template, the file /inc/template-functions/maintenanceMode.php will be loaded into the code and available on the site. The same if you use the section function from smarty. 
