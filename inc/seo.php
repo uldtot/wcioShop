@@ -8,7 +8,8 @@
  */
 
 // Load permalink settings for this URL.
-$currentUrl = $_SERVER['REQUEST_URI'];
+$currentUrl = explode('?', $_SERVER['REQUEST_URI'], 2);
+$currentUrl = $currentUrl[0];
 
 $stmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks WHERE url = :url LIMIT 1");
 $result = $stmt->execute(array(
