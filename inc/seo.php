@@ -1,4 +1,12 @@
 <?php
+/*
+* wcioShop
+* Version 1.0.0
+* Author: Kim Vinberg <support@websitecare.io>
+* Source: https://github.com/websitecareio/wcioShop
+* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
+ */
+
 // Load permalink settings for this URL.
 $currentUrl = $_SERVER['REQUEST_URI'];
 
