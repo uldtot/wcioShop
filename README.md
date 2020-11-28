@@ -3,6 +3,9 @@ A ecommerce solution focused on speed and reliability. Long story short, the fir
 This system have been in use for since 2013 but never made public, this github project will fix that. I will be making a lot of changes to this before adding files to GitHub. Expecting 300 hours of coding for a working version. 
 
 ## FAQ
+### Is there a live demo
+Not right now.
+
 #### Where is the SQL?
 SQL is on its way. SQL will be available when i have fixed specific parts
 
