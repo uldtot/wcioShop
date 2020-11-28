@@ -29,7 +29,6 @@
 <link rel="apple-touch-icon" sizes="167x167" href="/templates/default/images/favicon144x144.png">
 
 <!-- Bootstrap4 files-->
-<script src="/templates/default/js/bootstrap.bundle.min.js" type="text/javascript"></script>
 <link href="/templates/default/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>

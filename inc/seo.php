@@ -10,7 +10,7 @@
 // Load permalink settings for this URL.
 $currentUrl = $_SERVER['REQUEST_URI'];
 
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks LIMIT 1");
+$stmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks WHERE url = :url LIMIT 1");
 $result = $stmt->execute(array(
 	"url" => $currentUrl,
 ));
@@ -32,6 +32,12 @@ while($data = $stmt->fetch( PDO::FETCH_ASSOC )) {
 	// Template file from the permalinks table
 	$smartyTemplateFile = $data["templateFile"];
 
+	// If we have set this URL to not be cached, then deactivate
+	if($data["smartyCache"] == "0") {
+		$smarty->caching  = false;
+	} else {
+		$smarty->caching  = true; //Activate when out of dev
+	}
 }
 
 // In case the no template file is set.
