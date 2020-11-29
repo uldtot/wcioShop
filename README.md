@@ -16,7 +16,7 @@ Cannot say at the moment.
 
 #### Will this be free to use?
 Yes and no. All source code for the first version will be published here on GitHub. 
-The will be some extensions for sale later and a hosted solution of this for those who do not want to host themself.
+The will be some extensions for sale later and a hosted solution of this for those who do not want to host themself. (Like the way Wordpress.com / Wordpress.org works)
 
 ## Issues / Bug report
 If you experience any errors, please report htem at the link below. If you can provide screenshots too.
