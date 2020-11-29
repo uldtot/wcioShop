@@ -8,11 +8,15 @@ This system have been in use for since 2013 but never made public, this github p
 - A valid and working SSL certificate
 
 ## FAQ
-### Is there a live demo
+#### Is there a live demo
 There is a non working site here: https://shop.kundesider.dk/ - But this is NOT a demo for this project. A real demo will be available in future.
 
 #### When can i expect this to be ready for use? 
 Cannot say at the moment.
+
+#### Will this be free to use?
+Yes and no. All source code for the first version will be published here on GitHub. 
+The will be some extensions for sale later and a hosted solution of this for those who do not want to host themself.
 
 ## Issues / Bug report
 If you experience any errors, please report htem at the link below. If you can provide screenshots too.
