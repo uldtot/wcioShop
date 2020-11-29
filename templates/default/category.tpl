@@ -211,13 +211,13 @@
 	<div class="row no-gutters">
 		<aside class="col-md-3">
 			<a href="#" class="img-wrap">
-				<span class="badge badge-danger"> NEW </span>
-				<img src="images/items/3.jpg">
+				<span class="badge badge-danger" style="display:none;"> - </span>
+				<img src="/uploads/{$displayCategoryProducts[product].image}">
 			</a>
 		</aside> <!-- col.// -->
 		<div class="col-md-6">
 			<div class="info-main">
-				<a href="#" class="h5 title"> Great product name goes here  </a>
+				<a href="#" class="h5 title"> {$displayCategoryProducts[product].name}  </a>
 				{if $prodcutStarRating != ""}
 					<div class="rating-wrap mb-3">
 						<ul class="rating-stars">
@@ -236,16 +236,20 @@
 					</div> <!-- rating-wrap.// -->
 				{/if}
 
-				<p> Take it as demo specs, ipsum dolor sit amet, consectetuer adipiscing elit, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, Ut wisi enim ad minim veniam </p>
+				<p> {$displayCategoryProducts[product].shorttext} </p>
 			</div> <!-- info-main.// -->
 		</div> <!-- col.// -->
 		<aside class="col-sm-3">
 			<div class="info-aside">
 				<div class="price-wrap">
-					<span class="price h5"> $140 </span>
-					<del class="price-old"> $198</del>
+					<span class="price h5"> {{{$displayCategoryProducts[product].price}+{$displayCategoryProducts[product].price}*20/100}|number_format:2:",":"."} kr.</span>
+					<del class="price-old">
+						{if $displayCategoryProducts[product].discount != "0" && $displayCategoryProducts[product].discount != ""}
+							{{{$displayCategoryProducts[product].discount}+{$displayCategoryProducts[product].price}+{$displayCategoryProducts[product].price}*20/100}|number_format:2:",":"."} kr.
+						{/if}
+					</del>
 				</div> <!-- info-price-detail // -->
-				<p class="text-success">In stock</p>
+				<p class="text-success">{if $displayCategoryProducts[product].stock > 0}In stock{/if}</p>
 				<br>
 				<p>
 					<a href="#" class="btn btn-primary btn-block"> Details </a>

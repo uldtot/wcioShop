@@ -22,15 +22,37 @@
             while ($data_products = $query_products->fetch(PDO::FETCH_ASSOC))
             {
 
+
+				// Getting permlink data
+				$permalinkStmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks WHERE postType = 'product' AND postId = :id LIMIT 1");
+				$result = $permalinkStmt->execute(array(
+					"id" => $data_products['id'],
+				));
+				$permalinkData = $permalinkStmt->fetch(PDO::FETCH_ASSOC);
+
+				// Getting featured image
+				$attachmentStmt = $dbh->prepare("SELECT * FROM wcio_se_attachments WHERE attachmentType = 'productFeaturedImage' AND attachmentPostId = :id LIMIT 1");
+				$result = $attachmentStmt->execute(array(
+					"id" => $data_products['id'],
+				));
+				$attachmentData = $attachmentStmt->fetch(PDO::FETCH_ASSOC);
+
+				if(!file_exists(dirname(__FILE__)."../../uploads/".$attachmentData["attachmentValue"]."")) {
+					$image = "noimage.png";
+				} else {
+					$iamge = $attachmentData["attachmentValue"];
+				}
+
+
                 $displayCategoryProducts[] = array(
                     'prdid' => $data_products['id'],
                     'name' => $data_products['name'],
                     'price' => $data_products['price'],
-                    'image' => $data_products['file2'],
+			  'image' => $image,
                     'discount' => $data_products['discount'],
                     'shorttext' => $data_products['shorttext'],
                     'stock' => $data_products['stock'],
-                    'url' => $data_products['name']
+			  'url' => $permalinkData["url"],
                 );
 
             }
