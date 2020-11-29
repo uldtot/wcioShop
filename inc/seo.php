@@ -16,7 +16,13 @@ $result = $stmt->execute(array(
 	"url" => $currentUrl,
 ));
 
+
+
 while($data = $stmt->fetch( PDO::FETCH_ASSOC )) {
+
+	// Send the permalink data to Smarty or scripts
+	$smarty->assign("SEOpermalinkData", $data);
+	$_SETTING["SEOpermalinkData"] = $data;
 
 	// If we have set a Seo shortname in settings, then add it
 	if($_SETTING["storeSeoShortName"] != "" ) {
