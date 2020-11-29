@@ -42,4 +42,5 @@ Contact me at support@websitecare.io
 - breadcrumbs for categories
 - sub menu for navigation vategories
 - change of names for wcioShop built template-functions (sohuld all start with wcioShop to be able to tell what is built by me or someone else)
+- test cache on live search
 - And a lot more...
