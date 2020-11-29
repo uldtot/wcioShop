@@ -9,29 +9,18 @@ This system have been in use for since 2013 but never made public, this github p
 
 ## FAQ
 ### Is there a live demo
-Not right now.
+There is a non working site here: https://shop.kundesider.dk/ - But this is NOT a demo for this project. A real demo will be available in future.
 
-#### Where is the SQL?
-SQL structure and demo content can be found in SQL.
-
-#### How do i make my own theme?
-In the directory /templates/ you will find a theme called default. This is a bootstrap theme you can edit if you want. TO make your own theme you need to know how Smarty template engine works (Not hard at all). Here is a link for the Smarty template engine documentation: https://www.smarty.net/documentation
-
-#### I need a new function in my templates, how do i add one
-This will be explained in the documentation at some point, but here is a quick one.
-In /inc/template-functions/ you will find some .php files. THeese are functions that auto loads IF they are used in a .tpl file. 
-If you write {$maintenanceMode} in your template, the file /inc/template-functions/maintenanceMode.php will be loaded into the code and available on the site. The same if you use the section function from smarty. 
-Much more detals will be available on this in the future. PLease ask if you need help with this (Use issue tracker)
-
-#### What about SEO
-SEO is important and i will implement as much as i can to make this a none issue for you who work with SEO to implement what you need. 
+#### When can i expect this to be ready for use? 
+Cannot say at the moment.
 
 ## Issues / Bug report
 If you experience any errors, please report htem at the link below. If you can provide screenshots too.
 Go here for issues or bug report: https://github.com/websitecareio/wcioShop/issues
 
 ## Want to help?
-I would like help with this. Currently my biggest problem is the administration template. I know what i want it to look like, but need it coded in Bootstrap 4. Let me know if you want to help :)
+I would like help with this. If you want to help, i would like any help i can get.
+This can be coding, design, translation, testing and im sure a lot more.
 
 ## Documentation
 There will be made several documentations. All can be found at link below:
@@ -41,7 +30,7 @@ https://github.com/websitecareio/wcioShop/wiki
 ### Want to know more?
 Contact me at support@websitecare.io 
 
-### Todo
+### Todo ( Just a list of stuff i need to remember )
 - Redirect module (301 or 302)
 - Make sure the cache work for headerCart
 - AppStore to show what can be done with the modules available.
