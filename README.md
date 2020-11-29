@@ -1,9 +1,9 @@
 # wcioShop
 A ecommerce solution focused on speed and reliability. Long story short, the first version of this system was built in 4 day non stop coding (YES i did not sleep for days coding the first version in 2010). 
-This system have been in use for since 2010 but never made public, this github project will fix that. I will be making a lot of changes to this before adding files to GitHub. If you see this message, the project is not ready for use. 
+This system have been in use since 2010 but never made public, this github project will fix that. I will be making a lot of changes to this before adding files to GitHub. If you see this message, the project is not ready for use. 
 
 ## Requirements
-- PHP 7.4+ (Developed on PHP 7.4)
+- PHP 7.4+ (Developed on PHP 7.4, might work on older versions)
 - Apache 2.4+ web server (Should work on NGINX or LiteSpeed but without the .htaccess)
 - A valid and working SSL certificate
 
@@ -13,10 +13,6 @@ There is a non working site here: https://shop.kundesider.dk/ - But this is NOT 
 
 #### When can i expect this to be ready for use? 
 Cannot say at the moment.
-
-#### Will this be free to use?
-Yes and no. All source code for the first version will be published here on GitHub. 
-The will be some extensions for sale later and a hosted solution of this for those who do not want to host themself. (Like the way Wordpress.com / Wordpress.org works)
 
 ## Issues / Bug report
 If you experience any errors, please report htem at the link below. If you can provide screenshots too.
