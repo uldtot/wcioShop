@@ -210,14 +210,14 @@
 <article class="card card-product-list">
 	<div class="row no-gutters">
 		<aside class="col-md-3">
-			<a href="#" class="img-wrap">
+			<a href="{$displayCategoryProducts[product].url}" class="img-wrap">
 				<span class="badge badge-danger" style="display:none;"> - </span>
 				<img src="/uploads/{$displayCategoryProducts[product].image}">
 			</a>
 		</aside> <!-- col.// -->
 		<div class="col-md-6">
 			<div class="info-main">
-				<a href="#" class="h5 title"> {$displayCategoryProducts[product].name}  </a>
+				<a href="{$displayCategoryProducts[product].url}" class="h5 title"> {$displayCategoryProducts[product].name}  </a>
 				{if $prodcutStarRating != ""}
 					<div class="rating-wrap mb-3">
 						<ul class="rating-stars">
@@ -252,7 +252,7 @@
 				<p class="text-success">{if $displayCategoryProducts[product].stock > 0}In stock{/if}</p>
 				<br>
 				<p>
-					<a href="#" class="btn btn-primary btn-block"> Details </a>
+					<a href="{$displayCategoryProducts[product].url}" class="btn btn-primary btn-block"> Details </a>
 					<a href="#" class="btn btn-light btn-block" style="display:none;"><i class="fa fa-heart"></i>
 						<span class="text">Add to wishlist</span>
 					</a>
