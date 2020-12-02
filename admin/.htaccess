@@ -1,0 +1,19 @@
+# Force HTTPS redirect if port is 80
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Error handling
+ErrorDocument 404 /404/
+ErrorDocument 500 /
+
+# File handling
+
+# File handling
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /admin/
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]
+</IfModule>
