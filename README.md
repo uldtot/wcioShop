@@ -7,6 +7,9 @@ This system have been in use since 2010 but never made public, this github proje
 - Apache 2.4+ web server (Should work on NGINX or LiteSpeed but without the .htaccess)
 - A valid and working SSL certificate
 
+## PHP 8
+PHP 8 is really new and this does not yet work with PHP 8, it is a priority to get this working.
+
 ## FAQ
 #### Is there a live demo
 There is a non working site here: https://shop.kundesider.dk/ - But this is NOT a demo for this project. A real demo will be available in future.
