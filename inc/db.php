@@ -14,7 +14,7 @@ try {
 //Make sure when reading file data,
 //PHP doesn't "magically" mangle backslashes!
 //set_magic_quotes_runtime(FALSE);
-if (get_magic_quotes_gpc()) {
+if (function_exists("get_magic_quotes_gpc")) {
     /*
     All these global variables are slash-encoded by default,
     because    magic_quotes_gpc is set by default!
