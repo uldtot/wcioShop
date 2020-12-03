@@ -34,6 +34,8 @@ https://github.com/websitecareio/wcioShop/wiki
 Contact me at support@websitecare.io 
 
 ### Todo ( Just a list of stuff i need to remember )
+- Need to find a solution for curreny (Maybe a setting with type of currency and a setting with position)
+- Need to find a solution for tax. Maybe tax on shipping and products and save the taxes in table seperate from rest.
 - Redirect module (301 or 302)
 - Make sure the cache work for headerCart
 - AppStore to show what can be done with the modules available.-
