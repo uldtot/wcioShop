@@ -3,12 +3,12 @@ A ecommerce solution focused on speed and reliability. Long story short, the fir
 This system have been in use since 2010 but never made public, this github project will fix that. I will be making a lot of changes to this before adding files to GitHub. If you see this message, the project is not ready for use. 
 
 ## Requirements
-- PHP 7.4+ (Developed on PHP 7.4, might work on older versions)
+- PHP 7.4+ (Developed on PHP 7.4 and PHP 8, might work on older versions)
 - Apache 2.4+ web server (Should work on NGINX or LiteSpeed but without the .htaccess)
 - A valid and working SSL certificate
 
 ## PHP 8
-PHP 8 is really new and this does not yet work with PHP 8, it is a priority to get this working.
+This should work with PHP 8. 
 
 ## FAQ
 #### Is there a live demo
