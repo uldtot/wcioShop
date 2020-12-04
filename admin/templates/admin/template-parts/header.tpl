@@ -56,9 +56,8 @@
       </div>
       <div class="col-md-5 text-right">
 		<div>
-			<a class="btn btn-light d-none d-lg-inline-block" data-toggle="modal" href="#modal_hire"> Hire me </a>
-			<a class="btn btn-primary d-none d-lg-inline-block" href="#download">Download</a>
-		</div>
+			<a class="btn btn-light d-none d-lg-inline-block" href="?logout=1"> Logout </a>
+			</div>
       </div>
 	</nav>
 </header>

@@ -36,13 +36,10 @@ while($setting = $stmt->fetch( PDO::FETCH_ASSOC )) {
 }
 
 // SEO : Load the current URL from permalinks including meta for this URL
-include(dirname(__FILE__) . '/../inc/seo.php');
+require(dirname(__FILE__) . '/../inc/seo.php');
 
-// We need to load all functions etc that are used in template files for admin. DO NOT CACHE!
-
-      // Load template functions
-      include(dirname(__FILE__) . '/inc/templateFunctions.php');
-
+// Because this is admin, we require someone to be logged in. If thery are not, then we dont provide access to functions
+require(dirname(__FILE__) . '/inc/login.php');
 
 // Display the page and all its functions
 $smarty->display($smartyTemplateFile);
