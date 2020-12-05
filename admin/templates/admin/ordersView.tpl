@@ -95,11 +95,13 @@
                               {/if}
                               <tr>
                                     <td><b>Order Total  (including VAT):</b></td>
-                                    <td><b>{if $settingStoreCurrencyPlacement == "left"}{$settingStoreShownDefaultCurrency}{/if} {$wcioShopAdminOrdersViewProductsTotal - {$wcioShopAdminOrdersView.cart_discount} + {$wcioShopAdminOrdersView.cart_shipping * $wcioShopAdminOrdersView.cart_shipping_vat / 100 + $wcioShopAdminOrdersView.cart_shipping} + $wcioShopAdminOrdersView.cart_fees + $wcioShopAdminOrdersViewProductsVat} {if $settingStoreCurrencyPlacement == "right"}{$settingStoreShownDefaultCurrency}{/if}</b></td>
+                                    <td><b>{if $settingStoreCurrencyPlacement == "left"}{$settingStoreShownDefaultCurrency}{/if}
+                                          {$wcioShopAdminOrdersViewProductsTotal - $wcioShopAdminOrdersView.cart_discount + {$wcioShopAdminOrdersView.cart_shipping * $wcioShopAdminOrdersView.cart_shipping_vat / 100 + $wcioShopAdminOrdersView.cart_shipping} + $wcioShopAdminOrdersView.cart_fees + $wcioShopAdminOrdersViewProductsVat}
+                                          {if $settingStoreCurrencyPlacement == "right"}{$settingStoreShownDefaultCurrency}{/if}</b></td>
                               </tr>
                               <tr>
                                     <td>Order VAT:</td>
-                                    <td>{if $settingStoreCurrencyPlacement == "left"}{$settingStoreShownDefaultCurrency}{/if} {$wcioShopAdminOrdersViewProductsVat + {$wcioShopAdminOrdersView.cart_shipping * $wcioShopAdminOrdersView.cart_shipping_vat / 100 }} {if $settingStoreCurrencyPlacement == "right"}{$settingStoreShownDefaultCurrency}{/if}
+                                    <td>{if $settingStoreCurrencyPlacement == "left"}{$settingStoreShownDefaultCurrency}{/if} {$wcioShopAdminOrdersViewProductsVat + ($wcioShopAdminOrdersView.cart_shipping * $wcioShopAdminOrdersView.cart_shipping_vat / 100 )} {if $settingStoreCurrencyPlacement == "right"}{$settingStoreShownDefaultCurrency}{/if}
                                     </td>
                               </tr>
                         </tbody>
