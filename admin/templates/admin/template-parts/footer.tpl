@@ -13,13 +13,6 @@
 
 
 
-<!-- Font awesome 5 -->
-<link href="/templates/default/fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet">
-
-<!-- custom style -->
-<link href="/templates/default/css/ui.css" rel="stylesheet" type="text/css"/>
-<link href="/templates/default/css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
-
 <!-- jQuery -->
 <script src="/templates/default/js/jquery-2.0.0.min.js" type="text/javascript"></script>
 

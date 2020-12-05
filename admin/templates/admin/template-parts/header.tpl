@@ -76,6 +76,7 @@
 				<li><a href="/admin/"><i class="fa fa-home"></i> Dashboard</a></li>
 				<li><a href="/admin/orders/"><i class="fa fa-box"></i> Orders</a></li>
 				<li><a href="/admin/products/"><i class="fa fa-tag"></i> Products</a></li>
+				<li><a href="/admin/pages/"><i class="fa fa-copy"></i> Pages</a></li>
 				<!--<li><a href="/admin/customers/"><i class="fa fa-user"></i> Customers</a></li>-->
 			</ul><br>
                   <h6 class="title-category">Setting & apps</h6>

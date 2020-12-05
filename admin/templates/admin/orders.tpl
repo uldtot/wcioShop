@@ -13,7 +13,7 @@
           <tr>
             <th>#</th>
             <th>ID</th>
-            <th>Date</th>
+            <th width="200">Date</th>
             <th>Customer</th>
             <th>Status</th>
             <th>Total</th>
