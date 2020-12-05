@@ -9,9 +9,14 @@ if(isset($_GET["logout"])) {
       header("Location: /admin/login/");
 }
 
+if(isset($_SESSION["loggedInAdmin"])) {
+      $loggedInAdmin = $_SESSION["loggedInAdmin"];
+} else {
+      $loggedInAdmin = "";
+}
 
 // Login
-if(!$_SESSION["loggedInAdmin"] && $smartyTemplateFile == "login.tpl") {
+if($loggedInAdmin == "" && $smartyTemplateFile == "login.tpl") {
 
       // If there is a new login, then check it before doing anything else
       if( isset($_POST["adminEmail"]) && isset($_POST["adminPassword"])) {
@@ -39,7 +44,7 @@ if(!$_SESSION["loggedInAdmin"] && $smartyTemplateFile == "login.tpl") {
 
       }
 
-} else if($_SESSION["loggedInAdmin"] != "") { // Just making sure there is a session for this incase someone changes something somewhere.
+} else if($loggedInAdmin != "") { // Just making sure there is a session for this incase someone changes something somewhere.
 
 
        // We need to load all functions etc that are used in template files for admin. DO NOT CACHE!

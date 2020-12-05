@@ -1,12 +1,10 @@
 {include file='template-parts/head.tpl'}
 {include file='template-parts/header.tpl'}
 
-<div class="col-md-12 col-xl-12 col-lg-12 mt-5">
+
+<div class="col-md-9 mt-5">
+      <div class="card card-body">
 <h1>Products</h2>
-</div>
-
-<div class="col-md-12 col-xl-12 col-lg-12 mt-5" style="    border: 1px solid #e4e4e4;   border-radius: 8px;   background: #fff;">
-
 
             <!--Table-->
             <table id="tablePreview" class="table">
@@ -48,6 +46,8 @@
               <!--Table body-->
             </table>
             <!--Table-->
-</div> <!-- col.// -->
 
-{include file='template-parts/footer.tpl'}
+
+            </div>
+            </div> <!-- col.// -->
+            {include file='template-parts/footer.tpl'}

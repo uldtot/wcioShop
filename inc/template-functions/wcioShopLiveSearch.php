@@ -2,7 +2,7 @@
 $displayRandomProducts = array();
 
 $q = $_GET["q"];
-
+if(strlen($q) > 3) {
 $stmt = $dbh->prepare("SELECT * FROM wcio_se_products WHERE name LIKE :name AND active='1' LIMIT 8");
 $result = $stmt->execute(array(
       ":name" => "%{$q}%",
@@ -42,6 +42,7 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
     );
 }
 
+}
     // We just need an output to load this in template. Settings will be added later
     $smarty->assign("wcioShopLiveSearch", $displayRandomProducts);
 

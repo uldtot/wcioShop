@@ -69,7 +69,7 @@
 	<div class="">
 
 <div class="row">
-	<aside class="col-md-2 fixed-top"  style="padding-top: 90px;height: 100%;background: #fff;z-index: 0;    border-right: 1px solid #e4e4e4;">
+	<aside class="col-md-3 mt-5 card-body"  style="background: #fff;   border: 1px solid #e4e4e4;">
 		<nav class="nav-home-aside">
                   <h6 class="title-category">Store</h6>
 			<ul class="menu-category">
@@ -80,7 +80,15 @@
 			</ul><br>
                   <h6 class="title-category">Setting & apps</h6>
                   <ul class="menu-category">
-                        <li><a href="/admin/settings/"><i class="fa fa-cog"></i> Settings</a></li>
+				<li class="has-submenu"><a href="/admin/settings/"><i class="fa fa-cog"></i> Settings</a></a>
+					<ul class="submenu">
+						<li><a href="/admin/settings/">Store settings</a></li>
+						 {section name=setting loop=$wcioShopAdminSettingsMenu}
+							<li><a href="/admin/settings/{$wcioShopAdminSettingsMenu[setting].url}/">{$wcioShopAdminSettingsMenu[setting].columnNiceName}</a></li>
+						 {/section}
+					</ul>
+				</li>
+
                         <li><a href="/admin/apps/"><i class="fa fa-store"></i> Apps</a></li>
 			</ul><br>
 

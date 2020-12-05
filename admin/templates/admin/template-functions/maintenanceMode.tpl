@@ -4,13 +4,13 @@
 
 <div class="col-md-9 mt-5">
       <div class="card card-body">
-<h1>Store settings</h1>
-      <p>Here you can edit all default store settings</p>
+<h1>Maintenance mode</h1>
+      <p>Here you can edit all maintenance mode settings</p>
 
 </div>
 
       <!-- Looping settingMainGroup -->
-               {foreach from=$wcioShopAdminSettings key=k item=i}
+               {foreach from=$wcioShopAdminMaintenanceModeSettings key=k item=i}
 
                               {foreach from=$i key=k1 item=i1}
                               <div class="card card-body mt-3">
@@ -41,14 +41,15 @@
                                                                {elseif $i2.columnType == 'text'}
                                                                <input type="text" name="{$i2.id}" class="form-control" value="{$i2.columnValue}">
                                                                {elseif $i2.columnType == 'onoff'}
-                                                               <select name="{$i2.id}" class="form-control" >
-                                                                     <option value="0" {if $i2.columnValue == 0}checked{/if}>No</option>
-                                                                     <option value="1" {if $i2.columnValue == 1}checked{/if}>Yes</option>
-                                                               </select>
-                                                               {else}
-                                                                <input type="text" name="{$i2.id}" class="form-control" value="{$i2.columnValue}">
-                                                               {/if}
-                                                         </td>
+                                                              <select name="{$i2.id}" class="form-control" >
+                                                                    <option value="0" {if $i2.columnValue == '0'}selected{/if}>No</option>
+                                                                    <option value="1" {if $i2.columnValue == '1'}selected{/if}>Yes</option>
+                                                              </select>
+                                                              {else}
+                                                               <input type="text" name="{$i2.id}" class="form-control" value="{$i2.columnValue}">
+                                                              {/if}
+                                                            </td>
+
                                                       </tr>
                                                   {/foreach}
 

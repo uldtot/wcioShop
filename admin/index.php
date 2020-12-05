@@ -23,7 +23,7 @@ $smarty->template_dir   = $templateDir; //Template dir
 $smarty->assign('template_dir', $smartyTemplateDir);
 
 // Load all shop settings from databse
-$stmt = $dbh->prepare("SELECT columnName,columnValue FROM wcio_se_settings");
+$stmt = $dbh->prepare("SELECT columnName,columnValue FROM wcio_se_settings WHERE autoload = 1");
 $result = $stmt->execute();
 while($setting = $stmt->fetch( PDO::FETCH_ASSOC )) {
 

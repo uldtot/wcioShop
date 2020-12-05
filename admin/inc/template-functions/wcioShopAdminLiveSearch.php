@@ -1,9 +1,12 @@
 <?php
+$wcioShopAdminLiveSearch = "1"; // This is just to mkae sure there is something to check if its loaded
+$liveSearchSettings = array();
+$liveSearchApps = array();
 $liveSearchOrders = array();
 $liveSearchProducts = array();
 
-$q = $_GET["q"];
-
+$q = $_GET["q"] ?? "";
+if(strlen($q) > 3) {
 // Orders
 $stmt = $dbh->prepare("SELECT * FROM wcio_se_porders WHERE
       id = :q OR
@@ -39,9 +42,6 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
 
 }
 
-    // We just need an output to load this in template. Settings will be added later
-    $smarty->assign("liveSearchOrders", $liveSearchOrders);
-
 
 // Products
 $stmt = $dbh->prepare("SELECT * FROM wcio_se_products WHERE
@@ -64,23 +64,27 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
 	));
 	$permalinkData = $permalinkStmt->fetch(PDO::FETCH_ASSOC);
 
-
+      $url =  $permalinkData["url"] ?? "";
     $liveSearchProducts[] = array(
 	  'id' => $data['id'],
 	  'active' => $data['active'],
 	  'partno' => $data['partno'],
 	  'name' => $data['name'],
 	  'shorttext' => $data['shorttext'],
-	  'url' => $permalinkData["url"],
+	  'url' => $url,
     );
 
 
 }
 
-    // We just need an output to load this in template. Settings will be added later
+} // End if strlen
+
     $smarty->assign("liveSearchProducts", $liveSearchProducts);
+    $smarty->assign("liveSearchOrders", $liveSearchOrders);
+    $smarty->assign("wcioShopAdminLiveSearch", $wcioShopAdminLiveSearch);
+    $smarty->assign("liveSearchSettings", $liveSearchSettings);
+    $smarty->assign("liveSearchApps", $liveSearchApps);
 
 //
-
 
 ?>

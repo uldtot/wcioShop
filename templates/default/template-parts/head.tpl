@@ -30,5 +30,9 @@
 
 <!-- Bootstrap4 files-->
 <link href="/templates/default/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+
+<link rel="preload"  type="font/woff2" crossorigin href="/templates/default/fonts/fontawesome/webfonts/fa-solid-900.woff2" as="font">
+<link rel="preload" type="font/woff2" crossorigin  href="/templates/default/fonts/fontawesome/webfonts/fa-brands-400.woff2" as="font">
+
 </head>
 <body>
