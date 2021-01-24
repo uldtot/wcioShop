@@ -25,7 +25,7 @@
               <tbody>
                    {section name=product loop=$wcioShopAdminProducts}
                          <tr>
-                          <td>{if $wcioShopAdminProducts[product].active == "0"}
+                          <td>{if $wcioShopAdminProducts[product].active == "1"}
                                 <i class="fas fa-circle" style="color:#74b816; font-size:12px;"></i>
                                 {else}
                                 <i class="fas fa-circle" style="color:#dd1b16;font-size:12px;"></i>
@@ -36,8 +36,8 @@
                           <td>{$wcioShopAdminProducts[product].price}</td>
                           <th>{$wcioShopAdminProducts[product].partno}</th>
                           <td>
-                                <a href="/admin/products/view/?id={$wcioShopAdminProducts[product].id}" target="_blank">Edit</a> |
-                                <a href="{$wcioShopAdminProducts[product].image}" target="_blank">View</a>
+                                <a href="/admin/products/view/?id={$wcioShopAdminProducts[product].prdid}" target="_blank">Edit</a> |
+                                <a href="{$wcioShopAdminProducts[product].url}" target="_blank">View</a>
                           </td>
                         </tr>
                    {/section}

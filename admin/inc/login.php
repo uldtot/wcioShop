@@ -54,6 +54,6 @@ if($loggedInAdmin == "" && $smartyTemplateFile == "login.tpl") {
 } else {
       // This should never be valid...
       session_destroy();
-      $smartyTemplateFile = "404.tpl";
+      header("Location: /admin/login/");
 }
 ?>

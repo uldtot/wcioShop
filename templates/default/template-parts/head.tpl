@@ -34,5 +34,16 @@
 <link rel="preload"  type="font/woff2" crossorigin href="/templates/default/fonts/fontawesome/webfonts/fa-solid-900.woff2" as="font">
 <link rel="preload" type="font/woff2" crossorigin  href="/templates/default/fonts/fontawesome/webfonts/fa-brands-400.woff2" as="font">
 
+
+<!-- Font awesome 5 -->
+<link href="/templates/default/fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet">
+
+<!-- Bootstrap4 files-->
+<script src="/templates/default/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+
+<!-- custom style -->
+<link href="/templates/default/css/ui.css" rel="stylesheet" type="text/css"/>
+<link href="/templates/default/css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
+
 </head>
 <body>

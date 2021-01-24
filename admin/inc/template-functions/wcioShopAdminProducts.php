@@ -38,7 +38,7 @@ $result = $stmt->execute();
         	  'discount' => $data['discount'],
         	  'shorttext' => $data['shorttext'],
         	  'stock' => $data['stock'],
-        	  'url' => $permalinkData["url"],
+        	  'url' => $permalinkData["url"] ?? "",
             );
 
   }

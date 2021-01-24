@@ -16,7 +16,7 @@
 		<form action="#" class="search" _lpchecked="1">
 			<div class="input-group w-100">
 			    <input type="text" class="form-control" placeholder="Search" onkeyup="showResult(this.value)">
-			    {if $wcioShopLiveSearch}<div id="livesearch"></div>{/if}
+			  <div id="livesearch"></div>
 			    <div class="input-group-append">
 			      <button class="btn btn-primary" type="submit">
 			        <i class="fa fa-search"></i>
@@ -25,7 +25,7 @@
 		    </div>
 		</form> <!-- search-wrap .end// -->
 
-		{if $wcioShopLiveSearch}
+
 		<script type="text/javascript">
 		function showResult(str) {
   if (str.length<=3) {
@@ -56,7 +56,7 @@
 		z-index:1;
 		}
 		</style>
-		{/if}
+
 
 	</div>
 

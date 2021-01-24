@@ -8,8 +8,8 @@
 
       <h5>General</h5>
             <div><span class="font-weight-bold">Created at:</span> {$wcioShopAdminOrdersView.dateandtime}</div>
-            <div><span class="font-weight-bold">Shipping method:</span> {$wcioShopAdminOrdersView.shippingmethodNiceName}</div>
-            <div><span class="font-weight-bold">Payment method:</span> {$wcioShopAdminOrdersView.paymentmethodNiceName}</div>
+            <div><span class="font-weight-bold">Shipping method:</span> {$wcioShopAdminOrdersView.shippingmethod}</div>
+            <div><span class="font-weight-bold">Payment method:</span> {$wcioShopAdminOrdersView.paymentmethod}</div>
 <br>
 <div class="row">
 <div class="col-md-6 mt-2">
@@ -113,14 +113,13 @@
       <div class="col-md-12">
             <div class="card card-body">
             <h3>Order actions</h3>
-            <form method="post" action="/admin/orders/update/?id=1920">
-                  <input type="hidden" name="orderActionUpdate" value="1">
-                  <select name="orderAction" class="form-control">
+            <form>
+                  <select name="50" class="form-control">
                         <option value="0">Choose an action...</option>
                         <option value="send_order_details">Email invoice / order details to customer</option>
                         <option value="send_order_details_admin">Resend new order notification to admin</option>
                   </select>
-                  <button class="btn btn-primary d-none d-lg-inline-block mt-2 float-right" type="submot"> Do action </button>
+                   <a class="btn btn-primary d-none d-lg-inline-block mt-2 float-right" href=""> Do action </a>
             </form>
 
             </div>
@@ -129,19 +128,17 @@
             <div class="card card-body">
             <h3>Order status</h3>
             <p><span class="font-weight-bold">Status:</span> {$wcioShopAdminOrdersView.cart_status}</p>
-            <form method="post" action="/admin/orders/update/?id=1920">
-                  <input type="hidden" name="orderStatusUpdate" value="1">
-                  <select name="orderStatus" class="form-control">
-                        <option value="pending" {if $wcioShopAdminOrdersView.cart_status == "pending"}selected{/if}>Pending payment</option>
-                        <option value="processing" {if $wcioShopAdminOrdersView.cart_status == "processing"}selected{/if}>Processing</option>
-                        <option value="on-hold" {if $wcioShopAdminOrdersView.cart_status == "on-hold"}selected{/if}>On hold</option>
-                        <option value="completed" {if $wcioShopAdminOrdersView.cart_status == "completed"}selected{/if}>Completed</option>
-                        <option value="cancelled" {if $wcioShopAdminOrdersView.cart_status == "cancelled"}selected{/if}>Cancelled</option>
-                        <option value="refunded" {if $wcioShopAdminOrdersView.cart_status == "refunded"}selected{/if}>Refunded</option>
-                        <option value="failed" {if $wcioShopAdminOrdersView.cart_status == "failed"}selected{/if}>Failed</option>
+            <form>
+                  <select name="50" class="form-control">
+                        <option value="wc-pending" {if $wcioShopAdminOrdersView.cart_status == "pending"}selected{/if}>Pending payment</option>
+                        <option value="wc-processing" {if $wcioShopAdminOrdersView.cart_status == "processing"}selected{/if}>Processing</option>
+                        <option value="wc-on-hold" {if $wcioShopAdminOrdersView.cart_status == "on-hold"}selected{/if}>On hold</option>
+                        <option value="wc-completed" {if $wcioShopAdminOrdersView.cart_status == "completed"}selected{/if}>Completed</option>
+                        <option value="wc-cancelled" {if $wcioShopAdminOrdersView.cart_status == "cancelled"}selected{/if}>Cancelled</option>
+                        <option value="wc-refunded" {if $wcioShopAdminOrdersView.cart_status == "refunded"}selected{/if}>Refunded</option>
+                        <option value="wc-failed" {if $wcioShopAdminOrdersView.cart_status == "failed"}selected{/if}>Failed</option>
                    </select>
-                   <a href="https://github.com/websitecareio/wcioShop/wiki/What-does-the-order-status-mean" target="_blank">What does the order status mean?</a><br>
-                   <button class="btn btn-primary d-none d-lg-inline-block mt-2 float-right" type="submot"> Update status </button>
+                   <a class="btn btn-primary d-none d-lg-inline-block mt-2 float-right" href=""> Update status </a>
             </form>
             </div>
       </div>
@@ -160,13 +157,15 @@
       <div class="col-md-12 mt-3">
             <div class="card card-body">
             <h3>Admin notes</h3>
-            <form method="post" action="/admin/orders/update/?id=1920">
-                  <input type="hidden" name="orderAdminNotesUpdate" value="1">
+            <form>
                   <div><span class="font-weight-bold">Stock updated:</span> {if $wcioShopAdminOrdersView.StockUpdated == "1"}Yes{else}No{/if}</div>
                   <div><span class="font-weight-bold">Notes:</span><br>
-                        <textarea rows="5" cols="30" name="orderAdminNotes" class="form-control">{$wcioShopAdminOrdersView.AdminNotes}</textarea>
+                        <textarea rows="5" cols="30"  class="form-control">
+                              {$wcioShopAdminOrdersView.AdminNotes}
+                        </textarea>
 
-                        <button class="btn btn-primary d-none d-lg-inline-block mt-2 float-right" type="submot"> Update note </button>
+
+                        <a class="btn btn-primary d-none d-lg-inline-block mt-2 float-right" href=""> Update note </a>
                   </div>
             </form>
             </div>

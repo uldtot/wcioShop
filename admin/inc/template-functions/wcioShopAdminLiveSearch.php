@@ -36,7 +36,7 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
 	  'id' => $data['id'],
 	  'firstname' => $data['firstname'],
 	  'lastname' => $data['lastname'],
-	  'url' => $permalinkData["url"],
+	  'url' => $permalinkData["url"] ?? "",
     );
 
 

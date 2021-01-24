@@ -4,7 +4,7 @@
 <!-- ========================= SECTION PAGETOP ========================= -->
 <section class="section-pagetop bg">
 <div class="container">
-	<h2 class="title-page">Logitec gaming headphone</h2>
+	<h2 class="title-page">{$wcioDisplayProduct.name}</h2>
 	{if $productBreadcrumbs != ""}
 	<nav>
 	<ol class="breadcrumb text-white">
@@ -41,22 +41,15 @@
 		</aside>
 		<main class="col-sm-6">
 <article class="content-body">
-	<h3 class="title">Logitec gaming headphone</h3>
-	<div class="rating-wrap mb-3">
+	<h3 class="title">{$wcioDisplayProduct.name}</h3>
+	<div class="rating-wrap mb-3" style="display:none;">
 		<span class="badge badge-warning"> <i class="fa fa-star"></i> 3.8</span>
 		<small class="text-muted ml-2">45 reviews</small>
 	</div>
-	<p>Here goes description consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco </p>
+	<p>{$wcioDisplayProduct.shorttext}</p>
 
-<ul class="list-check mb-4">
-	<li>Best performance of battery</li>
-	<li>5 years warranty for this product</li>
-	<li>Best performance of battery</li>
-</ul>
 
-<div class="item-option-select">
+<div class="item-option-select" style="display:none;">
 	<h6>Model</h6>
 	<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
 	  <label class="btn btn-light active">
@@ -68,7 +61,7 @@ quis nostrud exercitation ullamco </p>
 	</div>
 </div>
 
-<div class="item-option-select">
+<div class="item-option-select" style="display:none;">
 	<h6>Color</h6>
 	<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
 	  <label class="btn btn-light">
@@ -83,7 +76,7 @@ quis nostrud exercitation ullamco </p>
 	</div>
 </div>
 
-<div class="item-option-select">
+<div class="item-option-select" style="display:none;">
 	<h6>Capacity</h6>
 	<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
 	  <label class="btn btn-light active">
@@ -127,111 +120,19 @@ quis nostrud exercitation ullamco </p>
 		<div class="col-md-12"><h3>Product information</h3></div>
 	</div>
 	<div class="row mt-2">
-
-		<article class="card">
-			<div class="card-body">
-				<div class="row">
-					<aside class="col-md-6">
-						<h5>Parameters</h5>
-						<dl class="row">
-						      <dt class="col-sm-3">Display</dt>
-						      <dd class="col-sm-9">13.3-inch LED-backlit display with IPS</dd>
-
-						      <dt class="col-sm-3">Processor</dt>
-						      <dd class="col-sm-9">2.3GHz dual-core Intel Core i5</dd>
-
-						      <dt class="col-sm-3">Camera</dt>
-						      <dd class="col-sm-9">720p FaceTime HD camera</dd>
-
-						      <dt class="col-sm-3">Memory</dt>
-						      <dd class="col-sm-9">8 GB RAM or 16 GB RAM</dd>
-
-						      <dt class="col-sm-3">Graphics</dt>
-						      <dd class="col-sm-9">Intel Iris Plus Graphics 640</dd>
-						</dl>
-					</aside>
-					<aside class="col-md-6">
-						<h5>Features</h5>
-						<ul class="list-check">
-							<li>Best performance of battery</li>
-							<li>5 years warranty for this product</li>
-							<li>Amazing features and high quality</li>
-							<li>Best performance of battery</li>
-							<li>5 years warranty for this product</li>
-						</ul>
-					</aside>
-				</div> <!-- row.// -->
-				<hr>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p>
-			</div> <!-- card-body.// -->
-		</article>
-
-	</div>
-
-<div class="row mt-5">
-	<div class="col-md-12"><h3>Other products you might like</h3></div>
-</div>
-	<div class="row mt-2">
 		<div class="col-md-12">
-		<div class="card card-body">
-	<div class="row">
-		<div class="col-md-3">
-			<a href="#" class="itemside">
-				<div class="aside"><img src="https://dummyimage.com/80x80/000/fff" class="img-sm"></div>
-				<div class="info align-self-center">
-					<p class="title">Some name of item goes here nice</p>
-					<div class="price-wrap">
-						<span class="price">$1280</span>
-						<del class="price-old text-muted">$1980</del>
-					</div> <!-- price-wrap.// -->
-				</div>
-			</a>
-		</div> <!-- col.// -->
+			<article class="card">
+				<div class="card-body">
 
-		<div class="col-md-3">
-			<a href="#" class="itemside">
-				<div class="aside"><img src="https://dummyimage.com/80x80/000/fff" class="img-sm"></div>
-				<div class="info align-self-center">
-					<p class="title">Some name of item goes here nice</p>
-					<div class="price-wrap">
-						<span class="price">$1280</span>
-						<del class="price-old text-muted">$1980</del>
-					</div> <!-- price-wrap.// -->
-				</div>
-			</a>
-		</div> <!-- col.// -->
-
-		<div class="col-md-3">
-			<a href="#" class="itemside">
-				<div class="aside"><img src="https://dummyimage.com/80x80/000/fff" class="img-sm"></div>
-				<div class="info align-self-center">
-					<p class="title">Some name of item goes here nice</p>
-					<div class="price">$1280</div> <!-- price-wrap.// -->
-				</div>
-			</a>
-		</div> <!-- col.// -->
-
-		<div class="col-md-3">
-			<a href="#" class="itemside">
-				<div class="aside"><img src="https://dummyimage.com/80x80/000/fff" class="img-sm"></div>
-				<div class="info align-self-center">
-					<p class="title">Some name of item goes here nice</p>
-					<div class="price">$1280</div> <!-- price-wrap.// -->
-				</div>
-			</a>
-		</div> <!-- col.// -->
-	</div> <!-- row.// -->
-</div>
-
+					<p>
+						{$wcioDisplayProduct.FullDescription}
+					</p>
+				</div> <!-- card-body.// -->
+			</article>
+		</div>
 	</div>
-	</div>
+
+
 </div> <!-- container //  -->
 
 </section>

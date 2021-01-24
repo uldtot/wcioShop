@@ -11,8 +11,7 @@
       <!--Table head-->
         <thead>
           <tr>
-            <th>#</th>
-            <th>ID</th>
+            <th>Order id</th>
             <th width="200">Date</th>
             <th>Customer</th>
             <th>Status</th>
@@ -24,13 +23,12 @@
         <tbody>
              {section name=order loop=$wcioShopAdminOrders}
                    <tr>
-                    <td scope="row"></td>
-                    <td><a href="/admin/orders/view/?id={$wcioShopAdminOrders[order].orderId}">{$wcioShopAdminOrders[order].orderId}</a></td>
+                    <td scope="row"><a href="/admin/orders/view/?id={$wcioShopAdminOrders[order].orderId}">{$wcioShopAdminOrders[order].orderId}</a></td>
                     <td>{$wcioShopAdminOrders[order].timestamp|date_format:"%B %e, %Y"}</td>
                     <td>{$wcioShopAdminOrders[order].firstname} {$wcioShopAdminOrders[order].lastname}</td>
                     <td>{$wcioShopAdminOrders[order].orderStatus}
                     </td>
-                    <td>{$wcioShopAdminOrders[order].total}</td>
+                    <td>{$wcioShopAdminOrders[order].total} {$settingStoreShownDefaultCurrency}</td>
                   </tr>
              {/section}
 
