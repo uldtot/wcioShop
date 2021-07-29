@@ -33,10 +33,10 @@
 
 		<section class="footer-bottom border-top row">
 			<div class="col-md-2">
-				<p class="text-muted"> &copy {$smarty.now|date_format:"%Y"}  {$footerWidgetSix}</p>
+				<p class="text-muted"> &copy {$smarty.now|date_format:"%Y"}  {if isset($footerWidgetSix)}{$footerWidgetSix}{/if}</p>
 			</div>
 			<div class="col-md-8 text-md-center">
-				{$footerWidgetSeven}
+				{if isset($footerWidgetSeven)}{$footerWidgetSeven}{/if}
 			</div>
 			<div class="col-md-2 text-md-right text-muted">
 				<!-- KORT LOGOER HER -->
