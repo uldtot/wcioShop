@@ -220,22 +220,24 @@
 		<div class="col-md-6">
 			<div class="info-main">
 				<a href="{$displayCategoryProducts[product].url}" class="h5 title"> {$displayCategoryProducts[product].name}  </a>
-				{if $prodcutStarRating != ""}
-					<div class="rating-wrap mb-3">
-						<ul class="rating-stars">
-							<li style="width:80%" class="stars-active">
-								<i class="fa fa-star"></i> <i class="fa fa-star"></i>
-								<i class="fa fa-star"></i> <i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-							</li>
-							<li>
-								<i class="fa fa-star"></i> <i class="fa fa-star"></i>
-								<i class="fa fa-star"></i> <i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-							</li>
-						</ul>
-						<div class="label-rating">7/10</div>
-					</div> <!-- rating-wrap.// -->
+				{if isset($prodcutStarRating)}
+					{if $prodcutStarRating != ""}
+						<div class="rating-wrap mb-3">
+							<ul class="rating-stars">
+								<li style="width:80%" class="stars-active">
+									<i class="fa fa-star"></i> <i class="fa fa-star"></i>
+									<i class="fa fa-star"></i> <i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+								</li>
+								<li>
+									<i class="fa fa-star"></i> <i class="fa fa-star"></i>
+									<i class="fa fa-star"></i> <i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+								</li>
+							</ul>
+							<div class="label-rating">7/10</div>
+						</div> <!-- rating-wrap.// -->
+					{/if}
 				{/if}
 
 				<p> {$displayCategoryProducts[product].shorttext} </p>
