@@ -8,14 +8,16 @@
 <section class="section-pagetop bg">
 <div class="container">
 	<h2 class="title-page">{$category.name}</h2>
-	{if $categoryBreadcrumbs != ""}
-	<nav>
-	<ol class="breadcrumb text-white">
-	    <li class="breadcrumb-item"><a href="#">Home</a></li>
-	    <li class="breadcrumb-item"><a href="#">Best category</a></li>
-	    <li class="breadcrumb-item active" aria-current="page">Great articles</li>
-	</ol>
-	</nav>
+	{if isset($categoryBreadcrumbs)}
+		{if $categoryBreadcrumbs != ""}
+		<nav>
+		<ol class="breadcrumb text-white">
+		    <li class="breadcrumb-item"><a href="#">Home</a></li>
+		    <li class="breadcrumb-item"><a href="#">Best category</a></li>
+		    <li class="breadcrumb-item active" aria-current="page">Great articles</li>
+		</ol>
+		</nav>
+		{/if}
 	{/if}
 </div> <!-- container //  -->
 </section>
