@@ -95,20 +95,24 @@
 
 
 <div class="row mt-3 align-items-center">
-	<div class="col">
-		<span class="price h4">$815.00</span>
-	</div> <!-- col.// -->
-	<div class="col text-left">
+	{if isset($settingCatalogMode)}
+		{if settingCatalogMode == "1"}
+			<div class="col">
+			<span class="price h4">$815.00</span>
+		</div> <!-- col.// -->
+		<div class="col text-left">
 
-		<select class="form-control mb-3 mt-3">
-	  		<option> 1 </option>
-	  		<option> 2 </option>
-	  		<option> 3 </option>
-	  	</select>
-			<a href="#" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="icon fas fa-shopping-cart"></i>  </a>
-		<a href="#" class="btn  btn-light"> <i class="fas fa-heart"></i>  </a>
-		<a href="#" class="btn  btn-light"> <i class="fa fa-folder-plus"></i>  </a>
-	</div> <!-- col.// -->
+			<select class="form-control mb-3 mt-3">
+		  		<option> 1 </option>
+		  		<option> 2 </option>
+		  		<option> 3 </option>
+		  	</select>
+				<a href="#" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="icon fas fa-shopping-cart"></i>  </a>
+			<a href="#" class="btn  btn-light"> <i class="fas fa-heart"></i>  </a>
+			<a href="#" class="btn  btn-light"> <i class="fa fa-folder-plus"></i>  </a>
+		</div> <!-- col.// -->
+		{/if}
+	{/if}
 </div> <!-- row.// -->
 
 </article> <!-- product-info-aside .// -->
