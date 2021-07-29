@@ -4,19 +4,29 @@
 		<section class="footer-top padding-y">
 			<div class="row">
 				<aside class="col-md col-6">
-					{$footerWidgetOne}
+					{if isset($footerWidgetOne)}
+						{$footerWidgetOne}
+					{/if}
 				</aside>
 				<aside class="col-md col-6">
-					{$footerWidgetTwo}
+					{if isset($footerWidgetTwo)}
+						{$footerWidgetTwo}
+					{/if}
 				</aside>
 				<aside class="col-md col-6">
-					{$footerWidgetThree}
+					{if isset($footerWidgetThree)}
+						{$footerWidgetThree}
+					{/if}
 				</aside>
 				<aside class="col-md col-6">
-					{$footerWidgetFour}
+					{if isset($footerWidgetFour)}
+						{$footerWidgetFour}
+					{/if}
 				</aside>
 				<aside class="col-md">
-					{$footerWidgetFive}
+					{if isset($footerWidgetFive)}
+						{$footerWidgetFive}
+					{/if}
 				</aside>
 			</div> <!-- row.// -->
 		</section>	<!-- footer-top.// -->
