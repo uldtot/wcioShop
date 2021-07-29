@@ -64,7 +64,7 @@
 		<div class="widgets-wrap float-md-right">
 			<div class="widget-header  mr-3">
 				<a href="/cart/" class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></a>
-				<span class="badge badge-pill badge-danger notify">{nocache}{if $headerCart.numberOfItems != "0"}{$headerCart.numberOfItems}{/if}{/nocache}</span>
+								<span class="badge badge-pill badge-danger notify">{nocache}{if isset($headerCart.numberOfItems)}{if $headerCart.numberOfItems != "0"}{$headerCart.numberOfItems}{/if}{/if}{/nocache}</span>
 			</div>
 		</div> <!-- widgets-wrap.// -->
 	</div> <!-- col.// -->
