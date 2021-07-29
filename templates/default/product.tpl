@@ -31,7 +31,9 @@
 		<aside class="col-sm-6 border-right">
 <article class="gallery-wrap">
 	<div class="img-big-wrap">
-	   <a href="#"><img src="/uploads/{$wcioDisplayProduct.featuredImage}"></a>
+	   {if isset($nothinghere)}<a href="#">{/if}
+		   <img src="/uploads/{$wcioDisplayProduct.featuredImage}">
+	  {if isset($nothinghere)} </a>{/if}
 	</div> <!-- img-big-wrap.// -->
 	{if isset($nothinghere)}
 	<div class="thumbs-wrap">
