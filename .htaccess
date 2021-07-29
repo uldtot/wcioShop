@@ -1,7 +1,7 @@
 RewriteEngine On
 
 # Force HTTPS redirect if not https
-RewriteCond %{HTTPS} off
+RewriteCond %{ENV:HTTPS} off
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 # Error handling
