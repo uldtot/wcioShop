@@ -2,9 +2,10 @@
 $cartCount = "0";
 if (isset($_SESSION['cart']))
 {
-    $cartCount = count($_SESSION['cart']); //how many products
-} else {
-    $cartCount = "";
+
+    if(count($_SESSION['cart']) > 0) {
+            $cartCount = count($_SESSION['cart']); //how many products
+   }
 }
 
 $output = array(
