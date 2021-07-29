@@ -20,22 +20,22 @@ if (function_exists("get_magic_quotes_gpc")) {
     because    magic_quotes_gpc is set by default!
     (And magic_quotes_gpc affects more than just $_GET, $_POST, and $_COOKIE)
     */
-    $_SERVER = stripslashes_array($_SERVER);
-    $_GET = stripslashes_array($_GET);
-    $_POST = stripslashes_array($_POST);
-    $_COOKIE = stripslashes_array($_COOKIE);
-    $_FILES = stripslashes_array($_FILES);
-    $_ENV = stripslashes_array($_ENV);
-    $_REQUEST = stripslashes_array($_REQUEST);
-    $HTTP_SERVER_VARS = stripslashes_array($HTTP_SERVER_VARS);
-    $HTTP_GET_VARS = stripslashes_array($HTTP_GET_VARS);
-    $HTTP_POST_VARS = stripslashes_array($HTTP_POST_VARS);
-    $HTTP_COOKIE_VARS = stripslashes_array($HTTP_COOKIE_VARS);
-    $HTTP_POST_FILES = stripslashes_array($HTTP_POST_FILES);
-    $HTTP_ENV_VARS = stripslashes_array($HTTP_ENV_VARS);
+    $_SERVER = stripslashes_array($_SERVER ?? '');
+    $_GET = stripslashes_array($_GET ?? '');
+    $_POST = stripslashes_array($_POST ?? '');
+    $_COOKIE = stripslashes_array($_COOKIE ?? '');
+    $_FILES = stripslashes_array($_FILES ?? '');
+    $_ENV = stripslashes_array($_ENV ?? '');
+    $_REQUEST = stripslashes_array($_REQUEST ?? '');
+    $HTTP_SERVER_VARS = stripslashes_array($HTTP_SERVER_VARS ?? '');
+    $HTTP_GET_VARS = stripslashes_array($HTTP_GET_VARS ?? '');
+    $HTTP_POST_VARS = stripslashes_array($HTTP_POST_VARS ?? '');
+    $HTTP_COOKIE_VARS = stripslashes_array($HTTP_COOKIE_VARS ?? '');
+    $HTTP_POST_FILES = stripslashes_array($HTTP_POST_FILES ?? '');
+    $HTTP_ENV_VARS = stripslashes_array($HTTP_ENV_VARS ?? '');
     if (isset($_SESSION)) {    #These are unconfirmed (?)
-        $_SESSION = stripslashes_array($_SESSION, '');
-        $HTTP_SESSION_VARS = stripslashes_array($HTTP_SESSION_VARS, '');
+        $_SESSION = stripslashes_array($_SESSION ?? '', '');
+        $HTTP_SESSION_VARS = stripslashes_array($HTTP_SESSION_VARS ?? '', '');
     }
     /*
     The $GLOBALS array is also slash-encoded, but when all the above are
