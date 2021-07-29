@@ -60,14 +60,18 @@
 
 	</div>
 
+	{if isset($settingCatalogMode)}
+	{if settingCatalogMode == "1"}
 	<div class="col-lg-4 col-sm-6 col-12">
 		<div class="widgets-wrap float-md-right">
 			<div class="widget-header  mr-3">
 				<a href="/cart/" class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></a>
-								<span class="badge badge-pill badge-danger notify">{nocache}{if isset($headerCart.numberOfItems)}{if $headerCart.numberOfItems != "0"}{$headerCart.numberOfItems}{/if}{/if}{/nocache}</span>
+				<span class="badge badge-pill badge-danger notify">{nocache}{if isset($headerCart.numberOfItems)}{if $headerCart.numberOfItems != "0"}{$headerCart.numberOfItems}{/if}{/if}{/nocache}</span>
 			</div>
 		</div> <!-- widgets-wrap.// -->
 	</div> <!-- col.// -->
+	{/if}
+	{/if}
 </div> <!-- row.// -->
 	</div> <!-- container.// -->
 </section> <!-- header-main .// -->
