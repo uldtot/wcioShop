@@ -253,8 +253,12 @@
 						{/if}
 					</del>
 				</div> <!-- info-price-detail // -->
-				<p class="text-success">{if $displayCategoryProducts[product].stock > 0}In stock{/if}</p>
-				<br>
+				{if isset($settingCatalogMode)}
+					{if settingCatalogMode == "1"}
+					<p class="text-success">{if $displayCategoryProducts[product].stock > 0}In stock{/if}</p>
+					<br>
+					{/if}
+				{/if}
 				<p>
 					<a href="{$displayCategoryProducts[product].url}" class="btn btn-primary btn-block"> Details </a>
 					<a href="#" class="btn btn-light btn-block" style="display:none;"><i class="fa fa-heart"></i>
