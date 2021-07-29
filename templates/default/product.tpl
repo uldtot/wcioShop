@@ -50,7 +50,7 @@
 	</div>
 	<p>{$wcioDisplayProduct.shorttext}</p>
 
-
+{if isset($nothinghere)}
 <div class="item-option-select" style="display:none;">
 	<h6>Model</h6>
 	<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
@@ -92,7 +92,7 @@
 	  </label>
 	</div>
 </div>
-
+{/if}
 
 <div class="row mt-3 align-items-center">
 	{if isset($settingCatalogMode)}
