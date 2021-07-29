@@ -23,7 +23,7 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
 	if(!file_exists(dirname(__FILE__)."../../uploads/".$attachmentData["attachmentValue"]."")) {
 		$image = "noimage.png";
 	} else {
-		$iamge = $attachmentData["attachmentValue"];
+		$image = $attachmentData["attachmentValue"];
 	}
 
     $displayRandomProducts[] = array(
