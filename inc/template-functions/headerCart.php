@@ -3,6 +3,8 @@ $cartCount = "0";
 if (isset($_SESSION['cart']))
 {
     $cartCount = count($_SESSION['cart']); //how many products
+} else {
+    $cartCount = "";
 }
 
 $output = array(
