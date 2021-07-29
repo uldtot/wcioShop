@@ -31,14 +31,16 @@
 		<aside class="col-sm-6 border-right">
 <article class="gallery-wrap">
 	<div class="img-big-wrap">
-	   <a href="#"><img src="https://dummyimage.com/600x400/000/fff"></a>
+	   <a href="#"><img src="/uploads/{$wcioDisplayProduct.featuredImage}"></a>
 	</div> <!-- img-big-wrap.// -->
+	{if isset($nothinghere)}
 	<div class="thumbs-wrap">
 	  <a href="#" class="item-thumb"> <img src="https://dummyimage.com/600x400/000/fff"></a>
 	  <a href="#" class="item-thumb"> <img src="https://dummyimage.com/600x400/000/fff"></a>
 	  <a href="#" class="item-thumb"> <img src="https://dummyimage.com/600x400/000/fff"></a>
 	  <a href="#" class="item-thumb"> <img src="https://dummyimage.com/600x400/000/fff"></a>
 	</div> <!-- thumbs-wrap.// -->
+	{/if}
 </article> <!-- gallery-wrap .end// -->
 		</aside>
 		<main class="col-sm-6">
