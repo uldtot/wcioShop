@@ -21,7 +21,7 @@ Full shop mode: -- NOT YET READY --
 Catalog mode is a catalog only, no purchasing is possible. Prices, stock status is not displayed by default (but can be). Full shop mode, is a fully working site with pruchasing.
 
 #### When can i expect this to be ready for use? 
-Cannot say at the moment.
+Cannot say at the moment.Currently hoping by the end of 2021. Catalog mode is mostly ready 30-07-2021. Admin part is what takes most time currently.
 
 ## Issues / Bug report
 If you experience any errors, please report htem at the link below. If you can provide screenshots too.
