@@ -46,8 +46,6 @@
 </footer>
 <!-- ========================= FOOTER END // ========================= -->
 
-<!-- jQuery -->
-<script src="/templates/default/js/jquery-2.0.0.min.js" type="text/javascript"></script>
 
 <!-- custom javascript -->
 <script src="/templates/default/js/script.js" type="text/javascript"></script>
