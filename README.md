@@ -12,7 +12,13 @@ This should work with PHP 8.
 
 ## FAQ
 #### Is there a live demo
-There is a non working site here: https://shop.kundesider.dk/ - But this is NOT a demo for this project. A real demo will be available in future.
+
+Here is demo store:
+Catalog mode: https://tekanden.dk
+Full shop mode: -- NOT YET READY --
+
+### What is catalog mode / full shop mode
+Catalog mode is a catalog only, no purchasing is possible. Prices, stock status is not displayed by default (but can be). Full shop mode, is a fully working site with pruchasing.
 
 #### When can i expect this to be ready for use? 
 Cannot say at the moment.
