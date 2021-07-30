@@ -245,6 +245,8 @@
 		</div> <!-- col.// -->
 		<aside class="col-sm-3">
 			<div class="info-aside">
+				{if isset($settingCatalogMode)}
+				{if $settingCatalogMode != "1"}
 				<div class="price-wrap">
 					<span class="price h5"> {{{$displayCategoryProducts[product].price}+{$displayCategoryProducts[product].price}*20/100}|number_format:2:",":"."} kr.</span>
 					<del class="price-old">
@@ -253,8 +255,8 @@
 						{/if}
 					</del>
 				</div> <!-- info-price-detail // -->
-				{if isset($settingCatalogMode)}
-					{if settingCatalogMode == "1"}
+
+
 					<p class="text-success">{if $displayCategoryProducts[product].stock > 0}In stock{/if}</p>
 					<br>
 					{/if}
