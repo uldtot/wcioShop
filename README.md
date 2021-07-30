@@ -14,8 +14,8 @@ This should work with PHP 8.
 #### Is there a live demo
 
 Here is demo store:
-Catalog mode: https://tekanden.dk
-Full shop mode: -- NOT YET READY --
+- Catalog mode: https://tekanden.dk
+- Full shop mode: -- NOT YET READY --
 
 ### What is catalog mode / full shop mode
 Catalog mode is a catalog only, no purchasing is possible. Prices, stock status is not displayed by default (but can be). Full shop mode, is a fully working site with pruchasing.
