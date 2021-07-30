@@ -24,7 +24,11 @@
 			<a href="{$displayRandomProducts[product].url}" class="img-wrap"> <img src="/uploads/{$displayRandomProducts[product].image}"> </a>
 			<figcaption class="info-wrap">
 				<a href="{$displayRandomProducts[product].url}" class="title" style="height:45px;">{$displayRandomProducts[product].name}</a>
-				<div class="price mt-1">{{{$displayRandomProducts[product].price}+{$displayRandomProducts[product].price}*20/100}|number_format:2:",":"."} kr.</div> <!-- price-wrap.// -->
+				{if isset($settingCatalogMode)}
+					{if $settingCatalogMode != "1"}
+					<div class="price mt-1">{{{$displayRandomProducts[product].price}+{$displayRandomProducts[product].price}*20/100}|number_format:2:",":"."} kr.</div> <!-- price-wrap.// -->
+					{/if}
+				{/if}
 			</figcaption>
 		</div>
 	</div> <!-- col.// -->
