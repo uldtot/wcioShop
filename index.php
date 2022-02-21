@@ -8,8 +8,6 @@
  */
 session_start();
 
-// This is just a test of codeanywhere IDE...
-
 require(dirname(__FILE__) . '/inc/db.php'); //connect to database
 require(dirname(__FILE__) . '/libs/Smarty.class.php'); //Smarty
 
