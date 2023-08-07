@@ -13,23 +13,19 @@ This should work with PHP 8.
 ## FAQ
 #### Is there a live demo
 
-Here is demo store:
-- Catalog mode: https://tekanden.dk
-- Full shop mode: -- NOT YET READY --
+Here is the demo store:
+- Shop live site: https://kimvinberg.dk
 
 ### What is catalog mode / full shop mode
-Catalog mode is a catalog only, no purchasing is possible. Prices, stock status is not displayed by default (but can be). Full shop mode, is a fully working site with pruchasing.
-
-#### When can i expect this to be ready for use? 
-Cannot say at the moment.Currently hoping by the end of 2021. Catalog mode is mostly ready 30-07-2021. Admin part is what takes most time currently.
+Catalog mode is a catalog only, no purchasing is possible. Prices, and stock status is not displayed by default (but can be). Full shop mode is a fully working site with purchasing.
 
 ## Issues / Bug report
-If you experience any errors, please report htem at the link below. If you can provide screenshots too.
-Go here for issues or bug report: https://github.com/websitecareio/wcioShop/issues
+If you experience any errors, please report them at the link below. If you can provide screenshots too.
+Go here for issues or bug reports: https://github.com/websitecareio/wcioShop/issues
 
 ## Want to help?
-I would like help with this. If you want to help, i would like any help i can get.
-This can be coding, design, translation, testing and im sure a lot more.
+I would like help with this. If you want to help, I would like any help I can get.
+This can be coding, design, translation, testing, and I'm sure a lot more.
 
 ## Documentation
 There will be made several documentations. All can be found at link below:
