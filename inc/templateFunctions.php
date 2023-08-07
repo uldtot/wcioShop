@@ -1,4 +1,11 @@
 <?php
+/*
+* wcioShop
+* Version 1.0.0
+* Author: Kim Vinberg <support@websitecare.io>
+* Source: https://github.com/websitecareio/wcioShop
+* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
+ */
 
 // In case the SEO function does not include template file, then its a 404
 if(!$smartyTemplateFile) { $smartyTemplateFile = "404.tpl"; }
