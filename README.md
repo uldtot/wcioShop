@@ -32,6 +32,9 @@ Go here for issues or bug reports: https://github.com/websitecareio/wcioShop/iss
 I would like help with this. If you want to help, I would like any help I can get.
 This can be coding, design, translation, testing, and I'm sure a lot more.
 
+## Themes
+Currently there is no plan to make a default theme with all functions included. What you see on the live site example are just to show what can be done.
+
 ## Documentation
 There will be made several documentations. All can be found at link below:
 
