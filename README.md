@@ -1,10 +1,11 @@
 # wcioShop
 
-2023: 
-I am currently working a lot more on this, because I am trying to make a store for myself again, and would love to use my own system. Maybe this is the time I actually get this running again...  I'm acing difficulties with the theme and language part. I'm not a designer and I kind of don't want to work on it if it's not moving toward something I can use, so writing in danish is the solution at the moment. Then I later can add localization.
+## 
+Follow Discussions for updates : https://github.com/websitecareio/wcioShop/discussions
 
-A ecommerce solution focused on speed and reliability. Long story short, the first version of this system was built in 4 day non stop coding (YES i did not sleep for days coding the first version in 2010). 
-This system have been in use since 2010 but never made public, this github project will fix that. I will be making a lot of changes to this before adding files to GitHub. If you see this message, the project is not ready for use. 
+## What is wcioShop
+A e-commerce solution focused on speed and reliability. Long story short, the first version of this system was built in 4 days nonstop coding (YES I did not sleep for days coding the first version in 2010). 
+This system has been in use since 2010 but never made public, this GitHub project will fix that. I will be making a lot of changes to this before adding files to GitHub. If you see this message, the project is not ready for use. 
 
 ## Requirements
 - PHP 7.4+ (Developed on PHP 7.4 and PHP 8, might work on older versions)
@@ -21,7 +22,7 @@ Here is the demo store:
 - Shop live site: https://kimvinberg.dk
 
 ### What is catalog mode / full shop mode
-Catalog mode is a catalog only, no purchasing is possible. Prices, and stock status is not displayed by default (but can be). Full shop mode is a fully working site with purchasing.
+Catalog mode is a catalog only, no purchasing is possible. Prices and stock status is not displayed by default (but can be). Full shop mode is a fully working site with purchasing.
 
 ## Issues / Bug report
 If you experience any errors, please report them at the link below. If you can provide screenshots too.
