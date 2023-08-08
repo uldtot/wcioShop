@@ -1,8 +1,18 @@
+# Mod reqrite
+<IfModule mod_rewrite.c>
 RewriteEngine On
-
 # Force HTTPS redirect if not https
 RewriteCond %{ENV:HTTPS} off
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Send all traffix to index.php if its not a known file or directory
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
 
 # Error handling
 ErrorDocument 404 /404/
