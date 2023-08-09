@@ -8,38 +8,56 @@
  */
 session_start();
 
-require(dirname(__FILE__) . '/../inc/db.php'); //connect to database
-require(dirname(__FILE__) . '/../libs/Smarty.class.php'); //Smarty
+/** Absolute path to the store directory. */
+if (!defined('ABSPATH')) {
+      define('ABSPATH', __DIR__ . '/');
+}
+
+if (!defined('storeadmin')) {
+      define('storeadmin', true);
+}
+
+require_once(dirname(__FILE__) . '/../inc/db.php'); //connect to database
+require_once(dirname(__FILE__) . '/../libs/Smarty.class.php'); //Smarty
 
 $smarty = new Smarty; //Start smarty
+// set directory where compiled templates are stored
 
-$templateDir       = dirname(__FILE__) . "/templates/admin/";
-$smartyTemplateDir = "/templates/admin/";
+$templateDir       = dirname(__FILE__) . "/../templates/admin/";
+$smartyTemplateDir = "/../templates/admin/";
+
 
 $smarty->force_compile  = true; // Force admin to always recompile
-$smarty->debugging      = true; //Deactivate when out of dev for test
+$smarty->debugging      = false; //Deactivate when out of dev for test
 
 $smarty->template_dir   = $templateDir; //Template dir
 $smarty->assign('template_dir', $smartyTemplateDir);
+$smarty->setCompileDir(dirname(__FILE__) . '/../templates_c');
 
 // Load all shop settings from databse
 $stmt = $dbh->prepare("SELECT columnName,columnValue FROM wcio_se_settings WHERE autoload = 1");
 $result = $stmt->execute();
-while($setting = $stmt->fetch( PDO::FETCH_ASSOC )) {
+while ($setting = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
       // Assign values to be used in files
       $_SETTING[$setting['columnName']] = $setting['columnValue'];
 
       // Assign values to smarty for use in templates.
-      $smarty->assign('setting'.ucfirst($setting['columnName']).'',$setting['columnValue']); // Save setting for smarty
+      $smarty->assign('setting' . ucfirst($setting['columnName']) . '', $setting['columnValue']); // Save setting for smarty
 
 }
 
-// SEO : Load the current URL from permalinks including meta for this URL
-require(dirname(__FILE__) . '/../inc/seo.php');
-
 // Because this is admin, we require someone to be logged in. If thery are not, then we dont provide access to functions
-require(dirname(__FILE__) . '/inc/login.php');
+include(dirname(__FILE__) . '/inc/wcio_validateLogin.php');
 
-// Display the page and all its functions
-$smarty->display($smartyTemplateFile);
+if (!isset($smartyTemplateFile) || $smartyTemplateFile == "index.tpl") {
+
+      // Default template file.
+      $smartyTemplateFile = "index.tpl";
+
+      // Load template functions
+      include(dirname(__FILE__) . '/inc/wcio_templateFunctions.php');
+
+      // Display the page and all its functions
+      $smarty->display($smartyTemplateFile);
+}
