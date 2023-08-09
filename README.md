@@ -8,12 +8,9 @@ A e-commerce solution focused on speed and reliability. Long story short, the fi
 This system has been in use since 2010 but never made public, this GitHub project will fix that. I will be making a lot of changes to this before adding files to GitHub. If you see this message, the project is not ready for use. 
 
 ## Requirements
-- PHP 7.4+ (Developed on PHP 7.4 and PHP 8, might work on older versions)
+- PHP 8 (Developed on PHP 8.x, might work on older versions)
 - Apache 2.4+ web server (Should work on NGINX or LiteSpeed but without the .htaccess)
 - A valid and working SSL certificate
-
-## PHP 8
-This should work with PHP 8. 
 
 ## FAQ
 #### Is there a live demo
