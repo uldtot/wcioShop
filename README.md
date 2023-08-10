@@ -39,13 +39,3 @@ What you see on the live site example is just to show what can be done.
 There will be made several documentations. All can be found at link below:
 
 https://github.com/websitecareio/wcioShop/wiki
-
-### Todo ( Just a list of stuff i need to remember )
-- Need to find a solution for currency (Maybe a setting with type of currency and a setting with position)
-- Need to find a solution for tax. Maybe tax on shipping and products and save the taxes in table separate from rest.
-- Redirect module (301 or 302)
-- Make sure the cache work for headerCart
-- paginition system for category
-- breadcrumbs for categories
-- sub menu for navigation categories
-- And a lot more...
