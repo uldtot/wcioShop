@@ -4,13 +4,15 @@
 Follow Discussions for updates: https://github.com/websitecareio/wcioShop/discussions
 
 ## What is wcioShop
-An e-commerce solution focused on speed and reliability. Long story short, the first version of this system was built in 4 days nonstop coding (YES I did not sleep for days coding the first version in 2010). 
+An e-commerce solution focused on speed and reliability. Long story short, the first version of this system was built in 4 days of nonstop coding (YES I did not sleep for days coding the first version in 2010). 
 This system has been in use since 2010 but never made public, this GitHub project will fix that. I will be making a lot of changes to this before adding files to GitHub. If you see this message, the project is not ready for use. 
+
+If you want to read the long version of why and how i  coded this in 4 days originally, then hed over to Discussions 
 
 ## Requirements
 - PHP 8 (Developed on PHP 8.x, might work on older versions)
-- Apache 2.4+ web server (Should work on NGINX or LiteSpeed but without the .htaccess)
-- A valid and working SSL certificate
+- Apache 2.4+ web server
+- A valid and working SSL certificate. Any error due to missing SSL will not be fixed. With the availability of free SSL LeetsEncrypt, there are no reason not to have it.
 
 ## FAQ
 #### Is there a live demo
