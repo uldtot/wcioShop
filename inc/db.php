@@ -1,10 +1,46 @@
 <?php
+/*
+* wcioShop
+* Version 1.0.0
+* Author: Kim Vinberg <support@websitecare.io>
+* Source: https://github.com/websitecareio/wcioShop
+* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
+ */
+
+ 
+ if(!defined("ABSPATH")) { die("No ABSPATH definded"); }
+
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) { //ob start to start fetching data including gzip
 	ob_start("ob_gzhandler");
 	}
 
 try {
-    $dbh = new PDO("mysql:dbname=XXXXXXXXXXXXXX;port=3306;host=XXXXXXXXXXXXXX", "XXXXXXXXXXXXXX", "XXXXXXXXXXXX", array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8") );
+
+
+    // Load ini file if present.
+    $iniConfigFile = dirname(__FILE__)."/../../private.ini";
+    if(file_exists($iniConfigFile)) {
+
+        $iniArray = parse_ini_file($iniConfigFile);
+        
+        $dbname = $iniArray["dbname"];
+        $dbport = $iniArray["dbport"];
+        $dbhost = $iniArray["dbhost"];
+        $dbuser = $iniArray["dbuser"];
+        $dbpass = $iniArray["dbpass"];
+
+    } else {
+
+        // Or define your db connection here
+        $dbname = "";
+        $dbport = "";
+        $dbhost = "";
+        $dbuser = "";
+        $dbpass = "";
+
+    }
+
+    $dbh = new PDO("mysql:dbname=$dbname;port=$dbport;host=$dbhost", "$dbuser", "$dbpass", array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8") );
 } catch (PDOException $e) {
     die( 'Connection failed: ' . $e->getMessage());
 }
