@@ -1,6 +1,13 @@
 <?php
+/*
+* wcioShop
+* Version 1.0.0
+* Author: Kim Vinberg <support@websitecare.io>
+* Source: https://github.com/uldtot/wcioShop
+ */
+
 $displayRandomProducts = array();
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_products WHERE featuredImage != '' AND active='1' ORDER BY rand() LIMIT 8");
+$stmt = $dbh->prepare("SELECT * FROM wcio_se_products WHERE active=1 ORDER BY rand() LIMIT 8");
 $result = $stmt->execute();
 
 while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
@@ -29,7 +36,7 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
     $displayRandomProducts[] = array(
 	  'prdid' => $data['id'],
 	  'name' => $data['name'],
-	  'price' => $data['price'],
+	  'price' => $data['price'] ?? 0,
 	  'image' => $image,
 	  'discount' => $data['discount'],
 	  'shorttext' => $data['shorttext'],
@@ -37,4 +44,5 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
 	  'url' => $permalinkData["url"],
     );
 }
+
 $smarty->assign("displayRandomProducts", $displayRandomProducts);
