@@ -65,9 +65,7 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
     $liveSearchProducts[] = array(
 	  'id' => $data['id'],
 	  'active' => $data['active'],
-	  'partno' => $data['partno'],
 	  'name' => $data['name'],
-	  'shorttext' => $data['shorttext'],
 	  'url' => $url,
     );
 
