@@ -2,7 +2,7 @@
 
 
 $output = array();
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_categories ORDER BY sortorder");
+$stmt = $dbh->prepare("SELECT * FROM wcio_se_categories ORDER BY name ASC");
 $result = $stmt->execute();
 
 while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
@@ -19,10 +19,6 @@ $permalinkData = $permalinkStmt->fetch(PDO::FETCH_ASSOC);
     $output[] = array(
         'id' => $data['id'],
         'name' => $data['name'],
-        'isparent' => $data['isparent'],
-        'gotparent' => $data['gotparent'],
-        'productcount' => $data['productcount'],
-        'sortorder' => $data['sortorder'],
         'url' => $permalinkData["url"],
     );
 }
