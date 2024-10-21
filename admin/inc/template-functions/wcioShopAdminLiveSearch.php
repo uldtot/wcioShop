@@ -46,10 +46,7 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
 // Products
 $stmt = $dbh->prepare("SELECT * FROM wcio_se_products WHERE
       id = :q OR
-      partno = :q OR
-      name LIKE :q OR
-      shorttext LIKE :q
-      ORDER BY id DESC
+      name LIKE :q
       LIMIT 6");
 $result = $stmt->execute(array(
       ":q" => "%{$q}%",
