@@ -22,8 +22,7 @@
                     <tr>
                         <td>{$wcioShopAdminCategories[category].name}</td>
                         <td>
-                            <a href="/admin/?action=edit&id={$wcioShopAdminCategories[category].prdid}"
-                                target="_blank">Edit</a> |
+                            <a href="/admin/wcio_categories.php?action=edit&id={$wcioShopAdminCategories[category].prdid}">Edit</a> |
                             <a href="{$wcioShopAdminCategories[category].url}" target="_blank">View</a>
                         </td>
                     </tr>
