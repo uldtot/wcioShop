@@ -10,7 +10,7 @@ session_start();
 
 /** Absolute path to the store directory. */
 if (!defined('ABSPATH')) {
-      define('ABSPATH', __DIR__ . '/');
+      define('ABSPATH', dirname(__DIR__, 1));
 }
 
 if (!defined('storeadmin')) {
@@ -20,6 +20,142 @@ if (!defined('storeadmin')) {
 require_once(dirname(__FILE__) . '/../inc/db.php'); //connect to database
 require_once(dirname(__FILE__) . '/../libs/Smarty.class.php'); //Smarty
 
+// Permalink function
+// Permalink function
+function savePermalink(
+      $newUrl, 
+      $postId, 
+      $postType, 
+      $seoTitle = '', 
+      $seoKeywords = '', 
+      $seoDescription = '', 
+      $seoNoIndex = 0 // Default to 0 (false)
+  ) {
+      global $dbh; // Use the global database handler
+      
+      // Remove leading and trailing slashes from the URL
+      $newUrl = trim($newUrl, '/');
+      $newUrl = "/" . sanitizeSeoUrl($newUrl) . "/"; // Making sure all URLs have this.
+  
+      // Base URL without suffix
+      $baseUrl = $newUrl;
+      $suffix = 0;
+      
+      // Check for existing URLs and find a unique one
+      do {
+          // Prepare the query to check for existing URLs
+          $checkQuery = "SELECT COUNT(*) FROM wcio_se_permalinks WHERE url = :url AND postType = :postType AND postId != :postId";
+          $checkStmt = $dbh->prepare($checkQuery);
+          $checkStmt->bindParam(':url', $newUrl);
+          $checkStmt->bindParam(':postType', $postType);
+          $checkStmt->bindParam(':postId', $postId);
+          $checkStmt->execute();
+      
+          // Fetch the count of existing URLs
+          $count = $checkStmt->fetchColumn();
+      
+          // If the URL already exists for another post, modify it
+          if ($count > 0) {
+              $suffix++;
+              $newUrl = $baseUrl . '-' . $suffix;
+          }
+      } while ($count > 0);
+      
+      // Try to update the existing permalink first
+      $updateQuery = "UPDATE wcio_se_permalinks 
+                      SET url = :url, 
+                          SEOtitle = :seoTitle, 
+                          SEOkeywords = :seoKeywords, 
+                          SEOdescription = :seoDescription, 
+                          SEOnoIndex = :seoNoIndex 
+                      WHERE postType = :postType AND postId = :postId";
+      $updateStmt = $dbh->prepare($updateQuery);
+      $updateStmt->bindParam(':url', $newUrl);
+      $updateStmt->bindParam(':seoTitle', $seoTitle);
+      $updateStmt->bindParam(':seoKeywords', $seoKeywords);
+      $updateStmt->bindParam(':seoDescription', $seoDescription);
+      $updateStmt->bindParam(':seoNoIndex', $seoNoIndex);
+      $updateStmt->bindParam(':postType', $postType);
+      $updateStmt->bindParam(':postId', $postId);
+      $updated = $updateStmt->execute();
+      
+      // If no rows were updated, insert a new permalink
+      if ($updateStmt->rowCount() === 0) {
+          $insertQuery = "INSERT INTO wcio_se_permalinks (url, postType, postId, SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex) 
+                          VALUES (:url, :postType, :postId, :seoTitle, :seoKeywords, :seoDescription, :seoNoIndex)";
+          $insertStmt = $dbh->prepare($insertQuery);
+          $insertStmt->bindParam(':url', $newUrl);
+          $insertStmt->bindParam(':postType', $postType);
+          $insertStmt->bindParam(':postId', $postId);
+          $insertStmt->bindParam(':seoTitle', $seoTitle);
+          $insertStmt->bindParam(':seoKeywords', $seoKeywords);
+          $insertStmt->bindParam(':seoDescription', $seoDescription);
+          $insertStmt->bindParam(':seoNoIndex', $seoNoIndex);
+          $inserted = $insertStmt->execute();
+      
+          return $inserted; // Return whether the insert was successful
+      }
+      
+      return $updated; // Return whether the update was successful
+  }
+  
+
+// Fetch SEO data
+function fetchSeoData($postId, $postType) {
+      global $dbh; // Use the global database handler
+      
+      // Prepare the query to fetch SEO data
+      $query = "SELECT SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex FROM wcio_se_permalinks WHERE postId = :postId AND postType = :postType";
+      $stmt = $dbh->prepare($query);
+      $stmt->bindParam(':postId', $postId);
+      $stmt->bindParam(':postType', $postType);
+      $stmt->execute();
+      
+      // Fetch the data
+      $seoData = $stmt->fetch(PDO::FETCH_ASSOC);
+      
+      // Return the fetched SEO data or null if not found
+      return $seoData ?: null;
+  }
+  
+  //sanitizeSeoUrl
+  function sanitizeSeoUrl($url) {
+      // Remove any leading or trailing whitespace
+      $url = trim($url);
+      
+      // Define character replacements
+      $charReplacements = [
+          'á' => 'a', 'à' => 'a', 'ä' => 'a', 'â' => 'a', 'å' => 'aa', 'ã' => 'a', 'ā' => 'a',
+          'é' => 'e', 'è' => 'e', 'ë' => 'e', 'ê' => 'e', 'ē' => 'e',
+          'í' => 'i', 'ì' => 'i', 'ï' => 'i', 'î' => 'i', 'ī' => 'i',
+          'ó' => 'o', 'ò' => 'o', 'ö' => 'o', 'ô' => 'o', 'ø' => 'oe', 'õ' => 'o', 'ō' => 'o',
+          'ú' => 'u', 'ù' => 'u', 'ü' => 'u', 'û' => 'u', 'ū' => 'u',
+          'ç' => 'c', 'ñ' => 'n', 'ý' => 'y', 'ÿ' => 'y',
+          'Æ' => 'Ae', 'æ' => 'ae', 'Ø' => 'Oe', 'ø' => 'oe', 'Å' => 'Aa', 'å' => 'aa',
+          'ß' => 'ss', 'þ' => 'th', 'Þ' => 'Th', '&' => '-', ' ' => '-' 
+          // Add more replacements as needed
+      ];
+      
+      // Replace special characters with their ASCII equivalents
+      $url = str_replace(array_keys($charReplacements), array_values($charReplacements), $url);
+      
+      // Convert to lowercase
+      $url = strtolower($url);
+      
+      // Remove any unwanted characters (keep alphanumeric, dashes, underscores, and slashes)
+      $url = preg_replace('/[^a-z0-9\-\/]/', '', $url);
+      
+      // Replace spaces with hyphens
+      $url = preg_replace('/\s+/', '-', $url);
+      
+      // Remove duplicate hyphens
+      $url = preg_replace('/-+/', '-', $url);
+      
+      // Remove trailing hyphens
+      $url = rtrim($url, '-');
+  
+      return $url;
+  }
 $smarty = new Smarty; //Start smarty
 // set directory where compiled templates are stored
 
