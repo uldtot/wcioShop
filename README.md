@@ -1,4 +1,4 @@
-# wcioShop
+# wcioShop (This really need a better name)
 
 ## 
 Follow Discussions for updates: https://github.com/websitecareio/wcioShop/discussions
