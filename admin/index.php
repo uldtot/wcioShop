@@ -29,10 +29,14 @@ function savePermalink(
       $seoTitle = '', 
       $seoKeywords = '', 
       $seoDescription = '', 
-      $seoNoIndex = 0 // Default to 0 (false)
+      $seoNoIndex = 0, // Default to 0 (false),
+      $fallbackUrl = ""
   ) {
       global $dbh; // Use the global database handler
       
+      if($newUrl == "") {
+            $newUrl = $fallbackUrl;
+      }
       // Remove leading and trailing slashes from the URL
       $newUrl = trim($newUrl, '/');
       $newUrl = "/" . sanitizeSeoUrl($newUrl) . "/"; // Making sure all URLs have this.
@@ -81,8 +85,24 @@ function savePermalink(
       
       // If no rows were updated, insert a new permalink
       if ($updateStmt->rowCount() === 0) {
-          $insertQuery = "INSERT INTO wcio_se_permalinks (url, postType, postId, SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex) 
-                          VALUES (:url, :postType, :postId, :seoTitle, :seoKeywords, :seoDescription, :seoNoIndex)";
+
+
+        switch ($postType) {
+            case "category":
+                $templateFile = "category.tpl";
+                break;
+            case "page":
+                    $templateFile = "page.tpl";
+                    break;
+                    
+            case "product":
+                $templateFile = "product.tpl";
+                break;
+        }
+
+
+          $insertQuery = "INSERT INTO wcio_se_permalinks (url, templateFile, postType, postId, SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex) 
+                          VALUES (:url, :templateFile, :postType, :postId, :seoTitle, :seoKeywords, :seoDescription, :seoNoIndex)";
           $insertStmt = $dbh->prepare($insertQuery);
           $insertStmt->bindParam(':url', $newUrl);
           $insertStmt->bindParam(':postType', $postType);
@@ -91,6 +111,9 @@ function savePermalink(
           $insertStmt->bindParam(':seoKeywords', $seoKeywords);
           $insertStmt->bindParam(':seoDescription', $seoDescription);
           $insertStmt->bindParam(':seoNoIndex', $seoNoIndex);
+          $insertStmt->bindParam(':templateFile', $templateFile);
+
+          
           $inserted = $insertStmt->execute();
       
           return $inserted; // Return whether the insert was successful
@@ -99,6 +122,31 @@ function savePermalink(
       return $updated; // Return whether the update was successful
   }
   
+  function deletePermalink($postId, $postType) {
+    global $dbh; // Use the global database handler
+    
+    try {
+        // Prepare the delete query
+        $deleteQuery = "DELETE FROM wcio_se_permalinks WHERE postId = :postId AND postType = :postType";
+        $deleteStmt = $dbh->prepare($deleteQuery);
+        $deleteStmt->bindParam(':postId', $postId);
+        $deleteStmt->bindParam(':postType', $postType);
+        
+        // Execute the delete statement
+        $deleted = $deleteStmt->execute();
+        
+        // Check if any rows were affected
+        if ($deleted && $deleteStmt->rowCount() > 0) {
+            return true; // Deletion was successful
+        } else {
+            return false; // No rows were deleted (might not exist)
+        }
+    } catch (PDOException $e) {
+        // Handle any errors
+        echo "Error: " . $e->getMessage();
+        return false; // Indicate failure
+    }
+}
 
 // Fetch SEO data
 function fetchSeoData($postId, $postType) {
