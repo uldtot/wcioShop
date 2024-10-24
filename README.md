@@ -1,4 +1,4 @@
-# wcioShop (This really need a better name)
+# wcioShop (This really needs a better name)
 
 ## 
 Follow Discussions for updates: https://github.com/websitecareio/wcioShop/discussions
@@ -7,7 +7,7 @@ Follow Discussions for updates: https://github.com/websitecareio/wcioShop/discus
 An e-commerce solution focused on speed and reliability. Long story short, the first version of this system was built in 4 days of nonstop coding (YES I did not sleep for days coding the first version in 2010). 
 This system has been in use since 2010 but never made public, this GitHub project will fix that. I will be making a lot of changes to this before adding files to GitHub. If you see this message, the project is not ready for use. 
 
-If you want to read the long version of why and how i  coded this in 4 days originally, then hed over to Discussions 
+If you want to read the long version of why and how I coded this in 4 days originally, then head over to Discussions 
 
 ## Requirements
 - PHP 8 (Developed on PHP 8.x, might work on older versions)
@@ -31,16 +31,16 @@ Go here for issues or bug reports: https://github.com/websitecareio/wcioShop/iss
 If you want to help, I would like any help I can get.
 
 * Coding help:
-Currently help with making custom apps like payment gateways, shipping stuff, accounting sync etc. would be usefull and code debug of the system.  Currently there is no need for more people to work on the system itself because its not ready to be used.
+Help in making custom apps like payment gateways, shipping stuff, and accounting sync would be useful as code debug of the system. Currently, there is no need for more people to work on the core itself because it's not ready to be used.
 
-* Design
+* Design:
 If you want to, it could use a pretty store theme that can be downloaded. Must be your own design and code.
 
-* Translation
-I haven't really looked much into how to translate this yet, will be looked into when its ready for use i guess. But if you want to translate, let me know.
+* Translation:
+I haven't really looked much into how to translate this yet, will be looked into when it's ready for use I guess. But if you want to translate, let me know.
 
-* Testing
-If you want to help test this out, open a issue and i will contact you (not everything is uploaded here yet, so i might have more ready that is not yet visible)
+* Testing:
+If you want to help test this out, open an issue and I will contact you (not everything is uploaded here yet, so I might have more ready that is not yet visible). IT can be maybe just a specific function or something. 
 
 
 ## Themes
