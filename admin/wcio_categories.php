@@ -16,6 +16,43 @@ include(dirname(__FILE__) . '/index.php');
 $action = $_REQUEST["action"] ?? null;
 $categoryId = $_REQUEST["id"] ?? null;
 
+// If we want to edit a product. Load data
+        if (isset($categoryId) && $action == "delete") {
+                try {
+                    // Prepare the delete query
+                    $deleteQuery = "DELETE FROM wcio_se_categories WHERE id = :id";
+                    $deleteStmt = $dbh->prepare($deleteQuery);
+                    $deleteStmt->bindParam(':id', $categoryId);
+                    
+                    // Execute the delete statement
+                    $deleteStmt->execute();
+                    
+                    // Check if any rows were affected
+                    if ($deleteStmt->rowCount() > 0) {
+                        echo "Category deleted successfully.";
+                    } else {
+                        echo "No category found with the specified ID.";
+                    }
+
+                    // Delete permalink data
+
+                    if (isset($categoryId) && $action == "delete") {
+                        $success = deletePermalink($categoryId, 'category');
+                        
+                        if ($success) {
+                            //echo "Permalink deleted successfully.";
+                        } else {
+                            //echo "Failed to delete permalink or it does not exist.";
+                        }
+                    }
+
+
+                } catch (PDOException $e) {
+                    // Handle any errors
+                    echo "Error: " . $e->getMessage();
+                }
+            }
+
 
 // If we want to edit a product. Load data
 if (isset($categoryId) && $action == "edit") {
@@ -80,7 +117,7 @@ if (isset($categoryId) && $action == "edit") {
 if (isset($categoryId) && $action == "update") {
 
 
-        $categoryid = $_POST["id"];
+        $categoryId = $_POST["id"];
         $categoryName = $_POST["name"];
         $categoryPermalink = $_POST["permalink"];
         $categoryDescription = $_POST["fullDescription"];
@@ -93,27 +130,48 @@ if (isset($categoryId) && $action == "update") {
 
         try {
 
-                $updateQuery = "UPDATE wcio_se_categories SET name = :name, description = :description WHERE id = :id";
-                $updateStmt = $dbh->prepare($updateQuery);
-                $updateStmt->bindParam(':name', $categoryName);
-                $updateStmt->bindParam(':description', $categoryDescription);
-                $updateStmt->bindParam(':id', $categoryid);
-                $updated = $updateStmt->execute();
-                $rowCount = $updateStmt->rowCount();
 
-                // Now update the SEO table
-                // Example usage
-                $posttype = "category";
-                // Assuming $categoryName and $categoryid are defined
-                $fallbackUrl = !empty($categoryName) ? $categoryName : $categoryid;
+                // Check if its new or update
+                if($categoryId == 0) {
 
-                $saveSuccess = savePermalink($categoryPermalink, $categoryid, $posttype, $categorySEOtitle, $categorySEOdescription, $categorySEOdescription, $categorySEOnoIndex, $fallbackUrl);
+                        // Insert the new category
+                        $insertQuery = "INSERT INTO wcio_se_categories (name, description) VALUES (:name, :description)";
+                        $insertStmt = $dbh->prepare($insertQuery);
+                        $insertStmt->bindParam(':name', $categoryName);
+                        $insertStmt->bindParam(':description', $categoryDescription);
+                        
+                        // Execute the insert statement
+                        $insertStmt->execute();
 
-                if ($saveSuccess) {
-                        echo "Permalink saved successfully.";
-                } else {
-                        echo "Failed to save the permalink.";
+                        // Get the last inserted ID
+                        $categoryId = $dbh->lastInsertId();
+
+                  } else {
+
+                        $updateQuery = "UPDATE wcio_se_categories SET name = :name, description = :description WHERE id = :id";
+                        $updateStmt = $dbh->prepare($updateQuery);
+                        $updateStmt->bindParam(':name', $categoryName);
+                        $updateStmt->bindParam(':description', $categoryDescription);
+                        $updateStmt->bindParam(':id', $categoryId);
+                        $updated = $updateStmt->execute();
+                        $rowCount = $updateStmt->rowCount();
+                
                 }
+
+                        // Now update the SEO table
+                        // Example usage
+                        $posttype = "category";
+                        // Assuming $categoryName and $categoryId are defined
+                        $fallbackUrl = !empty($categoryName) ? $categoryName : $categoryId;
+
+                        $saveSuccess = savePermalink($categoryPermalink, $categoryId, $posttype, $categorySEOtitle, $categorySEOdescription, $categorySEOdescription, $categorySEOnoIndex, $fallbackUrl);
+
+                        if ($saveSuccess) {
+                               // echo "Permalink saved successfully.";
+                        } else {
+                               // echo "Failed to save the permalink.";
+                        }
+
         } catch (PDOException $e) {
                 // Rollback the transaction on error
 
@@ -130,7 +188,7 @@ if (isset($categoryId) && $action == "update") {
 if ($action == "add") {
 
         // Add default data. 
-        $categoryData['id'] = "";
+        $categoryData['id'] = "0";
         $categoryData['name'] = "";
         $categoryData['description'] = "";
         $categoryData['url'] = "";
