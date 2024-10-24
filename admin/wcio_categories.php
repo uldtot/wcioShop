@@ -84,11 +84,12 @@ if (isset($categoryId) && $action == "update") {
         $categoryName = $_POST["name"];
         $categoryPermalink = $_POST["permalink"];
         $categoryDescription = $_POST["fullDescription"];
-        
+
         $categorySEOtitle = $_POST["SEOtitle"];
         $categorySEOkeywords = $_POST["SEOkeywords"];
         $categorySEOdescription = $_POST["SEOdescription"];
-        $categorySEOnoIndex = $_POST["SEOnoIndex"];
+        $categorySEOnoIndex = isset($_POST["SEOnoIndex"]) ? 1 : 0;
+
 
         try {
 
@@ -101,16 +102,18 @@ if (isset($categoryId) && $action == "update") {
                 $rowCount = $updateStmt->rowCount();
 
                 // Now update the SEO table
-               // Example usage
-               $posttype = "category";
-               $saveSuccess = savePermalink($categoryPermalink, $categoryid, $posttype, $categorySEOtitle, $categorySEOdescription, $categorySEOdescription, $categorySEOnoIndex);
+                // Example usage
+                $posttype = "category";
+                // Assuming $categoryName and $categoryid are defined
+                $fallbackUrl = !empty($categoryName) ? $categoryName : $categoryid;
+
+                $saveSuccess = savePermalink($categoryPermalink, $categoryid, $posttype, $categorySEOtitle, $categorySEOdescription, $categorySEOdescription, $categorySEOnoIndex, $fallbackUrl);
 
                 if ($saveSuccess) {
-                echo "Permalink saved successfully.";
+                        echo "Permalink saved successfully.";
                 } else {
-                echo "Failed to save the permalink.";
+                        echo "Failed to save the permalink.";
                 }
-
         } catch (PDOException $e) {
                 // Rollback the transaction on error
 
@@ -125,6 +128,21 @@ if (isset($categoryId) && $action == "update") {
 
 // IF we want to save or update a product. Id determains if its one or the other.
 if ($action == "add") {
+
+        // Add default data. 
+        $categoryData['id'] = "";
+        $categoryData['name'] = "";
+        $categoryData['description'] = "";
+        $categoryData['url'] = "";
+
+        // SEO data
+        $categoryData['SEOtitle'] = "";
+        $categoryData['SEOkeywords'] = "";
+        $categoryData['SEOdescription'] = "";
+        $categoryData['SEOnoIndex'] = 0;
+
+        $smarty->assign("categoryData", $categoryData);
+
 
         // overwrite the template file
         $smartyTemplateFile = "categoriesView.tpl";
