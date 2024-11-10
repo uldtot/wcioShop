@@ -62,12 +62,20 @@ if (isset($productId) && $action == "edit") {
         }
 
         // Add default data. 
-        $productData['id'] = $data['id'];
+        $productData['id'] = $productId;
         $productData['active'] = $data['active'] ?? 0;
         $productData['name'] = $data['name'] ?? "";
         $productData['images'] = $images;
         $productData['featured'] = $data['featured'] ?? 0;
         $productData['url'] = $permalinkData["url"] ?? "";
+     
+        // SEO data
+      $seoData = fetchSeoData($productId, "product");
+
+      $productData['SEOtitle'] = $seoData['SEOtitle'] ?? "";
+      $productData['SEOkeywords'] = $seoData['SEOkeywords'] ?? "";
+      $productData['SEOdescription'] = $seoData['SEOdescription'] ?? "";
+      $productData['SEOnoIndex'] = $seoData['SEOnoIndex'] ?? 0;
 
 
         $smarty->assign("productData", $productData);
@@ -112,7 +120,7 @@ if (isset($productId) && $action == "update") {
         foreach ($_POST as $key => $value) {
 
                 // Just skipping some fields we do not need
-                if ($key == "id" || $key == "action" || $key == "name" || $key == "productCategories" || $key == "permalink") {
+                if ($key == "id" || $key == "action" ||  $key == "name" || $key == "active" ||  $key == "productCategories" || $key == "permalink") {
                         continue;
                 }
 
@@ -152,15 +160,89 @@ if (isset($productId) && $action == "update") {
 
                         echo "Error: " . $e->getMessage();
                 }
-
-                // Now updat the product talbe
-
-                // Now update the SEO table
-
-                // Now update the categories
-
-
         }
+
+        // Now update productname
+
+        $productName = $_POST["name"] ?? "";
+        $active = isset($_POST["active"]) ? 1 : 0; // If checkbox is checked, set active to 1, else 0
+        $updateQuery = "UPDATE wcio_se_products SET name = :name, active = :active WHERE id = :productId";
+        $updateStmt = $dbh->prepare($updateQuery);
+        $updateStmt->bindParam(':name', $productName);
+        $updateStmt->bindParam(':active', $active);
+        $updateStmt->bindParam(':productId', $productId);
+        $updated = $updateStmt->execute();
+        $rowCount = $updateStmt->rowCount();
+
+        
+
+        // Now update the categories
+
+
+        try {
+                // Assuming $dbh is your PDO database connection, $productId is provided (e.g., from a form or URL)
+                $categories = $_POST['productCategories']; // Array of selected category IDs from the form (checkboxes)
+
+                // Check if categories are selected
+                if (!empty($categories)) {
+
+
+                        // Begin transaction to ensure data consistency (both DELETE and INSERT are handled atomically)
+                        $dbh->beginTransaction();
+
+                        //  Delete all categories for this product (prdid)
+                        $deleteQuery = "DELETE FROM wcio_se_product_categories WHERE prdid = :prdid";
+                        $deleteStmt = $dbh->prepare($deleteQuery);
+                        $deleteStmt->bindParam(':prdid', $productId, PDO::PARAM_INT);
+                        $deleteStmt->execute(); // Execute the delete query
+
+                        // Insert the selected categories for this product (prdid)
+                        $insertQuery = "INSERT INTO wcio_se_product_categories (prdid, catid) VALUES (:prdid, :catid)";
+                        $insertStmt = $dbh->prepare($insertQuery);
+                        $insertStmt->bindParam(':prdid', $productId, PDO::PARAM_INT); // Bind prdid to each insert
+
+                        // Loop through the selected categories and insert each one
+                        foreach ($categories as $catid) {
+                                $insertStmt->bindParam(':catid', $catid, PDO::PARAM_INT); // Bind each catid
+                                $insertStmt->execute(); // Execute the insert query
+                        }
+
+                        // Commit the transaction to finalize both DELETE and INSERT operations
+                        $dbh->commit();
+                }
+        } catch (PDOException $e) {
+                // Rollback the transaction if there's an error
+                $dbh->rollBack();
+                echo 'Error: ' . $e->getMessage();
+        }
+
+
+        // Permalink
+        $cpageName = $_POST["name"];
+        $pagePermalink = $_POST["permalink"];
+      
+        $pageSEOtitle = $_POST["SEOtitle"] ?? "";
+        $pageSEOkeywords = $_POST["SEOkeywords"];
+        $pageSEOdescription = $_POST["SEOdescription"];
+        $pageSEOnoIndex = isset($_POST["SEOnoIndex"]) ? 1 : 0;
+
+           // Now update the SEO table
+                        // Example usage
+                        $posttype = "product";
+                        // Assuming $cpageName and $pageId are defined
+                        $fallbackUrl = !empty($productName) ? $productName : $productId;
+
+                        $saveSuccess = savePermalink($pagePermalink, $productId, $posttype, $pageSEOtitle, $pageSEOdescription, $pageSEOdescription, $pageSEOnoIndex, $fallbackUrl);
+
+                        if ($saveSuccess) {
+                               // echo "Permalink saved successfully.";
+                        } else {
+                               // echo "Failed to save the permalink.";
+                        }
+
+
+
+
 
         header("Location: /admin/wcio_products.php?id=$productId&action=edit"); // Redirect
 
