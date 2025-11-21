@@ -7,15 +7,15 @@
 <div class="row align-items-center">
 	<div class="col-lg-4 col-4">
 		<a href="/">
-			<h3>{$settingStoreName}</h3> <!-- brand-wrap.// -->
-			<span>{$settingStoreSlogan}</span> <!-- brand-wrap.// -->
+			<h3 class="storeName">{$settingStoreName}</h3> <!-- brand-wrap.// -->
+			<span class="storeSlogan">{$settingStoreSlogan}</span> <!-- brand-wrap.// -->
 		</a>
 	</div>
 
 	<div class="col-lg-4 col-sm-12">
 		<form action="#" class="search" _lpchecked="1">
 			<div class="input-group w-100">
-			    <input type="text" class="form-control" placeholder="Search" onkeyup="showResult(this.value)">
+			    <input type="text" class="form-control" placeholder="Produktsøgning" onkeyup="showResult(this.value)">
 			  <div id="livesearch"></div>
 			    <div class="input-group-append">
 			      <button class="btn btn-primary" type="submit">
@@ -64,8 +64,8 @@
 
 	</div>
 
-	{if isset($settingCatalogMode)}
-	{if settingCatalogMode == "1"}
+	{if isset($settingStoreCatalogMode)}
+	{if $settingStoreCatalogMode != "1"}
 	<div class="col-lg-4 col-sm-6 col-12">
 		<div class="widgets-wrap float-md-right">
 			<div class="widget-header  mr-3">
