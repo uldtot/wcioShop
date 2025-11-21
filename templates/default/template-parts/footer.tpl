@@ -61,5 +61,9 @@ $(document).ready(function() {
 // jquery end
 </script>
 
+
+{$settingFooterCode}
+
+
 </body>
 </html>
