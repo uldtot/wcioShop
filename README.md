@@ -1,6 +1,6 @@
 # wcioShop (This really needs a better name)
 
-Status of this project can be seen here (estimated)
+The status of this project can be seen here (estimated)
 
 Catalog mode: ![70%](https://progress-bar.xyz/70)
 
@@ -10,6 +10,22 @@ Almost a functional catalog mode, really just need the products page template to
 Shop mode: ![10%](https://progress-bar.xyz/10)
 
 Full shop mode is far from ready. When the catalog mode is done, this will go up to 25%, but there are still plenty to do, like shipping, payment, cart, email, and admin order functions.
+
+Detailed status
+Admin: ![50%](https://progress-bar.xyz/50)
+- Login ![100%](https://progress-bar.xyz/100)
+- Dashboard ![100%](https://progress-bar.xyz/100)
+- Orders ![1%](https://progress-bar.xyz/1)
+- Categories ![100%](https://progress-bar.xyz/100)
+- Products ![90%](https://progress-bar.xyz/90)
+- Pages ![100%](https://progress-bar.xyz/100)
+- Filemanager ![90%](https://progress-bar.xyz/90)
+- Settings ![100%](https://progress-bar.xyz/100)
+- Apps ![1%](https://progress-bar.xyz/1)
+  
+Frontend: ![1%](https://progress-bar.xyz/1)
+
+
 
 ## 
 Follow Discussions for updates: https://github.com/websitecareio/wcioShop/discussions
