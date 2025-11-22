@@ -1,4 +1,4 @@
-# wcioShop (This really needs a better name... Maybe just IOShop?)
+# wcioShop (This really needs a better name... Maybe just IoShop?)
 
 
 The status of this project can be seen here (estimated)
@@ -42,7 +42,7 @@ Frontend:
 ## 
 Follow Discussions for updates: https://github.com/websitecareio/wcioShop/discussions
 
-## What is wcioShop
+## What is wcioShop (IoShop)
 An e-commerce solution focused on speed and reliability. Long story short, the first version of this system was built in 4 days of nonstop coding (YES I did not sleep for days coding the first version in 2010). 
 This system has been in use since 2010, but has never been made public. This GitHub project will fix that. I will be making a lot of changes to this before adding files to GitHub. If you see this message, the project is not ready for use. 
 
