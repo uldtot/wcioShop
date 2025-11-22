@@ -12,9 +12,132 @@ $smartyTemplateFile = "products.tpl";
 // Load index for smarty functions and login valitation
 include(dirname(__FILE__) . '/index.php');
 
+
+// Load functions for this file...
+$action = $_REQUEST["action"] ?? null;
+$pageId = $_REQUEST["id"] ?? null;
+
+function formatFileSize($bytes) {
+    if ($bytes >= 1073741824) {
+        return number_format($bytes / 1073741824, 2) . ' GB';
+    } elseif ($bytes >= 1048576) {
+        return number_format($bytes / 1048576, 2) . ' MB';
+    } elseif ($bytes >= 1024) {
+        return number_format($bytes / 1024, 2) . ' KB';
+    } else {
+        return $bytes . ' bytes';
+    }
+}
+
+// Funktion til at hente både mapper og filer fra en given mappe
+function getFilesAndFolders($folderPath) {
+    $filesAndFolders = [
+        'folders' => [],
+        'files' => []
+    ];
+
+    // Check om mappen eksisterer
+    if (is_dir($folderPath)) {
+        // Åbn mappen og læs indholdet
+        if ($handle = opendir($folderPath)) {
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != "..") {
+                    $fullPath = $folderPath . DIRECTORY_SEPARATOR . $entry;
+
+                    if (is_dir($fullPath)) {
+                        // Hvis det er en mappe, tilføj til folder-listen
+                        $filesAndFolders['folders'][] = $entry;
+                    } else {
+                        // Hvis det er en fil, tilføj til fil-listen
+                        $fileSize = filesize($fullPath);
+                        $filesAndFolders['files'][] = [
+                            'name' => $entry,
+                            'size' => formatFileSize($fileSize),
+                            'path' => $fullPath // Send filstien til Smarty
+                        ];
+                    }
+                }
+            }
+            closedir($handle);
+        }
+    }
+    return $filesAndFolders;
+}
+
+
 // Load functions for this file...
 $action = $_REQUEST["action"] ?? null;
 $productId = $_REQUEST["id"] ?? null;
+
+// Media handle for products
+// Hent den valgte mappe fra URL (hvis der er en)
+$currentFolder = $_GET['folder'] ?? '/uploads';
+
+// Funktion til at hente mapper og filer i den valgte mappe
+$folderPath = dirname(__FILE__) . '/../' . $currentFolder;
+$filesAndFolders = getFilesAndFolders($folderPath);
+
+// Hvis der ikke er valgt mappe, vis "Root"
+if (empty($currentFolder)) {
+    $currentFolder = '';
+    $parentFolder = ''; // Root har ikke en overordnet mappe
+} else {
+    // Hvis en mappe er valgt, brug explode til at få den forrige mappe
+    $parentFolder = implode('/', array_slice(explode('/', $currentFolder), 0, -1));
+}
+
+// Send data til Smarty
+$smarty->assign('filesAndFolders', $filesAndFolders);
+$smarty->assign('currentFolder', $currentFolder);
+$smarty->assign('parentFolder', $parentFolder);  // Send parentFolder til Smarty
+
+// Send data til Smarty for at vise om vi er i 'uploads' mappen
+$smarty->assign('isUploadsFolder', $currentFolder === 'uploads');
+
+
+$smarty->registerPlugin('modifier', 'startswith', function($string, $substring) {
+    return strpos($string, $substring) === 0;
+});
+
+
+// Media handle END
+
+// If we want to edit a product. Load data
+        if (isset($pageId) && $action == "delete") {
+                try {
+                    // Prepare the delete query
+                    $deleteQuery = "DELETE FROM wcio_se_products WHERE id = :id";
+                    $deleteStmt = $dbh->prepare($deleteQuery);
+                    $deleteStmt->bindParam(':id', $pageId);
+                    
+                    // Execute the delete statement
+                    $deleteStmt->execute();
+                    
+                    // Check if any rows were affected
+                    if ($deleteStmt->rowCount() > 0) {
+                        echo "Product deleted successfully.";
+                    } else {
+                        echo "No product found with the specified ID.";
+                    }
+
+                    // Delete permalink data
+
+                    if (isset($pageId) && $action == "delete") {
+                        $success = deletePermalink($pageId, 'product');
+                        
+                        if ($success) {
+                            //echo "Permalink deleted successfully.";
+                        } else {
+                            //echo "Failed to delete permalink or it does not exist.";
+                        }
+                    }
+
+
+                } catch (PDOException $e) {
+                    // Handle any errors
+                    echo "Error: " . $e->getMessage();
+                }
+            }
 
 
 
