@@ -15,13 +15,13 @@ If you want to read the long version of why and how I coded this in 4 days origi
 - A valid and working SSL certificate. Any error due to a missing SSL will not be fixed. With the availability of free SSL Let's Encrypt, there is no reason not to have it.
 
 ## FAQ
-#### Is there a live demo
+#### Is there a live shop I can see?
+Yes, there is a live shop with this system on. You can view it here: https://kimvinberg.dk
+This shop runs a different version (newer) than the one you get from the GitHub here, because I use this to develop new functions. 
 
-Here is the demo store:
-- Shop live site: https://kimvinberg.dk
 
 ### What is catalog mode / full shop mode
-Catalog mode is a catalog only. no purchasing is possible. Prices and stock status is not displayed by default (but can be). Full shop mode is a fully working site with purchasing.
+Catalog mode is a catalog only. No purchasing is possible. Prices and stock status is not displayed by default (but can be). Full shop mode is a fully working site with purchasing.
 
 ## Issues / Bug report
 If you experience any errors, please report them at the link below. If you can provide screenshots too.
@@ -31,7 +31,7 @@ Go here for issues or bug reports: https://github.com/websitecareio/wcioShop/iss
 If you want to help, I would like any help I can get.
 
 * Coding help:
-Help in making custom apps like payment gateways, shipping stuff, and accounting sync would be useful as code debugging of the system. Currently, there is no need for more people to work on the core itself because it's not ready to be used.
+Help in making custom apps like payment gateways, shipping stuff, and accounting sync would be useful. Currently, there is no need for more people to work on the core itself because it's not ready to be used, but any help will be most welcome :) 
 
 * Design:
 If you want to, it could use a pretty store theme that can be downloaded. Must be your own design and code.
@@ -41,7 +41,6 @@ I haven't really looked much into how to translate this yet, will be looked into
 
 * Testing:
 If you want to help test this out, open an issue and I will contact you (not everything is uploaded here yet, so I might have more ready that is not yet visible). IT can be maybe just a specific function or something. 
-
 
 ## Themes
 There will be a default theme (not pretty, but functional. Check the live demo. You can, of course, create your own easily and do what you want. 
