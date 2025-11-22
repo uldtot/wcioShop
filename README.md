@@ -2,16 +2,17 @@
 
 The status of this project can be seen here (estimated)
 
-Catalog mode: ![70%](https://progress-bar.xyz/70)
+**Catalog mode:** ![70%](https://progress-bar.xyz/70)
 
 Almost a functional catalog mode, really just need the products page template to work, and then it can be used. Estimating it's at 70% (because I most likely have forgotten something).
 
 
-Shop mode: ![10%](https://progress-bar.xyz/10)
+**Shop mode:** ![10%](https://progress-bar.xyz/10)
 
 Full shop mode is far from ready. When the catalog mode is done, this will go up to 25%, but there are still plenty to do, like shipping, payment, cart, email, and admin order functions.
 
-Detailed status
+**Detailed status:**
+
 Admin: ![50%](https://progress-bar.xyz/50)
 - Login ![100%](https://progress-bar.xyz/100)
 - Dashboard ![100%](https://progress-bar.xyz/100)
