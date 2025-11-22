@@ -21,7 +21,7 @@ Admin:
 - Categories ![100%](https://progress-bar.xyz/100)
 - Products ![100%](https://progress-bar.xyz/100)
 - Pages ![100%](https://progress-bar.xyz/100)
-- Filemanager ![90%](https://progress-bar.xyz/90)
+- File manager ![90%](https://progress-bar.xyz/90)
 - Settings ![100%](https://progress-bar.xyz/100)
 - Apps ![1%](https://progress-bar.xyz/1)
 - Search ![100%](https://progress-bar.xyz/100)
