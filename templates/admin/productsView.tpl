@@ -6,6 +6,15 @@
     <div class="card card-body">
         <h1>Edit product</h1>
 
+<div>
+
+   <!-- Button to open modal upload  -->
+   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#primaryImageModal">
+    Select images and files
+</button>
+
+
+</div>       
 
         <form method="post" action="/admin/wcio_products.php">
             <input type="hidden" name="action" value="update">
@@ -139,21 +148,178 @@
 
 
 
-
-
-            <!-- <select name="{$i2.id}" class="form-control" >
-                                                                     <option value="0" {if $i2.columnValue == 0}checked{/if}>No</option>
-                                                                     <option value="1" {if $i2.columnValue == 1}checked{/if}>Yes</option>
-                                                               </select>
-                                                             -->
-
-
-
-
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
 
 
 
+
     </div>
+    
+    
+    
+    
+<!-- Primary Image Modal -->
+<div class="modal fade" id="primaryImageModal" tabindex="-1" role="dialog" aria-labelledby="primaryImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="primaryImageModalLabel">Select files</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {include file='mediaSelect.tpl'}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- JavaScript til filtrering og modal -->
+<script>
+    document.getElementById('fileSearch').addEventListener('input', function () {
+        var searchQuery = this.value.toLowerCase();
+        var fileRows = document.querySelectorAll('.file-row');
+
+        fileRows.forEach(function(row) {
+            var fileName = row.querySelector('td').textContent.toLowerCase();
+            if (fileName.includes(searchQuery)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+
+    // Event listener for knapperne
+document.querySelectorAll('.make-primary-btn').forEach(function(button) {
+    button.addEventListener('click', function() {
+        var fileName = this.getAttribute('data-file');
+        var currentFolder = this.getAttribute('data-currentFolder');
+        var action = this.getAttribute('data-action');
+
+        // Send AJAX request to /admin/inc/mediaSelect.php
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/admin/inc/mediaSelect.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.status === 'success') {
+                    // Skift tekst p책 knappen for at vise 'Remove as Primary' eller 'Make Primary'
+                    if (action === 'makePrimary') {
+                        button.textContent = 'Remove as Primary';
+                        button.setAttribute('data-action', 'removePrimary');
+                    } else {
+                        button.textContent = 'Make Primary';
+                        button.setAttribute('data-action', 'makePrimary');
+                    }
+                    alert(response.message);
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            } else {
+                alert('Error: ' + xhr.statusText);
+            }
+        };
+
+        xhr.onerror = function() {
+            alert('Request failed');
+        };
+
+        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action));
+    });
+});
+
+// Event listener for knapperne til 'Make Gallery'
+document.querySelectorAll('.make-gallery-btn').forEach(function(button) {
+    button.addEventListener('click', function() {
+        var fileName = this.getAttribute('data-file');
+        var currentFolder = this.getAttribute('data-currentFolder');
+        var action = this.getAttribute('data-action');
+
+        // Send AJAX request to /admin/inc/mediaSelect.php
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/admin/inc/mediaSelect.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.status === 'success') {
+                    // Skift tekst p책 knappen for at vise 'Remove from Gallery' eller 'Make Gallery'
+                    if (action === 'makeGallery') {
+                        button.textContent = 'Remove from Gallery';
+                        button.setAttribute('data-action', 'removeGallery');
+                    } else {
+                        button.textContent = 'Make Gallery';
+                        button.setAttribute('data-action', 'makeGallery');
+                    }
+                    alert(response.message);
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            } else {
+                alert('Error: ' + xhr.statusText);
+            }
+        };
+
+        xhr.onerror = function() {
+            alert('Request failed');
+        };
+
+        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action));
+    });
+});
+
+// Event listener for knapperne til 'Make Additional'
+document.querySelectorAll('.make-additional-btn').forEach(function(button) {
+    button.addEventListener('click', function() {
+        var fileName = this.getAttribute('data-file');
+        var currentFolder = this.getAttribute('data-currentFolder');
+        var action = this.getAttribute('data-action');
+
+        // Send AJAX request to /admin/inc/mediaSelect.php
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/admin/inc/mediaSelect.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.status === 'success') {
+                    // Skift tekst p책 knappen for at vise 'Remove from Additional' eller 'Make Additional'
+                    if (action === 'makeAdditional') {
+                        button.textContent = 'Remove from Additional';
+                        button.setAttribute('data-action', 'removeAdditional');
+                    } else {
+                        button.textContent = 'Make Additional';
+                        button.setAttribute('data-action', 'makeAdditional');
+                    }
+                    alert(response.message);
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            } else {
+                alert('Error: ' + xhr.statusText);
+            }
+        };
+
+        xhr.onerror = function() {
+            alert('Request failed');
+        };
+
+        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action));
+    });
+});
+
+
+</script>
+    
     {include file='template-parts/footer.tpl'}
