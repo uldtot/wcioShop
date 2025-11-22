@@ -17,6 +17,7 @@ If you want to read the long version of why and how I coded this in 4 days origi
 ## FAQ
 #### Is there a live shop I can see?
 Yes, there is a live shop with this system on. You can view it here: https://kimvinberg.dk
+
 This shop runs a different version (newer) than the one you get from the GitHub here, because I use this to develop new functions. 
 
 
