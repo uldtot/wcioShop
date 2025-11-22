@@ -4,7 +4,7 @@
 
 Catalog mode: ![70%](https://progress-bar.xyz/50)
 
-Shop mode: ![10%](https://progress-bar.xyz/50)
+Shop mode: ![10%](https://progress-bar.xyz/10)
 
 ## 
 Follow Discussions for updates: https://github.com/websitecareio/wcioShop/discussions
