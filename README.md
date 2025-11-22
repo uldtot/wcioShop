@@ -4,7 +4,12 @@ Status of this project can be seen here (estimated)
 
 Catalog mode: ![70%](https://progress-bar.xyz/50)
 
+Almost a functional catalog mode, really just need the products page template to work, and then it can be used. Estimating it's at 70% (because I most likely have forgotten something).
+
+
 Shop mode: ![10%](https://progress-bar.xyz/10)
+
+Full shop mode is far from ready. When the catalog mode is done, this will go up to 25%, but there are still plenty to do, like shipping, payment, cart, email, and admin order functions.
 
 ## 
 Follow Discussions for updates: https://github.com/websitecareio/wcioShop/discussions
