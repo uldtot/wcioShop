@@ -13,7 +13,7 @@ Full shop mode is far from ready. When the catalog mode is done, this will go up
 
 **Detailed status:**
 
-Admin: ![50%](https://progress-bar.xyz/50)
+Admin: 
 - Login ![100%](https://progress-bar.xyz/100)
 - Dashboard ![100%](https://progress-bar.xyz/100)
 - Orders ![1%](https://progress-bar.xyz/1)
@@ -25,7 +25,7 @@ Admin: ![50%](https://progress-bar.xyz/50)
 - Apps ![1%](https://progress-bar.xyz/1)
 - Search ![100%](https://progress-bar.xyz/100)
   
-Frontend: ![1%](https://progress-bar.xyz/1)
+Frontend:
 - Search ![1%](https://progress-bar.xyz/1)
 - header.tpl ![100%](https://progress-bar.xyz/100)
 - footer.tpl ![100%](https://progress-bar.xyz/100)
