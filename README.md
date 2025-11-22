@@ -2,7 +2,7 @@
 
 Status of this project can be seen here (estimated)
 
-Catalog mode: ![70%](https://progress-bar.xyz/50)
+Catalog mode: ![70%](https://progress-bar.xyz/70)
 
 Almost a functional catalog mode, really just need the products page template to work, and then it can be used. Estimating it's at 70% (because I most likely have forgotten something).
 
