@@ -1,4 +1,5 @@
-# wcioShop (This really needs a better name)
+# wcioShop (This really needs a better name... Maybe just IOShop?)
+
 
 The status of this project can be seen here (estimated)
 
