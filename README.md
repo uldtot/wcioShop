@@ -1,6 +1,6 @@
 # wcioShop (This really needs a better name)
 
-###Progress:
+Status of this project can be seen here (estimated)
 
 Catalog mode: ![70%](https://progress-bar.xyz/50)
 
