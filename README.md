@@ -1,6 +1,9 @@
 # wcioShop (This really needs a better name)
 
+###Progress:
+
 Catalog mode: ![70%](https://progress-bar.xyz/50)
+
 Shop mode: ![10%](https://progress-bar.xyz/50)
 
 ## 
