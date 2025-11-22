@@ -38,11 +38,12 @@ $stmt->bindParam(':settingMainGroup', $settingMainGroup, PDO::PARAM_STR);
 $result = $stmt->execute();
 
 
+
   while($data = $stmt->fetch(PDO::FETCH_ASSOC))
   {
 
         $settingMainGroup = $data['settingMainGroup'];
-        $settingSecondaryGroup = $dataMain['settingSecondaryGroup'];
+        $settingSecondaryGroup = $dataMain['settingSecondaryGroup'] ?? $data['settingSecondaryGroup'];
 
         $wcioShopAdminSettings[$settingMainGroup][$settingSecondaryGroup][] = array
         (
