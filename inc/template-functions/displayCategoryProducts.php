@@ -9,31 +9,34 @@
         $result = $stmt->execute(array(
             ":get_id" => $get_id
         ));
+   
 
         $query_products_count = "";
-        while ($data_category_products = $stmt->fetch(PDO::FETCH_ASSOC))
+        while ($dataCategoryProducts = $stmt->fetch(PDO::FETCH_ASSOC))
         {
 
-            $query_products = $dbh->prepare("SELECT id,name,price,discount,shorttext,stock FROM wcio_se_products WHERE id=:prdid");
+            $query_products = $dbh->prepare("SELECT * FROM wcio_se_products WHERE id=:prdid AND active = 1");
             $result = $query_products->execute(array(
-                ":prdid" => $data_category_products['prdid']
+                ":prdid" => $dataCategoryProducts['prdid']
             ));
 
-            while ($data_products = $query_products->fetch(PDO::FETCH_ASSOC))
-            {
 
+            while ($dataProducts = $query_products->fetch(PDO::FETCH_ASSOC))
+            {
+                
+                print_r($dataProducts);
 
 				// Getting permlink data
 				$permalinkStmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks WHERE postType = 'product' AND postId = :id LIMIT 1");
 				$result = $permalinkStmt->execute(array(
-					"id" => $data_products['id'],
+					"id" => $dataProducts['id'],
 				));
 				$permalinkData = $permalinkStmt->fetch(PDO::FETCH_ASSOC);
 
 				// Getting featured image
 				$attachmentStmt = $dbh->prepare("SELECT * FROM wcio_se_attachments WHERE attachmentType = 'productFeaturedImage' AND attachmentPostId = :id LIMIT 1");
 				$result = $attachmentStmt->execute(array(
-					"id" => $data_products['id'],
+					"id" => $dataProducts['id'],
 				));
 				$attachmentData = $attachmentStmt->fetch(PDO::FETCH_ASSOC);
 
@@ -42,16 +45,35 @@
 				} else {
 					$image = $attachmentData["attachmentValue"];
 				}
+				
+				// Get prices from _productmeta
+                $priceStmt = $dbh->prepare("
+                    SELECT columnName, columnValue 
+                    FROM wcio_se_productmeta 
+                    WHERE productId = :id 
+                      AND (columnName LIKE '%salePrice_%' OR columnName LIKE '%price_%')
+                ");
+                $priceStmt->execute([
+                    "id" => $dataProducts['id'],
+                ]);
+                
+                $priceData = $priceStmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                // Byg array med columnName som key
+                $prices = [];
+                foreach ($priceData as $row) {
+                    $prices[$row['columnName']] = $row['columnValue'] + 0; // +0 for at caste til int/float hvis muligt
+                }
 
 
                 $displayCategoryProducts[] = array(
-                    'prdid' => $data_products['id'],
-                    'name' => $data_products['name'],
-                    'price' => $data_products['price'],
+                    'prdid' => $dataProducts['id'],
+                    'name' => $dataProducts['name'],
+                    'price' => $prices,
 			  'image' => $image,
-                    'discount' => $data_products['discount'],
-                    'shorttext' => $data_products['shorttext'],
-                    'stock' => $data_products['stock'],
+                    'discount' => $dataProducts['discount'],
+                    'shorttext' => $dataProducts['shorttext'],
+                    'stock' => $dataProducts['stock'],
 			  'url' => $permalinkData["url"],
                 );
 
@@ -62,6 +84,5 @@
 
         }
         //while
-
 
     $smarty->assign("displayCategoryProducts", $displayCategoryProducts);
