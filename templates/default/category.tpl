@@ -1,9 +1,6 @@
 {include file='template-parts/head.tpl'}
 {include file='template-parts/header.tpl'}
 
-
-
-
 <!-- ========================= SECTION PAGETOP ========================= -->
 <section class="section-pagetop bg">
 <div class="container">
@@ -28,6 +25,8 @@
 <div class="container">
 
 <div class="row">
+	
+    {$categoryDescription[0]|nl2br}
 	<aside class="col-md-3" style="display:none;">
 
 <div class="card">
@@ -240,7 +239,7 @@
 					{/if}
 				{/if}
 
-				<p> {$displayCategoryProducts[product].shorttext} </p>
+				<p>{$displayCategoryProducts[product].excerpt}</p>
 			</div> <!-- info-main.// -->
 		</div> <!-- col.// -->
 		<aside class="col-sm-3">
@@ -273,8 +272,9 @@
 </article> <!-- card-product .// -->
 {/section}
 
-
-
+<div class="row">
+{$categoryDescription[1]}
+</div>
 
 <nav aria-label="Page navigation sample" style="display:none;">
   <ul class="pagination">
