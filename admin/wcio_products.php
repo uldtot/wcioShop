@@ -113,12 +113,23 @@ $smarty->registerPlugin('modifier', 'startswith', function($string, $substring) 
                     // Execute the delete statement
                     $deleteStmt->execute();
                     
+                    // Delete postmeta
+                    
+                    
                     // Check if any rows were affected
                     if ($deleteStmt->rowCount() > 0) {
                         echo "Product deleted successfully.";
                     } else {
                         echo "No product found with the specified ID.";
                     }
+                    
+                    // Prepare the delete query
+                    $deleteQuery = "DELETE FROM wcio_se_productmeta WHERE productId = :id";
+                    $deleteStmt = $dbh->prepare($deleteQuery);
+                    $deleteStmt->bindParam(':id', $pageId);
+                    
+                    // Execute the delete statement
+                    $deleteStmt->execute();
 
                     // Delete permalink data
 
@@ -254,10 +265,11 @@ if (isset($productId) && $action == "update") {
                         $selectQuery = "SELECT COUNT(*) FROM wcio_se_productmeta 
     WHERE columnName = :columnName AND productId = :productId";
                         $selectStmt = $dbh->prepare($selectQuery);
-                        $selectStmt->bindParam(':columnName', $columnName);
+                        $selectStmt->bindParam(':columnName', $key);
                         $selectStmt->bindParam(':productId', $productId);
                         $selectStmt->execute();
                         $rowCount = $selectStmt->fetchColumn();
+
 
                         if ($rowCount > 0) {
 
