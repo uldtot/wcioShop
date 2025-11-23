@@ -24,7 +24,6 @@
             while ($dataProducts = $query_products->fetch(PDO::FETCH_ASSOC))
             {
                 
-                print_r($dataProducts);
 
 				// Getting permlink data
 				$permalinkStmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks WHERE postType = 'product' AND postId = :id LIMIT 1");
@@ -59,21 +58,37 @@
                 
                 $priceData = $priceStmt->fetchAll(PDO::FETCH_ASSOC);
                 
-                // Byg array med columnName som key
+                          // Byg array med columnName som key
                 $prices = [];
                 foreach ($priceData as $row) {
                     $prices[$row['columnName']] = $row['columnValue'] + 0; // +0 for at caste til int/float hvis muligt
                 }
-
+                
+                // Get other from product meta
+                $otherStmt = $dbh->prepare("
+                    SELECT *
+                    FROM wcio_se_productmeta 
+                    WHERE productId = :id
+                ");
+                $otherStmt->execute([
+                    "id" => $dataProducts['id'],
+                ]);
+                
+                $otherData = $otherStmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                $allData = [];
+                foreach ($otherData as $row) {
+                    $allData[$row['columnName']] = $row['columnValue'];
+                }
 
                 $displayCategoryProducts[] = array(
                     'prdid' => $dataProducts['id'],
                     'name' => $dataProducts['name'],
                     'price' => $prices,
 			  'image' => $image,
-                    'discount' => $dataProducts['discount'],
-                    'shorttext' => $dataProducts['shorttext'],
-                    'stock' => $dataProducts['stock'],
+                    'discount' => $allData['discount'],
+                    'excerpt' => $allData['excerpt'],
+                    'stock' => $allData['stock'],
 			  'url' => $permalinkData["url"],
                 );
 
