@@ -8,7 +8,12 @@
 		     <div href="{$wcioShopLiveSearch[product].url}" class="">
 			     <figcaption class="info-wrap">
 				     <a href="{$wcioShopLiveSearch[product].url}" class="title" style="height:45px;">{$wcioShopLiveSearch[product].name}</a>
+				     	{if isset($settingCatalogMode)}
+				{if $settingCatalogMode != "1"}
 				     <div class="price mt-1">{{{$wcioShopLiveSearch[product].price}+{$wcioShopLiveSearch[product].price}*20/100}|number_format:2:",":"."} kr.</div> <!-- price-wrap.// -->
+				     	{/if}
+				{/if}
+				
 			     </figcaption>
 		     </div>
 		</div> <!-- col.// -->
