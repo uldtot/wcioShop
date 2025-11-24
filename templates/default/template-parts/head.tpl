@@ -17,17 +17,6 @@
 <meta name="robots" content="noindex" />
 {/if}
 
-<!-- For Favicon -->
-<link rel="shortcut icon" href="/templates/default/images/favicon-32x32.png" type="image/x-icon" />
-<!-- For iPhone -->
-<link rel="apple-touch-icon" href="/templates/default/images/favicon57x57.png">
-<!-- For iPhone Retina display -->
-<link rel="apple-touch-icon" sizes="180x180" href="/templates/default/images/favicon114x114.png">
-<!-- For iPad -->
-<link rel="apple-touch-icon" sizes="152x152" href="/templates/default/images/favicon72x72.png">
-<!-- For iPad Retina display -->
-<link rel="apple-touch-icon" sizes="167x167" href="/templates/default/images/favicon144x144.png">
-
 <!-- Bootstrap4 files-->
 <link href="/templates/default/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 
@@ -48,7 +37,8 @@
 <!-- jQuery -->
 <script src="/templates/default/js/jquery-2.0.0.min.js" type="text/javascript"></script>
 
-{$settingHeaderCode}
+
+    {$settingHeaderCode}
 
 </head>
 <body>
