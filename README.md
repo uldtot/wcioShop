@@ -27,12 +27,12 @@ Admin:
 - Search ![100%](https://progress-bar.xyz/100)
   
 Frontend:
-- Search ![1%](https://progress-bar.xyz/1)
+- Search ![100%](https://progress-bar.xyz/100)
 - header.tpl ![100%](https://progress-bar.xyz/100)
 - footer.tpl ![100%](https://progress-bar.xyz/100)
 - head.tpl ![100%](https://progress-bar.xyz/100)
 - index.tpl ![1%](https://progress-bar.xyz/1)
-- categories.tpl ![1%](https://progress-bar.xyz/1)
+- categories.tpl ![100%](https://progress-bar.xyz/100)
 - products.tpl ![1%](https://progress-bar.xyz/1)
 - cart.tpl ![1%](https://progress-bar.xyz/1)
 - checkout.tpl ![1%](https://progress-bar.xyz/1)
