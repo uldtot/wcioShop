@@ -3,9 +3,9 @@
 
 The status of this project can be seen here (estimated)
 
-**Catalog mode:** ![80%](https://progress-bar.xyz/80)
+**Catalog mode:** ![90%](https://progress-bar.xyz/80)
 
-Almost a functional catalog mode, really just need the products page template to work, and then it can be used. Estimating it's at 70% (because I most likely have forgotten something).
+Almost a functional catalog mode, really just need the products page template to work, and then it can be used.
 
 
 **Shop mode:** ![10%](https://progress-bar.xyz/10)
@@ -31,9 +31,9 @@ Frontend:
 - header.tpl ![100%](https://progress-bar.xyz/100)
 - footer.tpl ![100%](https://progress-bar.xyz/100)
 - head.tpl ![100%](https://progress-bar.xyz/100)
-- index.tpl ![1%](https://progress-bar.xyz/1)
+- index.tpl ![100%](https://progress-bar.xyz/100)
 - categories.tpl ![100%](https://progress-bar.xyz/100)
-- products.tpl ![1%](https://progress-bar.xyz/1)
+- products.tpl ![100%](https://progress-bar.xyz/100)
 - cart.tpl ![1%](https://progress-bar.xyz/1)
 - checkout.tpl ![1%](https://progress-bar.xyz/1)
 
