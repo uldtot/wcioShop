@@ -1,13 +1,4 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/websitecareio/wcioShop
-* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
- */
-
- 
  if(!defined("ABSPATH")) { die("No ABSPATH definded"); }
 
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) { //ob start to start fetching data including gzip
@@ -18,7 +9,7 @@ try {
 
 
     // Load ini file if present.
-    $iniConfigFile = dirname(__FILE__)."/../../private.ini";
+    $iniConfigFile = ABSPATH."/../private.ini";
     if(file_exists($iniConfigFile)) {
 
         $iniArray = parse_ini_file($iniConfigFile);

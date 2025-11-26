@@ -4,7 +4,7 @@
 <!-- ========================= SECTION PAGETOP ========================= -->
 <section class="section-pagetop bg">
 <div class="container">
-	<h2 class="title-page">{$wcioDisplayProduct.name}</h2>
+	<h1 class="title-page">{$wcioDisplayProduct.name}</h1>
 	{if isset($productBreadcrumbs)}
 		{if $productBreadcrumbs != ""}
 		<nav>
@@ -25,14 +25,13 @@
 <div class="container">
 
 	<div class="row">
-
-		<div class="card">
+		<div class="card" style="width: 100%;">
 	<div class="row no-gutters">
 		<aside class="col-sm-6 border-right">
 <article class="gallery-wrap">
 	<div class="img-big-wrap">
 	   {if isset($nothinghere)}<a href="#">{/if}
-		   <img src="/uploads/{$wcioDisplayProduct.featuredImage}">
+		   <img src="/uploads/{$wcioDisplayProduct.image}">
 	  {if isset($nothinghere)} </a>{/if}
 	</div> <!-- img-big-wrap.// -->
 	{if isset($nothinghere)}
@@ -47,12 +46,12 @@
 		</aside>
 		<main class="col-sm-6">
 <article class="content-body">
-	<h3 class="title">{$wcioDisplayProduct.name}</h3>
+    
 	<div class="rating-wrap mb-3" style="display:none;">
 		<span class="badge badge-warning"> <i class="fa fa-star"></i> 3.8</span>
 		<small class="text-muted ml-2">45 reviews</small>
 	</div>
-	<p>{$wcioDisplayProduct.shorttext}</p>
+	<p>{$wcioDisplayProduct.excerpt}</p>
 
 {if isset($nothinghere)}
 <div class="item-option-select" style="display:none;">
@@ -99,8 +98,8 @@
 {/if}
 
 <div class="row mt-3 align-items-center">
-	{if isset($settingCatalogMode)}
-		{if settingCatalogMode == "1"}
+	{if isset($settingStoreCatalogMode)}
+		{if $settingStoreCatalogMode != "1"}
 			<div class="col">
 			<span class="price h4">$815.00</span>
 		</div> <!-- col.// -->
@@ -111,10 +110,14 @@
 		  		<option> 2 </option>
 		  		<option> 3 </option>
 		  	</select>
-				<a href="#" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="icon fas fa-shopping-cart"></i>  </a>
+			
 			<a href="#" class="btn  btn-light"> <i class="fas fa-heart"></i>  </a>
 			<a href="#" class="btn  btn-light"> <i class="fa fa-folder-plus"></i>  </a>
 		</div> <!-- col.// -->
+			{else}	
+			
+		
+		
 		{/if}
 	{/if}
 </div> <!-- row.// -->
@@ -133,10 +136,8 @@
 		<div class="col-md-12">
 			<article class="card">
 				<div class="card-body">
-
-					<p>
-						{$wcioDisplayProduct.FullDescription}
-					</p>
+						<h4>{$wcioDisplayProduct.name}</h4>
+						{$wcioDisplayProduct.meta.fullDescription}
 				</div> <!-- card-body.// -->
 			</article>
 		</div>

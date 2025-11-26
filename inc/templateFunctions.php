@@ -1,28 +1,21 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/websitecareio/wcioShop
-* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
- */
-
 // In case the SEO function does not include template file, then its a 404
 if(!$smartyTemplateFile) { $smartyTemplateFile = "404.tpl"; }
 
 // Load only the template-fucntions that is used in the template files.
 $templateFiles = array(
-    "$smartyTemplateFile", // This is the current template file
+    "$smartyTemplateFile", // This is the current template file loaded fro seo.php
     "template-parts/head.tpl", // This is required template file
     "template-parts/header.tpl", // This is required template file
     "template-parts/footer.tpl" // This is required template file
 );
 
 foreach ($templateFiles as $key => $templateFile) {
-
+ 
     if(file_exists($templateDir . $templateFile)) {
           $fc = file_get_contents($templateDir . $templateFile);
 
+          // Find other template functions to load based on the data in template file.
           $data = array();
           preg_match_all('/\$([a-zA-Z0-9]*)/is', $fc, $data, PREG_PATTERN_ORDER);
           unset($data[0]);
@@ -35,8 +28,9 @@ foreach ($templateFiles as $key => $templateFile) {
 
              if (file_exists($templateFunctionFile)) {
 
-                  // Inclkue the php file to be used in template..
+                  // Include the php file to be used in template..
                   include($templateFunctionFile);
+
             }
           }
     }

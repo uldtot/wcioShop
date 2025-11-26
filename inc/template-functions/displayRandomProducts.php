@@ -1,11 +1,4 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/uldtot/wcioShop
- */
-
 $displayRandomProducts = array();
 $stmt = $dbh->prepare("SELECT * FROM wcio_se_products WHERE active=1 ORDER BY rand() LIMIT 8");
 $result = $stmt->execute();
@@ -21,13 +14,13 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
 	$permalinkData = $permalinkStmt->fetch(PDO::FETCH_ASSOC);
 
 	// Getting featured image
-	$attachmentStmt = $dbh->prepare("SELECT * FROM wcio_se_attachments WHERE attachmentType = 'productFeaturedImage' AND attachmentPostId = :id LIMIT 1");
+	$attachmentStmt = $dbh->prepare("SELECT * FROM wcio_se_attachments WHERE attachmentType = 'primary' AND attachmentPostId = :id LIMIT 1");
 	$result = $attachmentStmt->execute(array(
 		"id" => $data['id'],
 	));
 	$attachmentData = $attachmentStmt->fetch(PDO::FETCH_ASSOC);
 
-	if(!file_exists(dirname(__FILE__)."../../uploads/".$attachmentData["attachmentValue"]."")) {
+	if(!$attachmentData["attachmentValue"] || !file_exists(dirname(__FILE__)."/../../uploads/".$attachmentData["attachmentValue"]."")) {
 		$image = "noimage.png";
 	} else {
 		$image = $attachmentData["attachmentValue"];

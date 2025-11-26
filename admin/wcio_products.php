@@ -1,12 +1,4 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/websitecareio/wcioShop
-* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
- */
-
 $smartyTemplateFile = "products.tpl";
 
 // Load index for smarty functions and login valitation
@@ -90,6 +82,7 @@ if (empty($currentFolder)) {
 $smarty->assign('filesAndFolders', $filesAndFolders);
 $smarty->assign('currentFolder', $currentFolder);
 $smarty->assign('parentFolder', $parentFolder);  // Send parentFolder til Smarty
+$smarty->assign('currentId', $pageId);  
 
 // Send data til Smarty for at vise om vi er i 'uploads' mappen
 $smarty->assign('isUploadsFolder', $currentFolder === 'uploads');
@@ -249,6 +242,14 @@ if (isset($productId) && $action == "edit") {
 
 // IF we want to save or update a product. Id determains if its one or the other.
 if (isset($productId) && $action == "update") {
+    
+        // If product id are zero (0) then its a new product. Add it first.
+     if($productId == 0) {
+                                $insertQuery = "INSERT INTO wcio_se_products (active) VALUES (0)";
+                                $insertStmt = $dbh->prepare($insertQuery);
+                                $insertStmt->execute();
+                                $productId = $dbh->lastInsertId();
+     }
 
         // Get all fields from the post
         foreach ($_POST as $key => $value) {
@@ -282,6 +283,7 @@ if (isset($productId) && $action == "update") {
                                 $updated = $updateStmt->execute();
                                 $rowCount = $updateStmt->rowCount();
                         } else {
+                            
 
                                 $insertQuery = "INSERT INTO wcio_se_productmeta (columnName, columnValue, productId) VALUES (:columnName, :columnValue, :productId)";
                                 $insertStmt = $dbh->prepare($insertQuery);
@@ -390,6 +392,7 @@ if ($action == "add") {
 
         // overwrite the template file
         $smartyTemplateFile = "productsView.tpl";
+        
 }
 
 

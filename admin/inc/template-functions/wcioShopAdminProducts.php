@@ -1,5 +1,6 @@
 <?php
 
+
 $wcioShopAdminProducts = array();
 
 $stmt = $dbh->prepare("SELECT * FROM wcio_se_products ORDER BY active,id DESC");
@@ -21,23 +22,19 @@ $result = $stmt->execute();
         		"id" => $data['id'],
         	));
         	$attachmentData = $attachmentStmt->fetch(PDO::FETCH_ASSOC);
+		$attachmentValue = $attachmentData["attachmentValue"] ?? "";
 
-        	if(!file_exists(dirname(__FILE__)."../../uploads/".$attachmentData["attachmentValue"]."")) {
-        		$image = "noimage.png";
+        	if(!$attachmentValue || !file_exists(ABSPATH."/uploads/$attachmentValue")) {
+        		$images = "noimage.png";
         	} else {
-        		$image = $attachmentData["attachmentValue"];
+        		$images = $attachmentData["attachmentValue"];
         	}
 
             $wcioShopAdminProducts[] = array(
         	  'prdid' => $data['id'],
         	  'active' => $data['active'],
         	  'name' => $data['name'],
-        	  'partno' => $data['partno'],
-        	  'price' => $data['price'],
-        	  'image' => $image,
-        	  'discount' => $data['discount'],
-        	  'shorttext' => $data['shorttext'],
-        	  'stock' => $data['stock'],
+        	  'images' => $images,
         	  'url' => $permalinkData["url"] ?? "",
             );
 

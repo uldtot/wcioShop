@@ -16,13 +16,14 @@
 				<a href="{$displayRandomProducts[product].url}" class="title" style="height:45px;">{$displayRandomProducts[product].name}</a>
 				{if isset($settingStoreCatalogMode)}
 					{if $settingStoreCatalogMode != "1"}
-                    
-                    {assign var="price" value=$displayRandomProducts[product].price}
-                    {assign var="vat" value=$settingStoreVat / 100}
-                    {assign var="totalPrice" value=$price + ($price * $vat)}
 
-					<div class="price mt-1">{if $settingStoreCurrencyPlacement == left}{$settingStoreCurrencies}{/if} {$totalPrice|number_format:$settingStoreDefaultCurrencyFormat} {if $settingStoreCurrencyPlacement == right}{$settingStoreCurrencies}{/if}</div> <!-- price-wrap.// -->
-					{/if}
+                      {assign var="price" value=$displayRandomProducts[product].price}
+                      {assign var="vat" value=$settingStoreVat / 100}
+                      {assign var="totalPrice" value=$price + ($price * $vat)}
+
+                      <div class="price mt-1">{if $settingStoreCurrencyPlacement == left}{$settingStoreCurrencies}{/if} {$totalPrice|number_format:$settingStoreDefaultCurrencyFormat} {if $settingStoreCurrencyPlacement == right}{$settingStoreCurrencies}{/if}</div> <!-- price-wrap.// -->
+
+                 {/if}
 				{/if}
 			</figcaption>
 		</div>

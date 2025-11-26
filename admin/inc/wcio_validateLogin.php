@@ -18,7 +18,7 @@ if(isset($_GET["logout"]) ) {
 $loggedInAdmin = $_SESSION["loggedInAdmin"] ?? "";
 
 // IF we are trying to login
-if($loggedInAdmin == "" && $smartyTemplateFile == "login.tpl") {
+if(isset($smartyTemplateFile) && $loggedInAdmin == "" && $smartyTemplateFile == "login.tpl") {
 
 
       // If there is a new login, then check it before doing anything else

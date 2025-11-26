@@ -33,17 +33,17 @@
 				$permalinkData = $permalinkStmt->fetch(PDO::FETCH_ASSOC);
 
 				// Getting featured image
-				$attachmentStmt = $dbh->prepare("SELECT * FROM wcio_se_attachments WHERE attachmentType = 'productFeaturedImage' AND attachmentPostId = :id LIMIT 1");
+				$attachmentStmt = $dbh->prepare("SELECT * FROM wcio_se_attachments WHERE attachmentType = 'primary' AND attachmentPostId = :id LIMIT 1");
 				$result = $attachmentStmt->execute(array(
 					"id" => $dataProducts['id'],
 				));
 				$attachmentData = $attachmentStmt->fetch(PDO::FETCH_ASSOC);
 
-				if(!file_exists(dirname(__FILE__)."../../uploads/".$attachmentData["attachmentValue"]."")) {
-					$image = "noimage.png";
-				} else {
-					$image = $attachmentData["attachmentValue"];
-				}
+	if(!$attachmentData["attachmentValue"] || !file_exists(dirname(__FILE__)."/../../uploads/".$attachmentData["attachmentValue"]."")) {
+		$image = "noimage.png";
+	} else {
+		$image = $attachmentData["attachmentValue"];
+	}
 				
 				// Get prices from _productmeta
                 $priceStmt = $dbh->prepare("

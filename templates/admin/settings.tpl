@@ -13,6 +13,8 @@
                {foreach from=$wcioShopAdminSettings key=k item=i}
 
                               {foreach from=$i key=k1 item=i1}
+                              
+                            
                               <div class="card card-body mt-3">
                                     <h3>{$k1}</h3>
                                     <form method="post" action="/admin/wcio_settings.php">

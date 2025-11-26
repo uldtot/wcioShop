@@ -1,11 +1,4 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/websitecareio/wcioShop
-* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
- */
 session_start();
 
 /** Absolute path to the store directory. */
@@ -23,104 +16,118 @@ require_once(dirname(__FILE__) . '/../libs/Smarty.class.php'); //Smarty
 // Permalink function
 // Permalink function
 function savePermalink(
-      $newUrl, 
-      $postId, 
-      $postType, 
-      $seoTitle = '', 
-      $seoKeywords = '', 
-      $seoDescription = '', 
-      $seoNoIndex = 0, // Default to 0 (false),
-      $fallbackUrl = ""
-  ) {
-      global $dbh; // Use the global database handler
-      
-      if($newUrl == "") {
-            $newUrl = $fallbackUrl;
-      }
-      // Remove leading and trailing slashes from the URL
-      $newUrl = trim($newUrl, '/');
-      $newUrl = "/" . sanitizeSeoUrl($newUrl) . "/"; // Making sure all URLs have this.
-  
-      // Base URL without suffix
-      $baseUrl = $newUrl;
-      $suffix = 0;
-      
-      // Check for existing URLs and find a unique one
-      do {
-          // Prepare the query to check for existing URLs
-          $checkQuery = "SELECT COUNT(*) FROM wcio_se_permalinks WHERE url = :url AND postType = :postType AND postId != :postId";
-          $checkStmt = $dbh->prepare($checkQuery);
-          $checkStmt->bindParam(':url', $newUrl);
-          $checkStmt->bindParam(':postType', $postType);
-          $checkStmt->bindParam(':postId', $postId);
-          $checkStmt->execute();
-      
-          // Fetch the count of existing URLs
-          $count = $checkStmt->fetchColumn();
-      
-          // If the URL already exists for another post, modify it
-          if ($count > 0) {
-              $suffix++;
-              $newUrl = $baseUrl . '-' . $suffix;
-          }
-      } while ($count > 0);
-      
-      // Try to update the existing permalink first
-      $updateQuery = "UPDATE wcio_se_permalinks 
-                      SET url = :url, 
-                          SEOtitle = :seoTitle, 
-                          SEOkeywords = :seoKeywords, 
-                          SEOdescription = :seoDescription, 
-                          SEOnoIndex = :seoNoIndex 
-                      WHERE postType = :postType AND postId = :postId";
-      $updateStmt = $dbh->prepare($updateQuery);
-      $updateStmt->bindParam(':url', $newUrl);
-      $updateStmt->bindParam(':seoTitle', $seoTitle);
-      $updateStmt->bindParam(':seoKeywords', $seoKeywords);
-      $updateStmt->bindParam(':seoDescription', $seoDescription);
-      $updateStmt->bindParam(':seoNoIndex', $seoNoIndex);
-      $updateStmt->bindParam(':postType', $postType);
-      $updateStmt->bindParam(':postId', $postId);
-      $updated = $updateStmt->execute();
-      
-      // If no rows were updated, insert a new permalink
-      if ($updateStmt->rowCount() === 0) {
+    $newUrl, 
+    $postId, 
+    $postType, 
+    $seoTitle = '', 
+    $seoKeywords = '', 
+    $seoDescription = '', 
+    $seoNoIndex = 0, 
+    $fallbackUrl = ""
+) {
+    global $dbh; // Use the global database handler
+    
+    if ($newUrl == "") {
+        $newUrl = $fallbackUrl;
+    }
 
+    // Remove leading and trailing slashes and sanitize URL
+    $newUrl = "/" . trim(sanitizeSeoUrl(trim($newUrl, '/'))) . "/";
 
-        switch ($postType) {
-            case "category":
-                $templateFile = "category.tpl";
-                break;
-            case "page":
+    // Base URL without suffix
+    $baseUrl = $newUrl;
+    $suffix = 0;
+    
+    // Check for unique URL
+    do {
+        $checkQuery = "SELECT COUNT(*) FROM wcio_se_permalinks WHERE url = :url AND postType = :postType AND postId != :postId";
+        $checkStmt = $dbh->prepare($checkQuery);
+        $checkStmt->bindParam(':url', $newUrl);
+        $checkStmt->bindParam(':postType', $postType);
+        $checkStmt->bindParam(':postId', $postId);
+        $checkStmt->execute();
+        $count = $checkStmt->fetchColumn();
+
+        if ($count > 0) {
+            $suffix++;
+            $newUrl = $baseUrl . '-' . $suffix;
+        }
+        
+        
+    } while ($count > 0);
+
+    // Fetch current values to check if an update is needed
+    $currentQuery = "SELECT url, SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex 
+                     FROM wcio_se_permalinks 
+                     WHERE postType = :postType AND postId = :postId";
+    $currentStmt = $dbh->prepare($currentQuery);
+    $currentStmt->bindParam(':postType', $postType);
+    $currentStmt->bindParam(':postId', $postId);
+    $currentStmt->execute();
+    $currentData = $currentStmt->fetch(PDO::FETCH_ASSOC);
+
+    // Only update if there's a difference
+    if (!$currentData || 
+        $currentData['url'] !== $newUrl || 
+        $currentData['SEOtitle'] !== $seoTitle || 
+        $currentData['SEOkeywords'] !== $seoKeywords || 
+        $currentData['SEOdescription'] !== $seoDescription || 
+        $currentData['SEOnoIndex'] != $seoNoIndex) { // Loose comparison for integer
+
+        // If permalink exists, update it; otherwise, insert a new row
+        if ($currentData) {
+        
+            $updateQuery = "UPDATE wcio_se_permalinks 
+                            SET url = :url, 
+                                SEOtitle = :seoTitle, 
+                                SEOkeywords = :seoKeywords, 
+                                SEOdescription = :seoDescription, 
+                                SEOnoIndex = :seoNoIndex 
+                            WHERE postType = :postType AND postId = :postId";
+            $updateStmt = $dbh->prepare($updateQuery);
+            $updateStmt->bindParam(':url', $newUrl);
+            $updateStmt->bindParam(':seoTitle', $seoTitle);
+            $updateStmt->bindParam(':seoKeywords', $seoKeywords);
+            $updateStmt->bindParam(':seoDescription', $seoDescription);
+            $updateStmt->bindParam(':seoNoIndex', $seoNoIndex);
+            $updateStmt->bindParam(':postType', $postType);
+            $updateStmt->bindParam(':postId', $postId);
+            return $updateStmt->execute(); // Return update success
+        } else {
+            // Determine template file
+            switch ($postType) {
+                case "category":
+                    $templateFile = "category.tpl";
+                    break;
+                case "page":
                     $templateFile = "page.tpl";
                     break;
-                    
-            case "product":
-                $templateFile = "product.tpl";
-                break;
+                case "product":
+                    $templateFile = "product.tpl";
+                    break;
+            }
+
+            // Insert new permalink
+            $insertQuery = "INSERT INTO wcio_se_permalinks (url, templateFile, postType, postId, SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex) 
+                            VALUES (:url, :templateFile, :postType, :postId, :seoTitle, :seoKeywords, :seoDescription, :seoNoIndex)";
+            $insertStmt = $dbh->prepare($insertQuery);
+            $insertStmt->bindParam(':url', $newUrl);
+            $insertStmt->bindParam(':templateFile', $templateFile);
+            $insertStmt->bindParam(':postType', $postType);
+            $insertStmt->bindParam(':postId', $postId);
+            $insertStmt->bindParam(':seoTitle', $seoTitle);
+            $insertStmt->bindParam(':seoKeywords', $seoKeywords);
+            $insertStmt->bindParam(':seoDescription', $seoDescription);
+            $insertStmt->bindParam(':seoNoIndex', $seoNoIndex);
+
+            return $insertStmt->execute(); // Return insert success
         }
+    } 
 
+    // No update necessary; return true (indicating "success" without change)
+    return true;
+}
 
-          $insertQuery = "INSERT INTO wcio_se_permalinks (url, templateFile, postType, postId, SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex) 
-                          VALUES (:url, :templateFile, :postType, :postId, :seoTitle, :seoKeywords, :seoDescription, :seoNoIndex)";
-          $insertStmt = $dbh->prepare($insertQuery);
-          $insertStmt->bindParam(':url', $newUrl);
-          $insertStmt->bindParam(':postType', $postType);
-          $insertStmt->bindParam(':postId', $postId);
-          $insertStmt->bindParam(':seoTitle', $seoTitle);
-          $insertStmt->bindParam(':seoKeywords', $seoKeywords);
-          $insertStmt->bindParam(':seoDescription', $seoDescription);
-          $insertStmt->bindParam(':seoNoIndex', $seoNoIndex);
-          $insertStmt->bindParam(':templateFile', $templateFile);
-
-          
-          $inserted = $insertStmt->execute();
-      
-          return $inserted; // Return whether the insert was successful
-      }
-      
-      return $updated; // Return whether the update was successful
-  }
   
   function deletePermalink($postId, $postType) {
     global $dbh; // Use the global database handler

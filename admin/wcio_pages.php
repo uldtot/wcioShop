@@ -1,13 +1,6 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/websitecareio/wcioShop
-* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
- */
-
 $smartyTemplateFile = "pages.tpl";
+
 
 // Load index for smarty functions and login valitation
 include(dirname(__FILE__) . '/index.php');
@@ -29,15 +22,15 @@ $pageId = $_REQUEST["id"] ?? null;
                     
                     // Check if any rows were affected
                     if ($deleteStmt->rowCount() > 0) {
-                        echo "Category deleted successfully.";
+                        echo "Page deleted successfully.";
                     } else {
-                        echo "No category found with the specified ID.";
+                        echo "No page found with the specified ID.";
                     }
 
                     // Delete permalink data
 
                     if (isset($pageId) && $action == "delete") {
-                        $success = deletePermalink($pageId, 'category');
+                        $success = deletePermalink($pageId, 'page');
                         
                         if ($success) {
                             //echo "Permalink deleted successfully.";
@@ -76,8 +69,9 @@ if (isset($pageId) && $action == "edit") {
         // Add default data. 
         $pageData['id'] = $data['id'];
         $pageData['name'] = $data['name'] ?? "";
-        $pageData['description'] = $data['description'] ?? "";
+        $pageData['content'] = $data['content'] ?? "";
         $pageData['url'] = $permalinkData["url"] ?? "";
+        $pageData['isHomePage'] = $permalinkData["isHomePage"] ?? "";
 
         // SEO data
         $seoData = fetchSeoData($pageId, "page");
@@ -89,44 +83,43 @@ if (isset($pageId) && $action == "edit") {
 
         $smarty->assign("pageData", $pageData);
 
-        // Get all categories from shop for parent category later
-        $wcioShopAdminCategoriesArray = array();
+        // Get all data from shop for parent later
+        $wcioShopAdminPagesArray = array();
 
         $stmt = $dbh->prepare("SELECT * FROM wcio_se_pages ORDER BY id DESC");
         $stmt->execute(array());
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Loop all categories and check if current product is in them
+        // Loop all data and check if current product is in them
         foreach ($data as $key => $value) {
 
-                $wcioShopAdminCategoriesArray[] = array(
+                $wcioShopAdminPagesArray[] = array(
                         "id" => $value["id"],
                         "name" => $value["name"],
                 );
         }
 
-        $smarty->assign("wcioShopAdminCategoriesArray", $wcioShopAdminCategoriesArray);
+        $smarty->assign("wcioShopAdminPagesArray", $wcioShopAdminPagesArray);
 
 
 
         // overwrite the template file
-        $smartyTemplateFile = "categoriesView.tpl";
+        $smartyTemplateFile = "pagesView.tpl";
 }
 
 // IF we want to save or update a product. Id determains if its one or the other.
 if (isset($pageId) && $action == "update") {
 
-
         $pageId = $_POST["id"];
-        $categoryName = $_POST["name"];
-        $categoryPermalink = $_POST["permalink"];
-        $categoryDescription = $_POST["fullDescription"];
+        $cpageName = $_POST["name"];
+        $pagePermalink = $_POST["permalink"];
+        $pageContent = $_POST["content"];
+        $isHomePage = isset($_POST["isHomePage"]) ? 1 : 0;
 
-        $categorySEOtitle = $_POST["SEOtitle"];
-        $categorySEOkeywords = $_POST["SEOkeywords"];
-        $categorySEOdescription = $_POST["SEOdescription"];
-        $categorySEOnoIndex = isset($_POST["SEOnoIndex"]) ? 1 : 0;
-
+        $pageSEOtitle = $_POST["SEOtitle"];
+        $pageSEOkeywords = $_POST["SEOkeywords"];
+        $pageSEOdescription = $_POST["SEOdescription"];
+        $pageSEOnoIndex = isset($_POST["SEOnoIndex"]) ? 1 : 0;
 
         try {
 
@@ -134,11 +127,11 @@ if (isset($pageId) && $action == "update") {
                 // Check if its new or update
                 if($pageId == 0) {
 
-                        // Insert the new category
-                        $insertQuery = "INSERT INTO wcio_se_pages (name, description) VALUES (:name, :description)";
+                        // Insert the new content
+                        $insertQuery = "INSERT INTO wcio_se_pages (name, content) VALUES (:name, :content)";
                         $insertStmt = $dbh->prepare($insertQuery);
-                        $insertStmt->bindParam(':name', $categoryName);
-                        $insertStmt->bindParam(':description', $categoryDescription);
+                        $insertStmt->bindParam(':name', $cpageName);
+                        $insertStmt->bindParam(':content', $pageContent);
                         
                         // Execute the insert statement
                         $insertStmt->execute();
@@ -148,10 +141,10 @@ if (isset($pageId) && $action == "update") {
 
                   } else {
 
-                        $updateQuery = "UPDATE wcio_se_pages SET name = :name, description = :description WHERE id = :id";
+                        $updateQuery = "UPDATE wcio_se_pages SET name = :name, content = :content WHERE id = :id";
                         $updateStmt = $dbh->prepare($updateQuery);
-                        $updateStmt->bindParam(':name', $categoryName);
-                        $updateStmt->bindParam(':description', $categoryDescription);
+                        $updateStmt->bindParam(':name', $cpageName);
+                        $updateStmt->bindParam(':content', $pageContent);
                         $updateStmt->bindParam(':id', $pageId);
                         $updated = $updateStmt->execute();
                         $rowCount = $updateStmt->rowCount();
@@ -160,17 +153,74 @@ if (isset($pageId) && $action == "update") {
 
                         // Now update the SEO table
                         // Example usage
-                        $posttype = "category";
-                        // Assuming $categoryName and $pageId are defined
-                        $fallbackUrl = !empty($categoryName) ? $categoryName : $pageId;
+                        $posttype = "page";
+                        // Assuming $cpageName and $pageId are defined
+                        $fallbackUrl = !empty($cpageName) ? $cpageName : $pageId;
 
-                        $saveSuccess = savePermalink($categoryPermalink, $pageId, $posttype, $categorySEOtitle, $categorySEOdescription, $categorySEOdescription, $categorySEOnoIndex, $fallbackUrl);
+                        $saveSuccess = savePermalink($pagePermalink, $pageId, $posttype, $pageSEOtitle, $pageSEOkeywords, $pageSEOdescription, $pageSEOnoIndex, $fallbackUrl);
 
                         if ($saveSuccess) {
                                // echo "Permalink saved successfully.";
                         } else {
                                // echo "Failed to save the permalink.";
                         }
+
+
+                                
+           // If homepage update
+try {
+    if ($isHomePage == 1) {
+
+        // Fetch the current homepage based on its URL and template file
+        $currentHomepageStmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks WHERE url = '/' AND templateFile = 'index.tpl' LIMIT 1");
+        $currentHomepageStmt->execute();
+        $currentHomepageData = $currentHomepageStmt->fetch(PDO::FETCH_ASSOC);
+
+
+        if ($currentHomepageData) {
+            // Update the old homepage permalink with a new URL and template file
+            $oldHomepageId = $currentHomepageData['postId'];
+            $oldHomepageUrl = $currentHomepageData['url'];
+            $oldTemplateFile = "page.tpl";  // Setting the template file to 'page.tpl'
+
+            $updateOldHomepagePermalink = savePermalink(
+                '',  // Empty URL to remove '/' from the current homepage
+                $oldHomepageId,
+                "page",
+                $currentHomepageData['SEOtitle'] ?? '',
+                $currentHomepageData['SEOdescription'] ?? '',
+                $currentHomepageData['SEOkeywords'] ?? '',
+                $currentHomepageData['SEOnoIndex'] ?? 0,
+                $currentHomepageData['id']
+            );
+
+            // Update the old homepage template file to 'page.tpl'
+            $updateOldHomepageStmt = $dbh->prepare("UPDATE wcio_se_permalinks SET templateFile = :templateFile WHERE postId = :postId");
+            $updateOldHomepageStmt->execute([
+                ':templateFile' => $oldTemplateFile,
+                ':postId' => $oldHomepageId
+            ]);
+        }
+
+       
+        // Set the new page as the homepage
+        $newHomepageUrl = '/';
+        $newTemplateFile = 'index.tpl';  // Set this page's template file to 'index.tpl'
+
+            // Update the current page's template file to 'index.tpl'
+        $updateNewHomepageStmt = $dbh->prepare("UPDATE wcio_se_permalinks SET templateFile = :templateFile, url = '/', isHomePage = 1 WHERE postId = :postId");
+        $updateNewHomepageStmt->execute([
+            ':templateFile' => $newTemplateFile,
+            ':postId' => $pageId
+        ]);
+    }
+} catch (PDOException $e) {
+    // Rollback transaction or handle error
+    echo "Error: " . $e->getMessage(); die();
+}
+
+
+
 
         } catch (PDOException $e) {
                 // Rollback the transaction on error
@@ -179,7 +229,7 @@ if (isset($pageId) && $action == "update") {
         }
 
 
-        header("Location: /admin/wcio_categories.php?id=$pageId&action=edit"); // Redirect
+        header("Location: /admin/wcio_pages.php?id=$pageId&action=edit"); // Redirect
 
 }
 
@@ -190,8 +240,9 @@ if ($action == "add") {
         // Add default data. 
         $pageData['id'] = "0";
         $pageData['name'] = "";
-        $pageData['description'] = "";
+        $pageData['content'] = "";
         $pageData['url'] = "";
+        $pageData['isHomePage'] = 0;
 
         // SEO data
         $pageData['SEOtitle'] = "";

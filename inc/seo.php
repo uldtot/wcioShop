@@ -1,12 +1,4 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/websitecareio/wcioShop
-* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
- */
-
 // Load permalink settings for this URL.
 $currentUrl = explode('?', $_SERVER['REQUEST_URI'], 2);
 $currentUrl = $currentUrl[0];
@@ -15,7 +7,6 @@ $stmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks WHERE url = :url LIMIT 1
 $result = $stmt->execute(array(
 	"url" => $currentUrl,
 ));
-
 
 
 while($data = $stmt->fetch( PDO::FETCH_ASSOC )) {
@@ -36,6 +27,12 @@ while($data = $stmt->fetch( PDO::FETCH_ASSOC )) {
 	$smarty->assign("SEOdescription", $data["SEOdescription"]);
 	$smarty->assign("SEOnoIndex", $data["SEOnoIndex"]);
 
+	// Assign other data from permalink table	
+	$smarty->assign("postType", $data["postType"]);
+	$smarty->assign("postId", $data["postId"]);
+	$smarty->assign("templateFile", $data["templateFile"]);
+	$smarty->assign("smartyCache", $data["smartyCache"]);
+
 	// Template file from the permalinks table
 	$smartyTemplateFile = $data["templateFile"];
 
@@ -45,9 +42,11 @@ while($data = $stmt->fetch( PDO::FETCH_ASSOC )) {
 	} else {
 		$smarty->caching  = true; //Activate when out of dev
 	}
+
+	// Assign SEO data to array 
+	$_SETTING["seoArray"] = $data;
+	
 }
 
 // In case the no template file is set.
 if(!$smartyTemplateFile) { $smartyTemplateFile = "404.tpl"; }
-
-?>

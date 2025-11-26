@@ -202,6 +202,7 @@ document.querySelectorAll('.make-primary-btn').forEach(function(button) {
         var fileName = this.getAttribute('data-file');
         var currentFolder = this.getAttribute('data-currentFolder');
         var action = this.getAttribute('data-action');
+        var id =  this.getAttribute('data-id');
 
         // Send AJAX request to /admin/inc/mediaSelect.php
         var xhr = new XMLHttpRequest();
@@ -212,7 +213,7 @@ document.querySelectorAll('.make-primary-btn').forEach(function(button) {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
                 if (response.status === 'success') {
-                    // Skift tekst p책 knappen for at vise 'Remove as Primary' eller 'Make Primary'
+                    // Skift tekst på knappen for at vise 'Remove as Primary' eller 'Make Primary'
                     if (action === 'makePrimary') {
                         button.textContent = 'Remove as Primary';
                         button.setAttribute('data-action', 'removePrimary');
@@ -233,7 +234,7 @@ document.querySelectorAll('.make-primary-btn').forEach(function(button) {
             alert('Request failed');
         };
 
-        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action));
+        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action) + '&id=' + encodeURIComponent(id));
     });
 });
 
@@ -243,7 +244,8 @@ document.querySelectorAll('.make-gallery-btn').forEach(function(button) {
         var fileName = this.getAttribute('data-file');
         var currentFolder = this.getAttribute('data-currentFolder');
         var action = this.getAttribute('data-action');
-
+        var id =  this.getAttribute('data-id');
+        
         // Send AJAX request to /admin/inc/mediaSelect.php
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/admin/inc/mediaSelect.php', true);
@@ -253,7 +255,7 @@ document.querySelectorAll('.make-gallery-btn').forEach(function(button) {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
                 if (response.status === 'success') {
-                    // Skift tekst p책 knappen for at vise 'Remove from Gallery' eller 'Make Gallery'
+                    // Skift tekst på knappen for at vise 'Remove from Gallery' eller 'Make Gallery'
                     if (action === 'makeGallery') {
                         button.textContent = 'Remove from Gallery';
                         button.setAttribute('data-action', 'removeGallery');
@@ -274,7 +276,7 @@ document.querySelectorAll('.make-gallery-btn').forEach(function(button) {
             alert('Request failed');
         };
 
-        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action));
+        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action) + '&id=' + encodeURIComponent(id));
     });
 });
 
@@ -284,7 +286,8 @@ document.querySelectorAll('.make-additional-btn').forEach(function(button) {
         var fileName = this.getAttribute('data-file');
         var currentFolder = this.getAttribute('data-currentFolder');
         var action = this.getAttribute('data-action');
-
+        var id =  this.getAttribute('data-id');
+        
         // Send AJAX request to /admin/inc/mediaSelect.php
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/admin/inc/mediaSelect.php', true);
@@ -294,7 +297,7 @@ document.querySelectorAll('.make-additional-btn').forEach(function(button) {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
                 if (response.status === 'success') {
-                    // Skift tekst p책 knappen for at vise 'Remove from Additional' eller 'Make Additional'
+                    // Skift tekst på knappen for at vise 'Remove from Additional' eller 'Make Additional'
                     if (action === 'makeAdditional') {
                         button.textContent = 'Remove from Additional';
                         button.setAttribute('data-action', 'removeAdditional');
@@ -315,7 +318,7 @@ document.querySelectorAll('.make-additional-btn').forEach(function(button) {
             alert('Request failed');
         };
 
-        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action));
+        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action) + '&id=' + encodeURIComponent(id));
     });
 });
 

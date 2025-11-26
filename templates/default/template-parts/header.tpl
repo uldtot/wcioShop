@@ -15,7 +15,7 @@
 	<div class="col-lg-4 col-sm-12">
 		<form action="#" class="search" _lpchecked="1">
 			<div class="input-group w-100">
-			    <input type="text" class="form-control" placeholder="Produktsøgning" onkeyup="showResult(this.value)">
+			    <input type="text" class="form-control" placeholder="{_('Search')}" onkeyup="showResult(this.value)">
 			  <div id="livesearch"></div>
 			    <div class="input-group-append">
 			      <button class="btn btn-primary" type="submit">
@@ -65,16 +65,16 @@
 	</div>
 
 	{if isset($settingStoreCatalogMode)}
-	{if $settingStoreCatalogMode != "1"}
-	<div class="col-lg-4 col-sm-6 col-12">
-		<div class="widgets-wrap float-md-right">
-			<div class="widget-header  mr-3">
-				<a href="/cart/" class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></a>
-				<span class="badge badge-pill badge-danger notify">{nocache}{if isset($headerCart.numberOfItems)}{if $headerCart.numberOfItems != "0"}{$headerCart.numberOfItems}{/if}{/if}{/nocache}</span>
-			</div>
-		</div> <!-- widgets-wrap.// -->
-	</div> <!-- col.// -->
-	{/if}
+    	{if $settingStoreCatalogMode != "1"}
+    	<div class="col-lg-4 col-sm-6 col-12">
+    		<div class="widgets-wrap float-md-right">
+    			<div class="widget-header  mr-3">
+    				<a href="/cart/" class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></a>
+    				<span class="badge badge-pill badge-danger notify">{nocache}{if isset($headerCart.numberOfItems)}{if $headerCart.numberOfItems != "0"}{$headerCart.numberOfItems}{/if}{/if}{/nocache}</span>
+    			</div>
+    		</div> <!-- widgets-wrap.// -->
+    	</div> <!-- col.// -->
+    	{/if}
 	{/if}
 </div> <!-- row.// -->
 	</div> <!-- container.// -->

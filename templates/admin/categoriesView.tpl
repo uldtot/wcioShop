@@ -42,8 +42,6 @@
 
             <div class="card card-body mt-3">
                   <h3>SEO data</h3>
-                  <form method="post" action="/admin/wcio_settings.php">
-                        <input type="hidden" name="save" value="1">
                         <!--Table-->
                         <table id="tablePreview" class="table">
 
@@ -97,7 +95,7 @@
 
                         <button type="submit" class="btn btn-primary">Update</button>
 
-                  </form>
+                 
             </div>
 
       </form>

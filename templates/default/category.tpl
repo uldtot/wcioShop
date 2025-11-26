@@ -244,8 +244,8 @@
 		</div> <!-- col.// -->
 		<aside class="col-sm-3">
 			<div class="info-aside">
-				{if isset($settingCatalogMode)}
-				{if $settingCatalogMode != "1"}
+	{if isset($settingStoreCatalogMode)}
+		{if $settingStoreCatalogMode != "1"}
 				<div class="price-wrap">
 					<span class="price h5"> {{{$displayCategoryProducts[product].price}+{$displayCategoryProducts[product].price}*20/100}|number_format:2:",":"."} kr.</span>
 					<del class="price-old">
@@ -272,7 +272,7 @@
 </article> <!-- card-product .// -->
 {/section}
 
-<div class="row">
+<div class="row bottomDescription ">
 {$categoryDescription[1]}
 </div>
 
