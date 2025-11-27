@@ -1,0 +1,17 @@
+# Ignore cache tpl files
+**/templates_c/*.tpl.php
+**/cache/*.tpl.php
+# Ignore all error log
+error_log
+error.log
+errors.log
+php_error.log
+**/error_log
+**/error.log
+**/errors.log
+**/php_error.log
+# Ignore all log files
+*.log
+**/*.log
+# Ignore uploads
+/uploads/
