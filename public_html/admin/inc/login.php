@@ -49,7 +49,7 @@ if($loggedInAdmin == "" && $smartyTemplateFile == "login.tpl") {
 
        // We need to load all functions etc that are used in template files for admin. DO NOT CACHE!
       // Load template functions
-      include dirname(__FILE__) . '/templateFunctions.php';
+      include_once dirname(__FILE__) . '/templateFunctions.php';
 
 } else {
       // This should never be valid...

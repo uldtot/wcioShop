@@ -38,12 +38,6 @@ $categoryId = $_REQUEST["id"] ?? null;
 
                     if (isset($categoryId) && $action == "delete") {
                         $success = deletePermalink($categoryId, 'category');
-                        
-                        if ($success) {
-                            //echo "Permalink deleted successfully.";
-                        } else {
-                            //echo "Failed to delete permalink or it does not exist.";
-                        }
                     }
 
 
@@ -165,13 +159,6 @@ if (isset($categoryId) && $action == "update") {
                         $fallbackUrl = !empty($categoryName) ? $categoryName : $categoryId;
 
                         $saveSuccess = savePermalink($categoryPermalink, $categoryId, $posttype, $categorySEOtitle, $categorySEOdescription, $categorySEOdescription, $categorySEOnoIndex, $fallbackUrl);
-
-                        if ($saveSuccess) {
-                               // echo "Permalink saved successfully.";
-                        } else {
-                               // echo "Failed to save the permalink.";
-                        }
-
         } catch (PDOException $e) {
                 // Rollback the transaction on error
 
@@ -208,7 +195,7 @@ if ($action == "add") {
 
 
 // Load template functions
-include dirname(__FILE__) . '/inc/templateFunctions.php';
+include_once dirname(__FILE__) . '/inc/templateFunctions.php';
 
 
 // Display the page and all its functions

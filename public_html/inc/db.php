@@ -62,7 +62,7 @@ if (function_exists("get_magic_quotes_gpc")) {
     $HTTP_POST_FILES = stripslashes_array($HTTP_POST_FILES ?? '');
     $HTTP_ENV_VARS = stripslashes_array($HTTP_ENV_VARS ?? '');
     if (isset($_SESSION)) {    #These are unconfirmed (?)
-        $_SESSION = stripslashes_array($_SESSION ?? '', '');
+        $_SESSION = stripslashes_array($_SESSION ?? '');
         $HTTP_SESSION_VARS = stripslashes_array($HTTP_SESSION_VARS ?? '', '');
     }
     /*

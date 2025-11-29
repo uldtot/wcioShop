@@ -11,7 +11,7 @@ $smartyTemplateFile = "pages.tpl";
 
 
 // Load index for smarty functions and login valitation
-include_oncedirname(__FILE__) . '/index.php';
+include_once dirname(__FILE__) . '/index.php';
 
 // Load functions for this file...
 $action = $_REQUEST["action"] ?? null;
@@ -39,12 +39,6 @@ $pageId = $_REQUEST["id"] ?? null;
 
                     if (isset($pageId) && $action == "delete") {
                         $success = deletePermalink($pageId, 'page');
-                        
-                        if ($success) {
-                            //echo "Permalink deleted successfully.";
-                        } else {
-                            //echo "Failed to delete permalink or it does not exist.";
-                        }
                     }
 
 
@@ -166,15 +160,7 @@ if (isset($pageId) && $action == "update") {
                         $fallbackUrl = !empty($cpageName) ? $cpageName : $pageId;
 
                         $saveSuccess = savePermalink($pagePermalink, $pageId, $posttype, $pageSEOtitle, $pageSEOkeywords, $pageSEOdescription, $pageSEOnoIndex, $fallbackUrl);
-
-                        if ($saveSuccess) {
-                               // echo "Permalink saved successfully.";
-                        } else {
-                               // echo "Failed to save the permalink.";
-                        }
-
-
-                                
+                               
            // If homepage update
 try {
     if ($isHomePage == 1) {

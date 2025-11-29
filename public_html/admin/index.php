@@ -33,7 +33,8 @@ function savePermalink(
     $fallbackUrl = ""
 ) {
     global $dbh; // Use the global database handler
-    
+    global $dbprefix;
+
     if ($newUrl == "") {
         $newUrl = $fallbackUrl;
     }
@@ -138,6 +139,7 @@ function savePermalink(
   
   function deletePermalink($postId, $postType) {
     global $dbh; // Use the global database handler
+    global $dbprefix;
     
     try {
         // Prepare the delete query
