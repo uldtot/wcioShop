@@ -9,49 +9,51 @@ include_once dirname(__FILE__) . '/index.php';
 $action = $_REQUEST["action"] ?? null;
 $pageId = $_REQUEST["id"] ?? null;
 
-function formatFileSize($bytes) {
+function formatFileSize($bytes)
+{
     if ($bytes >= 1073741824) {
         return number_format($bytes / 1073741824, 2) . ' GB';
     } elseif ($bytes >= 1048576) {
         return number_format($bytes / 1048576, 2) . ' MB';
     } elseif ($bytes >= 1024) {
         return number_format($bytes / 1024, 2) . ' KB';
-    } else {
-        return $bytes . ' bytes';
     }
+
+    // Default back to bytes
+    return $bytes . ' bytes';
 }
 
 // Funktion til at hente både mapper og filer fra en given fysisk mappe
 // $folderPath = fysisk sti, $webFolder = web-sti (fx /uploads/2025)
-function getFilesAndFolders($folderPath, $webFolder) {
+function getFilesAndFolders($folderPath, $webFolder)
+{
     $filesAndFolders = [
         'folders' => [],
         'files' => []
     ];
 
-    if (is_dir($folderPath)) {
-        if ($handle = opendir($folderPath)) {
-            while (false !== ($entry = readdir($handle))) {
-                if ($entry === "." || $entry === "..") {
-                    continue;
-                }
+    if (is_dir($folderPath) && $handle = opendir($folderPath)) {
 
-                $fullPath = $folderPath . DIRECTORY_SEPARATOR . $entry;
-
-                if (is_dir($fullPath)) {
-                    $filesAndFolders['folders'][] = $entry;
-                } else {
-                    $fileSize = @filesize($fullPath);
-                    $filesAndFolders['files'][] = [
-                        'name' => $entry,
-                        'size' => formatFileSize($fileSize !== false ? $fileSize : 0),
-                        // Web-sti, ikke server-sti
-                        'path' => rtrim($webFolder, '/') . '/' . $entry
-                    ];
-                }
+        while (false !== ($entry = readdir($handle))) {
+            if ($entry === "." || $entry === "..") {
+                continue;
             }
-            closedir($handle);
+
+            $fullPath = $folderPath . DIRECTORY_SEPARATOR . $entry;
+
+            if (is_dir($fullPath)) {
+                $filesAndFolders['folders'][] = $entry;
+            } else {
+                $fileSize = @filesize($fullPath);
+                $filesAndFolders['files'][] = [
+                    'name' => $entry,
+                    'size' => formatFileSize($fileSize !== false ? $fileSize : 0),
+                    // Web-sti, ikke server-sti
+                    'path' => rtrim($webFolder, '/') . '/' . $entry
+                ];
+            }
         }
+        closedir($handle);
     }
 
     return $filesAndFolders;
@@ -115,7 +117,7 @@ $smarty->assign('isUploadsFolder', $currentFolder === '/uploads');
 include_once dirname(__FILE__) . '/inc/templateFunctions.php';
 
 // Modifier til startswith
-$smarty->registerPlugin('modifier', 'startswith', function($string, $substring) {
+$smarty->registerPlugin('modifier', 'startswith', function ($string, $substring) {
     return strpos($string, $substring) === 0;
 });
 
