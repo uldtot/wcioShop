@@ -17,7 +17,7 @@
                             
                               <div class="card card-body mt-3">
                                     <h3>{$k1}</h3>
-                                    <form method="post" action="/admin/wcio_settings.php">
+                                    <form method="post" action="/admin/settings.php">
                                     <input type="hidden" name="save" value="1">
                                           <!--Table-->
                                           <table id="tablePreview" class="table">

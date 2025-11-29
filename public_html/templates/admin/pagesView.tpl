@@ -5,7 +5,7 @@
 
 
 <div class="col-md-9 mt-5">
-      <form method="post" action="/admin/wcio_pages.php">
+      <form method="post" action="/admin/pages.php">
             <div class="card card-body">
                   <h1>Edit page</h2>
 

@@ -3,14 +3,14 @@
 
 $wcioShopAdminPages = array();
 
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_pages ORDER BY id DESC");
+$stmt = $dbh->prepare("SELECT * FROM {$dbprefix}pages ORDER BY id DESC");
 $result = $stmt->execute();
 
   while($data = $stmt->fetch(PDO::FETCH_ASSOC))
   {
 
         	// Getting permlink data
-        	$permalinkStmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks WHERE postType = 'page' AND postId = :id LIMIT 1");
+        	$permalinkStmt = $dbh->prepare("SELECT * FROM {$dbprefix}permalinks WHERE postType = 'page' AND postId = :id LIMIT 1");
         	$result = $permalinkStmt->execute(array(
         		"id" => $data['id'],
         	));

@@ -2,7 +2,7 @@
 
 $wcioShopAdminOrders = array();
 
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_porders ORDER BY id DESC");
+$stmt = $dbh->prepare("SELECT * FROM {$dbprefix}porders ORDER BY id DESC");
 $result = $stmt->execute();
 
   while($data = $stmt->fetch(PDO::FETCH_ASSOC))

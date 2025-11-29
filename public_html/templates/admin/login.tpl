@@ -9,7 +9,7 @@
 	<div class="card">
       <div class="card-body">
       <h4 class="card-title mb-4">Sign in</h4>
-      <form method="post" action="/admin/wcio_login.php">
+      <form method="post" action="/admin/login.php">
           <div class="form-group">
             <div class="input-group">
 				<div class="input-group-prepend">

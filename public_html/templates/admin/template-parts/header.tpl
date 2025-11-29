@@ -36,7 +36,7 @@
 		      document.getElementById("livesearch").style.background="#fff";
 		    }
 		  }
-		  xmlhttp.open("GET","wcio_liveSearch.php?q="+str,true);
+		  xmlhttp.open("GET","liveSearch.php?q="+str,true);
 		  xmlhttp.send();
 		}
 				</script>
@@ -73,25 +73,25 @@
                   <h6 class="title-category">Store</h6>
 			<ul class="menu-category">
 				<li><a href="/admin/"><i class="fa fa-home"></i> Dashboard</a></li>
-				<li><a href="/admin/wcio_orders.php"><i class="fa fa-box"></i> Orders</a></li>
-				<li><a href="/admin/wcio_categories.php"><i class="fa fa-bars"></i> Categories</a></li>
-				<li><a href="/admin/wcio_products.php"><i class="fa fa-tag"></i> Products</a></li>
-				<li><a href="/admin/wcio_pages.php"><i class="fa fa-copy"></i> Pages</a></li>
-				<li><a href="/admin/wcio_media.php?folder=/uploads"><i class="fa fa-image"></i> File manager</a></li>
-				<!--<li><a href="/admin/wcio_customers.php"><i class="fa fa-user"></i> Customers</a></li>-->
+				<li><a href="/admin/orders.php"><i class="fa fa-box"></i> Orders</a></li>
+				<li><a href="/admin/categories.php"><i class="fa fa-bars"></i> Categories</a></li>
+				<li><a href="/admin/products.php"><i class="fa fa-tag"></i> Products</a></li>
+				<li><a href="/admin/pages.php"><i class="fa fa-copy"></i> Pages</a></li>
+				<li><a href="/admin/media.php?folder=/uploads"><i class="fa fa-image"></i> File manager</a></li>
+				<!--<li><a href="/admin/customers.php"><i class="fa fa-user"></i> Customers</a></li>-->
 			</ul><br>
                   <h6 class="title-category">Setting & apps</h6>
                   <ul class="menu-category">
-				<li class="has-submenu"><a href="/admin/wcio_settings.php"><i class="fa fa-cog"></i> Settings</a></a>
+				<li class="has-submenu"><a href="/admin/settings.php"><i class="fa fa-cog"></i> Settings</a></a>
 					<ul class="submenu">
-						<li><a href="/admin/wcio_settings.php">Store settings</a></li>
+						<li><a href="/admin/settings.php">Store settings</a></li>
 						 {section name=setting loop=$wcioShopAdminSettingsMenu}
-							<li><a href="/admin/wcio_settings.php?setting={$wcioShopAdminSettingsMenu[setting].url}">{$wcioShopAdminSettingsMenu[setting].columnNiceName}</a></li>
+							<li><a href="/admin/settings.php?setting={$wcioShopAdminSettingsMenu[setting].url}">{$wcioShopAdminSettingsMenu[setting].columnNiceName}</a></li>
 						 {/section}
 					</ul>
 				</li>
 
-                        <li><a href="/admin/wcio_apps.php"><i class="fa fa-store"></i> Apps</a></li>
+                        <li><a href="/admin/apps.php"><i class="fa fa-store"></i> Apps</a></li>
 			</ul><br>
 
                   <h6 class="title-category">Get help</h6>

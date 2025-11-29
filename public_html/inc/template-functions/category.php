@@ -8,7 +8,7 @@
     $SeCategoryCount = "0";
     $SeProductsCount = "0";
 
-    $stmt = $dbh->prepare("SELECT * FROM wcio_se_categories WHERE id=:get_id");
+    $stmt = $dbh->prepare("SELECT * FROM {$dbprefix}categories WHERE id=:get_id");
     $result = $stmt->execute(array(
         ":get_id" => $get_id
     ));

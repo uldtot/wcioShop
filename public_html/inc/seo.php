@@ -3,7 +3,7 @@
 $currentUrl = explode('?', $_SERVER['REQUEST_URI'], 2);
 $currentUrl = $currentUrl[0];
 
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks WHERE url = :url LIMIT 1");
+$stmt = $dbh->prepare("SELECT * FROM {$dbprefix}permalinks WHERE url = :url LIMIT 1");
 $result = $stmt->execute(array(
 	"url" => $currentUrl,
 ));

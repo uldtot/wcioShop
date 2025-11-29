@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 
 // Load index for smarty functions and login valitation
 include(dirname(__FILE__) . '/../../inc/db.php');
-include(dirname(__FILE__) . '/wcio_validateLogin.php');
+include(dirname(__FILE__) . '/validateLogin.php');
 
 header('Content-Type: application/json');
 
@@ -51,12 +51,12 @@ try {
     if (str_starts_with($action, 'make')) {
         // Først, slet gammel hvis den er af typen 'primary' (unik)
         if ($attachmentType === 'primary') {
-            $deleteStmt = $dbh->prepare("DELETE FROM wcio_se_attachments WHERE attachmentPostId = :postId AND attachmentType = 'primary'");
+            $deleteStmt = $dbh->prepare("DELETE FROM {$dbprefix}attachments WHERE attachmentPostId = :postId AND attachmentType = 'primary'");
             $deleteStmt->execute([':postId' => $attachmentPostId]);
         }
 
         // Undgå duplicates: slet eksisterende samme fil/type
-        $deleteDupStmt = $dbh->prepare("DELETE FROM wcio_se_attachments WHERE attachmentPostId = :postId AND attachmentType = :type AND attachmentValue = :value");
+        $deleteDupStmt = $dbh->prepare("DELETE FROM {$dbprefix}attachments WHERE attachmentPostId = :postId AND attachmentType = :type AND attachmentValue = :value");
         $deleteDupStmt->execute([
             ':postId' => $attachmentPostId,
             ':type' => $attachmentType,
@@ -64,7 +64,7 @@ try {
         ]);
 
         // Indsæt ny attachment
-        $insertStmt = $dbh->prepare("INSERT INTO wcio_se_attachments (attachmentType, attachmentPostId, attachmentValue, attachmentOrder) VALUES (:type, :postId, :value, 0)");
+        $insertStmt = $dbh->prepare("INSERT INTO {$dbprefix}attachments (attachmentType, attachmentPostId, attachmentValue, attachmentOrder) VALUES (:type, :postId, :value, 0)");
         $insertStmt->execute([
             ':type' => $attachmentType,
             ':postId' => $attachmentPostId,
@@ -74,7 +74,7 @@ try {
         echo json_encode(['status' => 'success', 'message' => "File added as $attachmentType"]);
     } else {
         // Slet filen af given type
-        $deleteStmt = $dbh->prepare("DELETE FROM wcio_se_attachments WHERE attachmentPostId = :postId AND attachmentType = :type AND attachmentValue = :value");
+        $deleteStmt = $dbh->prepare("DELETE FROM {$dbprefix}attachments WHERE attachmentPostId = :postId AND attachmentType = :type AND attachmentValue = :value");
         $deleteStmt->execute([
             ':postId' => $attachmentPostId,
             ':type' => $attachmentType,

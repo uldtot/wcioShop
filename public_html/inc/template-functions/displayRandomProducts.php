@@ -1,20 +1,27 @@
 <?php
+/*
+* wcioShop
+* Version 1.0.0
+* Author: Kim Vinberg <support@websitecare.io>
+* Source: https://github.com/uldtot/wcioShop
+ */
+
 $displayRandomProducts = array();
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_products WHERE active=1 ORDER BY rand() LIMIT 8");
+$stmt = $dbh->prepare("SELECT * FROM {$dbprefix}products WHERE active=1 ORDER BY rand() LIMIT 8");
 $result = $stmt->execute();
 
 while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
 {
 
 	// Getting permlink data
-	$permalinkStmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks WHERE postType = 'product' AND postId = :id LIMIT 1");
+	$permalinkStmt = $dbh->prepare("SELECT * FROM {$dbprefix}permalinks WHERE postType = 'product' AND postId = :id LIMIT 1");
 	$result = $permalinkStmt->execute(array(
 		"id" => $data['id'],
 	));
 	$permalinkData = $permalinkStmt->fetch(PDO::FETCH_ASSOC);
 
 	// Getting featured image
-	$attachmentStmt = $dbh->prepare("SELECT * FROM wcio_se_attachments WHERE attachmentType = 'primary' AND attachmentPostId = :id LIMIT 1");
+	$attachmentStmt = $dbh->prepare("SELECT * FROM {$dbprefix}attachments WHERE attachmentType = 'primary' AND attachmentPostId = :id LIMIT 1");
 	$result = $attachmentStmt->execute(array(
 		"id" => $data['id'],
 	));

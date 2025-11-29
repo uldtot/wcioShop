@@ -19,6 +19,7 @@ try {
         $dbhost = $iniArray["dbhost"];
         $dbuser = $iniArray["dbuser"];
         $dbpass = $iniArray["dbpass"];
+        $dbprefix = $iniArray["dbprefix"];
 
     } else {
 

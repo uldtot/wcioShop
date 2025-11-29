@@ -1,4 +1,11 @@
 <?php
+/*
+* wcioShop
+* Version 1.0.0
+* Author: Kim Vinberg <support@websitecare.io>
+* Source: https://github.com/websitecareio/wcioShop
+* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
+ */
 session_start();
 
 /** Absolute path to the store directory. */
@@ -40,7 +47,7 @@ function savePermalink(
     
     // Check for unique URL
     do {
-        $checkQuery = "SELECT COUNT(*) FROM wcio_se_permalinks WHERE url = :url AND postType = :postType AND postId != :postId";
+        $checkQuery = "SELECT COUNT(*) FROM {$dbprefix}permalinks WHERE url = :url AND postType = :postType AND postId != :postId";
         $checkStmt = $dbh->prepare($checkQuery);
         $checkStmt->bindParam(':url', $newUrl);
         $checkStmt->bindParam(':postType', $postType);
@@ -58,7 +65,7 @@ function savePermalink(
 
     // Fetch current values to check if an update is needed
     $currentQuery = "SELECT url, SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex 
-                     FROM wcio_se_permalinks 
+                     FROM {$dbprefix}permalinks 
                      WHERE postType = :postType AND postId = :postId";
     $currentStmt = $dbh->prepare($currentQuery);
     $currentStmt->bindParam(':postType', $postType);
@@ -77,7 +84,7 @@ function savePermalink(
         // If permalink exists, update it; otherwise, insert a new row
         if ($currentData) {
         
-            $updateQuery = "UPDATE wcio_se_permalinks 
+            $updateQuery = "UPDATE {$dbprefix}permalinks 
                             SET url = :url, 
                                 SEOtitle = :seoTitle, 
                                 SEOkeywords = :seoKeywords, 
@@ -108,7 +115,7 @@ function savePermalink(
             }
 
             // Insert new permalink
-            $insertQuery = "INSERT INTO wcio_se_permalinks (url, templateFile, postType, postId, SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex) 
+            $insertQuery = "INSERT INTO {$dbprefix}permalinks (url, templateFile, postType, postId, SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex) 
                             VALUES (:url, :templateFile, :postType, :postId, :seoTitle, :seoKeywords, :seoDescription, :seoNoIndex)";
             $insertStmt = $dbh->prepare($insertQuery);
             $insertStmt->bindParam(':url', $newUrl);
@@ -134,7 +141,7 @@ function savePermalink(
     
     try {
         // Prepare the delete query
-        $deleteQuery = "DELETE FROM wcio_se_permalinks WHERE postId = :postId AND postType = :postType";
+        $deleteQuery = "DELETE FROM {$dbprefix}permalinks WHERE postId = :postId AND postType = :postType";
         $deleteStmt = $dbh->prepare($deleteQuery);
         $deleteStmt->bindParam(':postId', $postId);
         $deleteStmt->bindParam(':postType', $postType);
@@ -158,9 +165,9 @@ function savePermalink(
 // Fetch SEO data
 function fetchSeoData($postId, $postType) {
       global $dbh; // Use the global database handler
-      
+      global $dbprefix;
       // Prepare the query to fetch SEO data
-      $query = "SELECT SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex FROM wcio_se_permalinks WHERE postId = :postId AND postType = :postType";
+      $query = "SELECT SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex FROM {$dbprefix}permalinks WHERE postId = :postId AND postType = :postType";
       $stmt = $dbh->prepare($query);
       $stmt->bindParam(':postId', $postId);
       $stmt->bindParam(':postType', $postType);
@@ -226,7 +233,7 @@ $smarty->assign('template_dir', $smartyTemplateDir);
 $smarty->setCompileDir(dirname(__FILE__) . '/../templates_c');
 
 // Load all shop settings from databse
-$stmt = $dbh->prepare("SELECT columnName,columnValue FROM wcio_se_settings WHERE autoload = 1");
+$stmt = $dbh->prepare("SELECT columnName,columnValue FROM {$dbprefix}settings WHERE autoload = 1");
 $result = $stmt->execute();
 while ($setting = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
@@ -239,7 +246,7 @@ while ($setting = $stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 // Because this is admin, we require someone to be logged in. If thery are not, then we dont provide access to functions
-include(dirname(__FILE__) . '/inc/wcio_validateLogin.php');
+include(dirname(__FILE__) . '/inc/validateLogin.php');
 
 if (!isset($smartyTemplateFile) || $smartyTemplateFile == "index.tpl") {
 
@@ -247,7 +254,7 @@ if (!isset($smartyTemplateFile) || $smartyTemplateFile == "index.tpl") {
       $smartyTemplateFile = "index.tpl";
 
       // Load template functions
-      include(dirname(__FILE__) . '/inc/wcio_templateFunctions.php');
+      include(dirname(__FILE__) . '/inc/templateFunctions.php');
 
       // Display the page and all its functions
       $smarty->display($smartyTemplateFile);

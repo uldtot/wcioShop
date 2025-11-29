@@ -3,7 +3,7 @@ $displayRandomProducts = array();
 
 $q = $_GET["q"];
 if(strlen($q) > 3) {
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_products WHERE name LIKE :name AND active='1' LIMIT 8");
+$stmt = $dbh->prepare("SELECT * FROM {$dbprefix}products WHERE name LIKE :name AND active='1' LIMIT 8");
 $result = $stmt->execute(array(
       ":name" => "%{$q}%",
 ));
@@ -11,14 +11,14 @@ $result = $stmt->execute(array(
 while ($data = $stmt->fetch(PDO::FETCH_ASSOC))
 {
 	// Getting permlink data
-	$permalinkStmt = $dbh->prepare("SELECT * FROM wcio_se_permalinks WHERE postType = 'product' AND postId = :id LIMIT 1");
+	$permalinkStmt = $dbh->prepare("SELECT * FROM {$dbprefix}permalinks WHERE postType = 'product' AND postId = :id LIMIT 1");
 	$result = $permalinkStmt->execute(array(
 		"id" => $data['id'],
 	));
 	$permalinkData = $permalinkStmt->fetch(PDO::FETCH_ASSOC);
 
 	// Getting featured image
-	$attachmentStmt = $dbh->prepare("SELECT * FROM wcio_se_attachments WHERE attachmentType = 'primary' AND attachmentPostId = :id LIMIT 1");
+	$attachmentStmt = $dbh->prepare("SELECT * FROM {$dbprefix}attachments WHERE attachmentType = 'primary' AND attachmentPostId = :id LIMIT 1");
 	$result = $attachmentStmt->execute(array(
 		"id" => $data['id'],
 	));

@@ -22,9 +22,9 @@
                     <tr>
                         <td>{$wcioShopAdminPages[page].name}</td>
                         <td>
-                            <a href="/admin/wcio_pages.php?action=edit&id={$wcioShopAdminPages[page].id}">Edit</a> |
+                            <a href="/admin/pages.php?action=edit&id={$wcioShopAdminPages[page].id}">Edit</a> |
                             <a href="{$wcioShopAdminPages[page].url}" target="_blank">View</a> |
-                            <a href="/admin/wcio_pages.php?action=delete&id={$wcioShopAdminPages[page].id}" 
+                            <a href="/admin/pages.php?action=delete&id={$wcioShopAdminPages[page].id}" 
                                 onclick="return confirm('Are you sure you want to delete this page?');">
                                 Delete
                              </a>

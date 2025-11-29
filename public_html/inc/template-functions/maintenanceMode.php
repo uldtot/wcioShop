@@ -3,7 +3,7 @@ $pluginSlug =  "maintenancemode";
 $pluginSettingMainGroup = "Maintenance mode";
 
 // Load all shop settings from databse
-$stmt = $dbh->prepare("SELECT columnName,columnValue FROM wcio_se_settings WHERE settingMainGroup = :settingMainGroup");
+$stmt = $dbh->prepare("SELECT columnName,columnValue FROM {$dbprefix}settings WHERE settingMainGroup = :settingMainGroup");
 $result = $stmt->execute(array(
       "settingMainGroup" => $pluginSettingMainGroup,
 ));

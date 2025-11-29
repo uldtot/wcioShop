@@ -22,9 +22,9 @@
                     <tr>
                         <td>{$wcioShopAdminCategories[category].name}</td>
                         <td>
-                            <a href="/admin/wcio_categories.php?action=edit&id={$wcioShopAdminCategories[category].prdid}">Edit</a> |
+                            <a href="/admin/categories.php?action=edit&id={$wcioShopAdminCategories[category].prdid}">Edit</a> |
                             <a href="{$wcioShopAdminCategories[category].url}" target="_blank">View</a> |
-                            <a href="/admin/wcio_categories.php?action=delete&id={$wcioShopAdminCategories[category].prdid}" 
+                            <a href="/admin/categories.php?action=delete&id={$wcioShopAdminCategories[category].prdid}" 
                                 onclick="return confirm('Are you sure you want to delete this category?');">
                                 Delete
                              </a>

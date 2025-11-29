@@ -1,8 +1,5 @@
 <?php
 
-// In case the SEO function does not include template file, then its a 404
-if(!$smartyTemplateFile) { $smartyTemplateFile = "404.tpl"; }
-
 // Load only the template-fucntions that is used in the template files.
 $templateFiles = array(
     "$smartyTemplateFile", // This is the current template file
@@ -24,7 +21,7 @@ foreach ($templateFiles as $key => $templateFile) {
           $data = array_unique($data); // Array is now (1, 2, 3)
 
           foreach ($data as $templateFunction) {
-
+            
              $templateFunctionFile = dirname(__FILE__) . "/template-functions/$templateFunction.php";
 
              if (file_exists($templateFunctionFile)) {

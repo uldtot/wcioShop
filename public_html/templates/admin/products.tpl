@@ -31,9 +31,9 @@
                           <td><img src="/uploads/{$wcioShopAdminProducts[product].images}" style="width:38px;"></a></td>
                           <td>{$wcioShopAdminProducts[product].name}</td>
                           <td>
-                                <a href="wcio_products.php?id={$wcioShopAdminProducts[product].prdid}&action=edit">Edit</a> |
+                                <a href="products.php?id={$wcioShopAdminProducts[product].prdid}&action=edit">Edit</a> |
                                 <a href="{$wcioShopAdminProducts[product].url}" target="_blank">View</a>  |
-                                 <a href="/admin/wcio_products.php?action=delete&id={$wcioShopAdminProducts[product].prdid}" 
+                                 <a href="/admin/products.php?action=delete&id={$wcioShopAdminProducts[product].prdid}" 
                                 onclick="return confirm('Are you sure you want to delete this product?');">
                                 Delete
                              </a>

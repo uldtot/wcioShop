@@ -2,7 +2,7 @@
 
 $wcioShopAdminSettingsMenu = array();
 
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_settings WHERE columnName = 'wcioShopAdminSettingsMenu' AND settingMainGroup != 'Store settings' ORDER BY settingMainGroup");
+$stmt = $dbh->prepare("SELECT * FROM {$dbprefix}settings WHERE columnName = 'wcioShopAdminSettingsMenu' AND settingMainGroup != 'Store settings' ORDER BY settingMainGroup");
 $result = $stmt->execute();
 
   while($data = $stmt->fetch(PDO::FETCH_ASSOC))

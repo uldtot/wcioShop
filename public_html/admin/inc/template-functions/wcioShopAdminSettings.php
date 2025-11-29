@@ -7,7 +7,7 @@ $mainGroup = $_GET["setting"] ?? "";
 
 if($mainGroup) {
     
-    $stmt = $dbh->prepare("SELECT * FROM wcio_se_settings WHERE columnValue = :mainGroup AND columnName = 'wcioShopAdminSettingsMenu' LIMIT 1");
+    $stmt = $dbh->prepare("SELECT * FROM {$dbprefix}settings WHERE columnValue = :mainGroup AND columnName = 'wcioShopAdminSettingsMenu' LIMIT 1");
     $stmt->bindParam(':mainGroup', $mainGroup, PDO::PARAM_STR);
     $result = $stmt->execute();
     
@@ -33,7 +33,7 @@ if($mainGroup) {
 
 // Now fetch data
 $settingMainGroup = $dataMain["settingMainGroup"] ?? "Store settings";
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_settings WHERE settingMainGroup = :settingMainGroup AND columnName != 'wcioShopAdminSettingsMenu' ORDER BY settingSecondaryGroup,settingOrder,columnNiceName");
+$stmt = $dbh->prepare("SELECT * FROM {$dbprefix}settings WHERE settingMainGroup = :settingMainGroup AND columnName != 'wcioShopAdminSettingsMenu' ORDER BY settingSecondaryGroup,settingOrder,columnNiceName");
 $stmt->bindParam(':settingMainGroup', $settingMainGroup, PDO::PARAM_STR);
 $result = $stmt->execute();
 

@@ -16,7 +16,7 @@
 
 </div>       
 
-        <form method="post" action="/admin/wcio_products.php">
+        <form method="post" action="/admin/products.php">
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="id" value="{$smarty.get.id|default:0}">
 

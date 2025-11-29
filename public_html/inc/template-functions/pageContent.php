@@ -2,7 +2,7 @@
 $pageData = array();
 // Load data
 $pageId = $_SETTING["seoArray"]["postId"];
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_pages WHERE id = :id LIMIT 1");
+$stmt = $dbh->prepare("SELECT * FROM {$dbprefix}pages WHERE id = :id LIMIT 1");
 $stmt->execute(array(
     "id" => $pageId,
 ));

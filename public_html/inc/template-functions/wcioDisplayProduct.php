@@ -3,7 +3,7 @@
 $get_id = $_SETTING["SEOpermalinkData"]["postId"];
 
 // Get product data
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_products WHERE id = :get_id AND active = 1");
+$stmt = $dbh->prepare("SELECT * FROM {$dbprefix}products WHERE id = :get_id AND active = 1");
 $stmt->execute([
     ":get_id" => $get_id
 ]);
@@ -18,7 +18,7 @@ if (!$wcioDisplayProduct) {
 // Get permalink
 $permalinkStmt = $dbh->prepare("
     SELECT * 
-    FROM wcio_se_permalinks 
+    FROM {$dbprefix}permalinks 
     WHERE postType = 'product' 
       AND postId = :id 
     LIMIT 1
@@ -31,7 +31,7 @@ $permalinkData = $permalinkStmt->fetch(PDO::FETCH_ASSOC);
 // Get featured image
 $attachmentStmt = $dbh->prepare("
     SELECT * 
-    FROM wcio_se_attachments 
+    FROM {$dbprefix}attachments 
     WHERE attachmentType = 'primary' 
       AND attachmentPostId = :id 
     LIMIT 1
@@ -50,7 +50,7 @@ if (!$attachmentData["attachmentValue"] || !file_exists(dirname(__FILE__)."/../.
 // Get price data
 $priceStmt = $dbh->prepare("
     SELECT columnName, columnValue 
-    FROM wcio_se_productmeta 
+    FROM {$dbprefix}productmeta 
     WHERE productId = :id 
       AND (columnName LIKE '%salePrice_%' OR columnName LIKE '%price_%')
 ");
@@ -67,7 +67,7 @@ foreach ($priceData as $row) {
 // Get other meta data
 $otherStmt = $dbh->prepare("
     SELECT * 
-    FROM wcio_se_productmeta 
+    FROM {$dbprefix}productmeta 
     WHERE productId = :id
 ");
 $otherStmt->execute([

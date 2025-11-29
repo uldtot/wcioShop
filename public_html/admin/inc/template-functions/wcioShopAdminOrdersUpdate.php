@@ -1,12 +1,14 @@
 <?php
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 $cart_id = $_GET["id"] ?? "";
 if($cart_id == "") {
       header("Location: /admin/orders/");
 }
 
 // Get cart data
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_porders WHERE cart_id = :cart_id LIMIT 1");
+$stmt = $dbh->prepare("SELECT * FROM {$dbprefix}porders WHERE cart_id = :cart_id LIMIT 1");
 $result = $stmt->execute(array(
       "cart_id" => $cart_id,
 ));
@@ -36,7 +38,7 @@ $orderStatusUpdate = $_POST["orderStatusUpdate"] ?? "";
 // Get mail settings
 $wcioShopAdminSettings = array();
 
-$stmt = $dbh->prepare("SELECT settingSecondaryGroup,columnName,columnValue FROM wcio_se_settings WHERE settingSecondaryGroup = 'Mail service' AND columnName != 'wcioShopAdminSettingsMenu' ORDER BY settingSecondaryGroup,settingOrder,columnNiceName");
+$stmt = $dbh->prepare("SELECT settingSecondaryGroup,columnName,columnValue FROM {$dbprefix}settings WHERE settingSecondaryGroup = 'Mail service' AND columnName != 'wcioShopAdminSettingsMenu' ORDER BY settingSecondaryGroup,settingOrder,columnNiceName");
 $result = $stmt->execute();
 
   while($data = $stmt->fetch(PDO::FETCH_ASSOC))
@@ -160,7 +162,7 @@ if(isset($orderStatus) && $orderStatusUpdate == "1") {
             exit;
       }
 
-      $stmt = $dbh->prepare("UPDATE wcio_se_porders SET cart_status=:cart_status WHERE cart_id = :cart_id");
+      $stmt = $dbh->prepare("UPDATE {$dbprefix}porders SET cart_status=:cart_status WHERE cart_id = :cart_id");
       $result = $stmt->execute(array(
       	"cart_id" => $cart_id,
             "cart_status" => $orderStatus
@@ -173,7 +175,7 @@ if(isset($orderStatus) && $orderStatusUpdate == "1") {
 
 // Order admin Notes
 if(isset($orderAdminNotes) && $orderAdminNotesUpdate == "1") {
-      $stmt = $dbh->prepare("UPDATE wcio_se_porders SET AdminNotes = :adminnotes WHERE cart_id = :cart_id");
+      $stmt = $dbh->prepare("UPDATE {$dbprefix}porders SET AdminNotes = :adminnotes WHERE cart_id = :cart_id");
       $result = $stmt->execute(array(
       	"adminnotes" => $orderAdminNotes,
       	"cart_id" => $cart_id,

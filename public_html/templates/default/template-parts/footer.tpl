@@ -1,42 +1,48 @@
 <!-- ========================= FOOTER ========================= -->
 <footer class="section-footer border-top">
 	<div class="container">
-		<section class="footer-top padding-y">
-			<div class="row">
-				<aside class="col-md col-6">
-					{if isset($footerWidgetOne)}
-						{$footerWidgetOne}
-					{/if}
-				</aside>
-				<aside class="col-md col-6">
-					{if isset($footerWidgetTwo)}
-						{$footerWidgetTwo}
-					{/if}
-				</aside>
-				<aside class="col-md col-6">
-					{if isset($footerWidgetThree)}
-						{$footerWidgetThree}
-					{/if}
-				</aside>
-				<aside class="col-md col-6">
-					{if isset($footerWidgetFour)}
-						{$footerWidgetFour}
-					{/if}
-				</aside>
-				<aside class="col-md">
-					{if isset($footerWidgetFive)}
-						{$footerWidgetFive}
-					{/if}
-				</aside>
-			</div> <!-- row.// -->
-		</section>	<!-- footer-top.// -->
+<section class="footer-top padding-y">
+    <div class="row">
+
+        {if $settingFooterWidgetOne != ""}
+            <aside class="col">
+                {$settingFooterWidgetOne}
+            </aside>
+        {/if}
+
+        {if $settingFooterWidgetTwo != ""}
+            <aside class="col">
+                {$settingFooterWidgetTwo}
+            </aside>
+        {/if}
+
+        {if $settingFooterWidgetThree != ""}
+            <aside class="col">
+                {$settingFooterWidgetThree}
+            </aside>
+        {/if}
+
+        {if $settingFooterWidgetFour != ""}
+            <aside class="col">
+                {$settingFooterWidgetFour}
+            </aside>
+        {/if}
+
+        {if $settingFooterWidgetFive != ""}
+            <aside class="col">
+                {$settingFooterWidgetFive}
+            </aside>
+        {/if}
+
+    </div>
+</section>
 
 		<section class="footer-bottom border-top row">
 			<div class="col-md-2">
-				<p class="text-muted"> &copy {$smarty.now|date_format:"%Y"}  {if isset($footerWidgetSix)}{$footerWidgetSix}{/if}</p>
+				<p class="text-muted"> &copy {$smarty.now|date_format:"%Y"} {if $settingFooterWidgetSix != ""}{$settingFooterWidgetSix}{/if}</p>
 			</div>
 			<div class="col-md-8 text-md-center">
-				{if isset($footerWidgetSeven)}{$footerWidgetSeven}{/if}
+				{if $settingFooterWidgetSeven != ""}{$settingFooterWidgetSeven}{/if}
 			</div>
 			<div class="col-md-2 text-md-right text-muted">
 				<!-- KORT LOGOER HER -->

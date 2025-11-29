@@ -2,7 +2,7 @@
 
 $wcioShopAdminMaintenanceModeSettings = array();
 
-$stmt = $dbh->prepare("SELECT * FROM wcio_se_settings WHERE settingMainGroup = 'Maintenance mode' AND columnName != 'wcioShopAdminSettingsMenu' ORDER BY settingSecondaryGroup,settingOrder,columnNiceName");
+$stmt = $dbh->prepare("SELECT * FROM {$dbprefix}settings WHERE settingMainGroup = 'Maintenance mode' AND columnName != 'wcioShopAdminSettingsMenu' ORDER BY settingSecondaryGroup,settingOrder,columnNiceName");
 $result = $stmt->execute();
 
   while($data = $stmt->fetch(PDO::FETCH_ASSOC))
