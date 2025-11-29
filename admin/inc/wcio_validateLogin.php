@@ -1,62 +1,75 @@
 <?php
-// Starting session if not
+
+// Start session
 if (session_status() === PHP_SESSION_NONE) {
-      session_start();
- }
-
-//Logout
-if(isset($_GET["logout"]) ) {
-      // Destroy any sessions to make sure any data is removed
-      session_destroy();
-
-      // If no one is logged in, we send them to login
-            // Display the page and all its functions
-            $smartyTemplateFile = "login.tpl";
-            $smarty->display($smartyTemplateFile);
+    session_start();
 }
 
-$loggedInAdmin = $_SESSION["loggedInAdmin"] ?? "";
+// Handle logout
+if (isset($_GET["logout"])) {
+    session_destroy();
+    header("Location: /admin/login");
+    exit;
+}
 
-// IF we are trying to login
-if(isset($smartyTemplateFile) && $loggedInAdmin == "" && $smartyTemplateFile == "login.tpl") {
+// Check login session
+$loggedInAdmin = $_SESSION["loggedInAdmin"] ?? null;
 
+// Er vi på login-siden?
+$isLoginPage = ($smartyTemplateFile ?? "") === "login.tpl";
 
-      // If there is a new login, then check it before doing anything else
-      if( isset($_POST["adminEmail"]) && isset($_POST["adminPassword"])) {
-           
-            $adminEmail = $_POST["adminEmail"];
-            $adminPassword = $_POST["adminPassword"];
+// --------------------------------------------------------------------------------
+// 1) Bruger er IKKE logget ind → kun login.tpl må vises
+// --------------------------------------------------------------------------------
+if (!$loggedInAdmin) {
 
-            // Fetch the admin user
-            $stmt = $dbh->prepare("SELECT * FROM wcio_se_admin WHERE adminEmail = :adminEmail AND adminPassword = :adminPassword LIMIT 1");
-            $result = $stmt->execute(array(
-                  "adminEmail" => $adminEmail,
-                  "adminPassword" => sha1($adminPassword)
-            ));
-            $resultData = $stmt->fetchAll( PDO::FETCH_ASSOC );
+    // Hvis det er login-form submission
+    if ($isLoginPage && isset($_POST["adminEmail"], $_POST["adminPassword"])) {
 
-            if(count($resultData) == "1") {
+        $adminEmail = $_POST["adminEmail"];
+        $adminPassword = sha1($_POST["adminPassword"]);
 
-                  $_SESSION["loggedInAdmin"] = $resultData["0"]["id"];
-                  header("Location: /admin/");
-            }
+        $stmt = $dbh->prepare("
+            SELECT * FROM wcio_se_admin 
+            WHERE adminEmail = :email 
+            AND adminPassword = :pass 
+            LIMIT 1
+        ");
 
-      } else {
-            // Destroy any sessions to make sure any data is removed
-            session_destroy();
-                  // Display the page and all its functions
-                  $smartyTemplateFile = "login.tpl";
-      $smarty->display($smartyTemplateFile);
-      }
+        $stmt->execute([
+            "email" => $adminEmail,
+            "pass"  => $adminPassword
+        ]);
 
-} else if($loggedInAdmin == "" ){ // Just making sure there is a session for this incase someone changes something somewhere.
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-      // Display the page and all its functions
-      $smartyTemplateFile = "login.tpl";
-      $smarty->display($smartyTemplateFile);
-      
+        if ($result) {
+            $_SESSION["loggedInAdmin"] = $result["id"];
+            header("Location: /admin/");
+            exit;
+        }
 
+        // Invalid login → show login again
+        $smarty->display("login.tpl");
+        exit;
+    }
 
+    // Hvis ingen login-form vises → redirect til login
+    $smarty->display("login.tpl");
+    exit;
+}
 
-} 
+// --------------------------------------------------------------------------------
+// 2) Bruger ER logget ind → vi viser alle andre sider end login.tpl
+// --------------------------------------------------------------------------------
+
+if ($isLoginPage) {
+    // Hvis en logget ind bruger prøver at se login → redirect
+    header("Location: /admin/");
+    exit;
+}
+
+// ALT ER OK – ADMIN ER LOGGET IND
+// Fortsæt med normal admin-side
+
 ?>
