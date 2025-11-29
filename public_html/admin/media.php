@@ -3,7 +3,7 @@
 $smartyTemplateFile = "media.tpl";
 
 // Load index for smarty functions and login validation
-include(dirname(__FILE__) . '/index.php');
+include_once(dirname(__FILE__) . '/index.php');
 
 // Evt. action/id (hvis du bruger dem andetsteds)
 $action = $_REQUEST["action"] ?? null;

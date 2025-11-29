@@ -3,7 +3,7 @@ $smartyTemplateFile = "wcioShopAdminLiveSearch.tpl";
 
 
 // Load index for smarty functions and login valitation
-include(dirname(__FILE__) . '/index.php');
+include_once(dirname(__FILE__) . '/index.php');
 
 
 $wcioShopAdminLiveSearch = "1"; // This is just to mkae sure there is something to check if its loaded

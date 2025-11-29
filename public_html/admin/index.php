@@ -246,7 +246,7 @@ while ($setting = $stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 // Because this is admin, we require someone to be logged in. If thery are not, then we dont provide access to functions
-include(dirname(__FILE__) . '/inc/validateLogin.php');
+include_once(dirname(__FILE__) . '/inc/validateLogin.php');
 
 if (!isset($smartyTemplateFile) || $smartyTemplateFile == "index.tpl") {
 
@@ -254,7 +254,7 @@ if (!isset($smartyTemplateFile) || $smartyTemplateFile == "index.tpl") {
       $smartyTemplateFile = "index.tpl";
 
       // Load template functions
-      include(dirname(__FILE__) . '/inc/templateFunctions.php');
+      include_once(dirname(__FILE__) . '/inc/templateFunctions.php');
 
       // Display the page and all its functions
       $smarty->display($smartyTemplateFile);

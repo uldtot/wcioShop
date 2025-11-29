@@ -10,7 +10,7 @@
 $smartyTemplateFile = "categories.tpl";
 
 // Load index for smarty functions and login valitation
-include(dirname(__FILE__) . '/index.php');
+include_once(dirname(__FILE__) . '/index.php');
 
 // Load functions for this file...
 $action = $_REQUEST["action"] ?? null;
