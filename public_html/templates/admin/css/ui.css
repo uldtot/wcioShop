@@ -442,7 +442,6 @@ p:last-child {
   color: #FFF;
   display: inline-block;
   background-color: rgba(0, 0, 0, 0.3);
-  position: absolute;
   z-index: 9;
   position: absolute; }
 .slider-banner-owl .owl-nav .owl-prev {
