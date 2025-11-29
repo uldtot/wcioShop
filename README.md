@@ -1,4 +1,6 @@
-# wcioShop (This really needs a better name... Maybe just IoShop?)
+# wcioShop
+
+SonarQube status: https://sonarcloud.io/project/overview?id=uldtot_wcioShop
 
 
 The status of this project can be seen here (estimated)
