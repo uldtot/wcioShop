@@ -10,7 +10,7 @@
 $smartyTemplateFile = "settings.tpl";
 
 // Load index for smarty functions and login valitation
-include_once(dirname(__FILE__) . '/index.php');
+include_once dirname(__FILE__) . '/index.php';
 
 // Load functions for this file...
 // IF we are saving data... This should really be a middleware...
@@ -34,7 +34,7 @@ if (isset($_POST["save"]) && $_POST["save"] == "1") {
 }
 
 // Load template functions
-include(dirname(__FILE__) . '/inc/templateFunctions.php');
+include_once dirname(__FILE__) . '/inc/templateFunctions.php';
 
 
 // Display the page and all its functions

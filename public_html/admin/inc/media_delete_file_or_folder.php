@@ -1,6 +1,6 @@
 <?php
 // Load index for smarty functions and login validation
-include(dirname(__FILE__) . '/../index.php');
+include dirname(__FILE__) . '/../index.php';
 
 // Definér base uploads-mappen
 $baseDir = realpath(dirname(__FILE__) . '/../../uploads');

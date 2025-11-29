@@ -2,7 +2,7 @@
 $smartyTemplateFile = "products.tpl";
 
 // Load index for smarty functions and login validation
-include_once(dirname(__FILE__) . '/index.php');
+include_once dirname(__FILE__) . '/index.php';
 
 // --------------------------------------------------
 // Input-sanitizing
@@ -400,6 +400,6 @@ if ($action === "add") {
 // Load template functions og display
 // --------------------------------------------------
 
-include(dirname(__FILE__) . '/inc/templateFunctions.php');
+include_once dirname(__FILE__) . '/inc/templateFunctions.php';
 
 $smarty->display($smartyTemplateFile);

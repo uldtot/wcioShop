@@ -5,8 +5,8 @@ if (!defined('ABSPATH')) {
 }
 
 // Load index for smarty functions and login valitation
-include(dirname(__FILE__) . '/../../inc/db.php');
-include(dirname(__FILE__) . '/validateLogin.php');
+include dirname(__FILE__) . '/../../inc/db.php';
+include dirname(__FILE__) . '/validateLogin.php';
 
 header('Content-Type: application/json');
 

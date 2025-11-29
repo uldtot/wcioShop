@@ -3,7 +3,7 @@
 $smartyTemplateFile = "media.tpl";
 
 // Load index for smarty functions and login validation
-include_once(dirname(__FILE__) . '/index.php');
+include_once dirname(__FILE__) . '/index.php';
 
 // Evt. action/id (hvis du bruger dem andetsteds)
 $action = $_REQUEST["action"] ?? null;
@@ -112,7 +112,7 @@ $smarty->assign('parentFolder', $parentFolder);
 $smarty->assign('isUploadsFolder', $currentFolder === '/uploads');
 
 // Load template functions
-include(dirname(__FILE__) . '/inc/templateFunctions.php');
+include_once dirname(__FILE__) . '/inc/templateFunctions.php';
 
 // Modifier til startswith
 $smarty->registerPlugin('modifier', 'startswith', function($string, $substring) {
