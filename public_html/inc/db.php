@@ -1,26 +1,27 @@
 <?php
- if(!defined("ABSPATH")) { die("No ABSPATH definded"); }
+if (!defined("ABSPATH")) {
+    die("No ABSPATH definded");
+}
 
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) { //ob start to start fetching data including gzip
-	ob_start("ob_gzhandler");
-	}
+    ob_start("ob_gzhandler");
+}
 
 try {
 
 
     // Load ini file if present.
-    $iniConfigFile = ABSPATH."/../private.ini";
-    if(file_exists($iniConfigFile)) {
+    $iniConfigFile = ABSPATH . "/../private.ini";
+    if (file_exists($iniConfigFile)) {
 
         $iniArray = parse_ini_file($iniConfigFile);
-        
+
         $dbname = $iniArray["dbname"];
         $dbport = $iniArray["dbport"];
         $dbhost = $iniArray["dbhost"];
         $dbuser = $iniArray["dbuser"];
         $dbpass = $iniArray["dbpass"];
         $dbprefix = $iniArray["dbprefix"];
-
     } else {
 
         // Or define your db connection here
@@ -29,12 +30,11 @@ try {
         $dbhost = "";
         $dbuser = "";
         $dbpass = "";
-
     }
 
-    $dbh = new PDO("mysql:dbname=$dbname;port=$dbport;host=$dbhost", "$dbuser", "$dbpass", array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8") );
+    $dbh = new PDO("mysql:dbname=$dbname;port=$dbport;host=$dbhost", "$dbuser", "$dbpass", array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 } catch (PDOException $e) {
-    die( 'Connection failed: ' . $e->getMessage());
+    die('Connection failed: ' . $e->getMessage());
 }
 
 // SRC: http://ca3.php.net/magic_quotes
@@ -63,7 +63,7 @@ if (function_exists("get_magic_quotes_gpc")) {
     $HTTP_ENV_VARS = stripslashes_array($HTTP_ENV_VARS ?? '');
     if (isset($_SESSION)) {    #These are unconfirmed (?)
         $_SESSION = stripslashes_array($_SESSION ?? '');
-        $HTTP_SESSION_VARS = stripslashes_array($HTTP_SESSION_VARS ?? '', '');
+        $HTTP_SESSION_VARS = stripslashes_array($HTTP_SESSION_VARS ?? '');
     }
     /*
     The $GLOBALS array is also slash-encoded, but when all the above are
@@ -72,15 +72,14 @@ if (function_exists("get_magic_quotes_gpc")) {
     infinite recursion, so it's dangerous...
     */
 }
-function stripslashes_array($data) {
-    if (is_array($data)){
-        foreach ($data as $key => $value){
+function stripslashes_array($data)
+{
+    if (is_array($data)) {
+        foreach ($data as $key => $value) {
             $data[$key] = stripslashes_array($value);
         }
         return $data;
-    }else{
+    } else {
         return stripslashes($data);
     }
 }
-
-?>

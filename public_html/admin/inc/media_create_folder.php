@@ -1,5 +1,5 @@
 <?php
-include dirname(__FILE__) . '/../index.php';
+include_once dirname(__FILE__) . '/../index.php';
 
 // Allowed base folder
 $baseDir = realpath(dirname(__FILE__) . '/../../uploads');

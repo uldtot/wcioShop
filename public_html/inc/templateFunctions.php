@@ -29,7 +29,7 @@ foreach ($templateFiles as $key => $templateFile) {
              if (file_exists($templateFunctionFile)) {
 
                   // Include the php file to be used in template..
-                  include($templateFunctionFile);
+                  include_once $templateFunctionFile;
 
             }
           }

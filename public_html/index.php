@@ -10,8 +10,8 @@ if (!defined('storeadmin')) {
       define('storeadmin', false);
 }
 
-require(dirname(__FILE__) . '/inc/db.php'); // Connect to database
-require(dirname(__FILE__) . '/libs/Smarty.class.php'); //Smarty
+require_once dirname(__FILE__) . '/inc/db.php'; // Connect to database
+require_once dirname(__FILE__) . '/libs/Smarty.class.php'; //Smarty
 
 $smarty = new Smarty; //Start smarty
 
@@ -39,13 +39,13 @@ while ($setting = $stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 // SEO : Load the current URL from permalinks including meta for this URL
-include(dirname(__FILE__) . '/inc/seo.php');
+include_once dirname(__FILE__) . '/inc/seo.php';
 
 // If no cache of this page is done, then we need to load all functions etc. to make the cache file.
 if (!$smarty->isCached($smartyTemplateFile, $cacheName)) {
 
       // Load template functions
-      include(dirname(__FILE__) . '/inc/templateFunctions.php');
+      include_once dirname(__FILE__) . '/inc/templateFunctions.php';
 } //end if cache
 
 // Display the page and all its functions
