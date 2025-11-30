@@ -58,7 +58,7 @@ while ($dataCategoryProducts = $stmt->fetch(PDO::FETCH_ASSOC)) {
         // Byg array med columnName som key
         $prices = [];
         foreach ($priceData as $row) {
-            $prices[$row['columnName']] = $row['columnValue'] + 0; // +0 for at caste til int/float hvis muligt
+            $prices[$row['columnName']] = (int)$row['columnValue'] + 0; // +0 for at caste til int/float hvis muligt
         }
 
         // Get other from product meta
