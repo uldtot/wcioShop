@@ -1,12 +1,4 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/websitecareio/wcioShop
-* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
- */
-
 $smartyTemplateFile = "pages.tpl";
 
 
@@ -18,212 +10,205 @@ $action = $_REQUEST["action"] ?? null;
 $pageId = $_REQUEST["id"] ?? null;
 
 // If we want to edit a product. Load data
+if (isset($pageId) && $action == "delete") {
+    try {
+        // Prepare the delete query
+        $deleteQuery = "DELETE FROM {$dbprefix}pages WHERE id = :id";
+        $deleteStmt = $dbh->prepare($deleteQuery);
+        $deleteStmt->bindParam(':id', $pageId);
+
+        // Execute the delete statement
+        $deleteStmt->execute();
+
+        // Check if any rows were affected
+        if ($deleteStmt->rowCount() > 0) {
+            echo "Page deleted successfully.";
+        } else {
+            echo "No page found with the specified ID.";
+        }
+
+        // Delete permalink data
+
         if (isset($pageId) && $action == "delete") {
-                try {
-                    // Prepare the delete query
-                    $deleteQuery = "DELETE FROM {$dbprefix}pages WHERE id = :id";
-                    $deleteStmt = $dbh->prepare($deleteQuery);
-                    $deleteStmt->bindParam(':id', $pageId);
-                    
-                    // Execute the delete statement
-                    $deleteStmt->execute();
-                    
-                    // Check if any rows were affected
-                    if ($deleteStmt->rowCount() > 0) {
-                        echo "Page deleted successfully.";
-                    } else {
-                        echo "No page found with the specified ID.";
-                    }
-
-                    // Delete permalink data
-
-                    if (isset($pageId) && $action == "delete") {
-                        $success = deletePermalink($pageId, 'page');
-                    }
-
-
-                } catch (PDOException $e) {
-                    // Handle any errors
-                    echo "Error: " . $e->getMessage();
-                }
-            }
+            $success = deletePermalink($pageId, 'page');
+        }
+    } catch (PDOException $e) {
+        // Handle any errors
+        echo "Error: " . $e->getMessage();
+    }
+}
 
 
 // If we want to edit a product. Load data
 if (isset($pageId) && $action == "edit") {
 
-        $pageData = array();
-        // Load product data
-        $stmt = $dbh->prepare("SELECT * FROM {$dbprefix}pages WHERE id = :id LIMIT 1");
-        $stmt->execute(array(
-                "id" => $pageId,
-        ));
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+    $pageData = array();
+    // Load product data
+    $stmt = $dbh->prepare("SELECT * FROM {$dbprefix}pages WHERE id = :id LIMIT 1");
+    $stmt->execute(array(
+        "id" => $pageId,
+    ));
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Getting permlink data
-        $permalinkStmt = $dbh->prepare("SELECT * FROM {$dbprefix}permalinks WHERE postType = 'page' AND postId = :id LIMIT 1");
-        $permalinkStmt->execute(array(
-                "id" => $pageId,
-        ));
-        $permalinkData = $permalinkStmt->fetch(PDO::FETCH_ASSOC);
-
-
-        // Add default data. 
-        $pageData['id'] = $data['id'];
-        $pageData['name'] = $data['name'] ?? "";
-        $pageData['content'] = $data['content'] ?? "";
-        $pageData['url'] = $permalinkData["url"] ?? "";
-        $pageData['isHomePage'] = $permalinkData["isHomePage"] ?? "";
-
-        // SEO data
-        $seoData = fetchSeoData($pageId, "page");
-
-        $pageData['SEOtitle'] = $seoData['SEOtitle'] ?? "";
-        $pageData['SEOkeywords'] = $seoData['SEOkeywords'] ?? "";
-        $pageData['SEOdescription'] = $seoData['SEOdescription'] ?? "";
-        $pageData['SEOnoIndex'] = $seoData['SEOnoIndex'] ?? 0;
-
-        $smarty->assign("pageData", $pageData);
-
-        // Get all data from shop for parent later
-        $wcioShopAdminPagesArray = array();
-
-        $stmt = $dbh->prepare("SELECT * FROM {$dbprefix}pages ORDER BY id DESC");
-        $stmt->execute(array());
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Loop all data and check if current product is in them
-        foreach ($data as $key => $value) {
-
-                $wcioShopAdminPagesArray[] = array(
-                        "id" => $value["id"],
-                        "name" => $value["name"],
-                );
-        }
-
-        $smarty->assign("wcioShopAdminPagesArray", $wcioShopAdminPagesArray);
+    // Getting permlink data
+    $permalinkStmt = $dbh->prepare("SELECT * FROM {$dbprefix}permalinks WHERE postType = 'page' AND postId = :id LIMIT 1");
+    $permalinkStmt->execute(array(
+        "id" => $pageId,
+    ));
+    $permalinkData = $permalinkStmt->fetch(PDO::FETCH_ASSOC);
 
 
+    // Add default data. 
+    $pageData['id'] = $data['id'];
+    $pageData['name'] = $data['name'] ?? "";
+    $pageData['content'] = $data['content'] ?? "";
+    $pageData['url'] = $permalinkData["url"] ?? "";
+    $pageData['isHomePage'] = $permalinkData["isHomePage"] ?? "";
 
-        // overwrite the template file
-        $smartyTemplateFile = "pagesView.tpl";
+    // SEO data
+    $seoData = fetchSeoData($pageId, "page");
+
+    $pageData['SEOtitle'] = $seoData['SEOtitle'] ?? "";
+    $pageData['SEOkeywords'] = $seoData['SEOkeywords'] ?? "";
+    $pageData['SEOdescription'] = $seoData['SEOdescription'] ?? "";
+    $pageData['SEOnoIndex'] = $seoData['SEOnoIndex'] ?? 0;
+
+    $smarty->assign("pageData", $pageData);
+
+    // Get all data from shop for parent later
+    $wcioShopAdminPagesArray = array();
+
+    $stmt = $dbh->prepare("SELECT * FROM {$dbprefix}pages ORDER BY id DESC");
+    $stmt->execute(array());
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Loop all data and check if current product is in them
+    foreach ($data as $key => $value) {
+
+        $wcioShopAdminPagesArray[] = array(
+            "id" => $value["id"],
+            "name" => $value["name"],
+        );
+    }
+
+    $smarty->assign("wcioShopAdminPagesArray", $wcioShopAdminPagesArray);
+
+
+
+    // overwrite the template file
+    $smartyTemplateFile = "pagesView.tpl";
 }
 
 // IF we want to save or update a product. Id determains if its one or the other.
 if (isset($pageId) && $action == "update") {
 
-        $pageId = $_POST["id"];
-        $cpageName = $_POST["name"];
-        $pagePermalink = $_POST["permalink"];
-        $pageContent = $_POST["content"];
-        $isHomePage = isset($_POST["isHomePage"]) ? 1 : 0;
+    $pageId = $_POST["id"];
+    $cpageName = $_POST["name"];
+    $pagePermalink = $_POST["permalink"];
+    $pageContent = $_POST["content"];
+    $isHomePage = isset($_POST["isHomePage"]) ? 1 : 0;
 
-        $pageSEOtitle = $_POST["SEOtitle"];
-        $pageSEOkeywords = $_POST["SEOkeywords"];
-        $pageSEOdescription = $_POST["SEOdescription"];
-        $pageSEOnoIndex = isset($_POST["SEOnoIndex"]) ? 1 : 0;
+    $pageSEOtitle = $_POST["SEOtitle"];
+    $pageSEOkeywords = $_POST["SEOkeywords"];
+    $pageSEOdescription = $_POST["SEOdescription"];
+    $pageSEOnoIndex = isset($_POST["SEOnoIndex"]) ? 1 : 0;
 
+    try {
+
+
+        // Check if its new or update
+        if ($pageId == 0) {
+
+            // Insert the new content
+            $insertQuery = "INSERT INTO {$dbprefix}pages (name, content) VALUES (:name, :content)";
+            $insertStmt = $dbh->prepare($insertQuery);
+            $insertStmt->bindParam(':name', $cpageName);
+            $insertStmt->bindParam(':content', $pageContent);
+
+            // Execute the insert statement
+            $insertStmt->execute();
+
+            // Get the last inserted ID
+            $pageId = $dbh->lastInsertId();
+        } else {
+
+            $updateQuery = "UPDATE {$dbprefix}pages SET name = :name, content = :content WHERE id = :id";
+            $updateStmt = $dbh->prepare($updateQuery);
+            $updateStmt->bindParam(':name', $cpageName);
+            $updateStmt->bindParam(':content', $pageContent);
+            $updateStmt->bindParam(':id', $pageId);
+            $updated = $updateStmt->execute();
+            $rowCount = $updateStmt->rowCount();
+        }
+
+        // Now update the SEO table
+        // Example usage
+        $posttype = "page";
+        // Assuming $cpageName and $pageId are defined
+        $fallbackUrl = !empty($cpageName) ? $cpageName : $pageId;
+
+        $saveSuccess = savePermalink($pagePermalink, $pageId, $posttype, $pageSEOtitle, $pageSEOkeywords, $pageSEOdescription, $pageSEOnoIndex, $fallbackUrl);
+
+        // If homepage update
         try {
+            if ($isHomePage == 1) {
+
+                // Fetch the current homepage based on its URL and template file
+                $currentHomepageStmt = $dbh->prepare("SELECT * FROM {$dbprefix}permalinks WHERE url = '/' AND templateFile = 'index.tpl' LIMIT 1");
+                $currentHomepageStmt->execute();
+                $currentHomepageData = $currentHomepageStmt->fetch(PDO::FETCH_ASSOC);
 
 
-                // Check if its new or update
-                if($pageId == 0) {
+                if ($currentHomepageData) {
+                    // Update the old homepage permalink with a new URL and template file
+                    $oldHomepageId = $currentHomepageData['postId'];
+                    $oldHomepageUrl = $currentHomepageData['url'];
+                    $oldTemplateFile = "page.tpl";  // Setting the template file to 'page.tpl'
 
-                        // Insert the new content
-                        $insertQuery = "INSERT INTO {$dbprefix}pages (name, content) VALUES (:name, :content)";
-                        $insertStmt = $dbh->prepare($insertQuery);
-                        $insertStmt->bindParam(':name', $cpageName);
-                        $insertStmt->bindParam(':content', $pageContent);
-                        
-                        // Execute the insert statement
-                        $insertStmt->execute();
+                    $updateOldHomepagePermalink = savePermalink(
+                        '',  // Empty URL to remove '/' from the current homepage
+                        $oldHomepageId,
+                        "page",
+                        $currentHomepageData['SEOtitle'] ?? '',
+                        $currentHomepageData['SEOdescription'] ?? '',
+                        $currentHomepageData['SEOkeywords'] ?? '',
+                        $currentHomepageData['SEOnoIndex'] ?? 0,
+                        $currentHomepageData['id']
+                    );
 
-                        // Get the last inserted ID
-                        $pageId = $dbh->lastInsertId();
-
-                  } else {
-
-                        $updateQuery = "UPDATE {$dbprefix}pages SET name = :name, content = :content WHERE id = :id";
-                        $updateStmt = $dbh->prepare($updateQuery);
-                        $updateStmt->bindParam(':name', $cpageName);
-                        $updateStmt->bindParam(':content', $pageContent);
-                        $updateStmt->bindParam(':id', $pageId);
-                        $updated = $updateStmt->execute();
-                        $rowCount = $updateStmt->rowCount();
-                
+                    // Update the old homepage template file to 'page.tpl'
+                    $updateOldHomepageStmt = $dbh->prepare("UPDATE {$dbprefix}permalinks SET templateFile = :templateFile WHERE postId = :postId");
+                    $updateOldHomepageStmt->execute([
+                        ':templateFile' => $oldTemplateFile,
+                        ':postId' => $oldHomepageId
+                    ]);
                 }
 
-                        // Now update the SEO table
-                        // Example usage
-                        $posttype = "page";
-                        // Assuming $cpageName and $pageId are defined
-                        $fallbackUrl = !empty($cpageName) ? $cpageName : $pageId;
 
-                        $saveSuccess = savePermalink($pagePermalink, $pageId, $posttype, $pageSEOtitle, $pageSEOkeywords, $pageSEOdescription, $pageSEOnoIndex, $fallbackUrl);
-                               
-           // If homepage update
-try {
-    if ($isHomePage == 1) {
+                // Set the new page as the homepage
+                $newHomepageUrl = '/';
+                $newTemplateFile = 'index.tpl';  // Set this page's template file to 'index.tpl'
 
-        // Fetch the current homepage based on its URL and template file
-        $currentHomepageStmt = $dbh->prepare("SELECT * FROM {$dbprefix}permalinks WHERE url = '/' AND templateFile = 'index.tpl' LIMIT 1");
-        $currentHomepageStmt->execute();
-        $currentHomepageData = $currentHomepageStmt->fetch(PDO::FETCH_ASSOC);
-
-
-        if ($currentHomepageData) {
-            // Update the old homepage permalink with a new URL and template file
-            $oldHomepageId = $currentHomepageData['postId'];
-            $oldHomepageUrl = $currentHomepageData['url'];
-            $oldTemplateFile = "page.tpl";  // Setting the template file to 'page.tpl'
-
-            $updateOldHomepagePermalink = savePermalink(
-                '',  // Empty URL to remove '/' from the current homepage
-                $oldHomepageId,
-                "page",
-                $currentHomepageData['SEOtitle'] ?? '',
-                $currentHomepageData['SEOdescription'] ?? '',
-                $currentHomepageData['SEOkeywords'] ?? '',
-                $currentHomepageData['SEOnoIndex'] ?? 0,
-                $currentHomepageData['id']
-            );
-
-            // Update the old homepage template file to 'page.tpl'
-            $updateOldHomepageStmt = $dbh->prepare("UPDATE {$dbprefix}permalinks SET templateFile = :templateFile WHERE postId = :postId");
-            $updateOldHomepageStmt->execute([
-                ':templateFile' => $oldTemplateFile,
-                ':postId' => $oldHomepageId
-            ]);
-        }
-
-       
-        // Set the new page as the homepage
-        $newHomepageUrl = '/';
-        $newTemplateFile = 'index.tpl';  // Set this page's template file to 'index.tpl'
-
-            // Update the current page's template file to 'index.tpl'
-        $updateNewHomepageStmt = $dbh->prepare("UPDATE {$dbprefix}permalinks SET templateFile = :templateFile, url = '/', isHomePage = 1 WHERE postId = :postId");
-        $updateNewHomepageStmt->execute([
-            ':templateFile' => $newTemplateFile,
-            ':postId' => $pageId
-        ]);
-    }
-} catch (PDOException $e) {
-    // Rollback transaction or handle error
-    echo "Error: " . $e->getMessage(); die();
-}
-
-
-
-
+                // Update the current page's template file to 'index.tpl'
+                $updateNewHomepageStmt = $dbh->prepare("UPDATE {$dbprefix}permalinks SET templateFile = :templateFile, url = '/', isHomePage = 1 WHERE postId = :postId");
+                $updateNewHomepageStmt->execute([
+                    ':templateFile' => $newTemplateFile,
+                    ':postId' => $pageId
+                ]);
+            }
         } catch (PDOException $e) {
-                // Rollback the transaction on error
-
-                echo "Error: " . $e->getMessage();
+            // Rollback transaction or handle error
+            echo "Error: " . $e->getMessage();
+            die();
         }
+    } catch (PDOException $e) {
+        // Rollback the transaction on error
+
+        echo "Error: " . $e->getMessage();
+    }
 
 
-        header("Location: /admin/pages.php?id=$pageId&action=edit"); // Redirect
+    header("Location: /admin/pages.php?id=$pageId&action=edit"); // Redirect
 
 }
 
@@ -231,24 +216,24 @@ try {
 // IF we want to save or update a product. Id determains if its one or the other.
 if ($action == "add") {
 
-        // Add default data. 
-        $pageData['id'] = "0";
-        $pageData['name'] = "";
-        $pageData['content'] = "";
-        $pageData['url'] = "";
-        $pageData['isHomePage'] = 0;
+    // Add default data. 
+    $pageData['id'] = "0";
+    $pageData['name'] = "";
+    $pageData['content'] = "";
+    $pageData['url'] = "";
+    $pageData['isHomePage'] = 0;
 
-        // SEO data
-        $pageData['SEOtitle'] = "";
-        $pageData['SEOkeywords'] = "";
-        $pageData['SEOdescription'] = "";
-        $pageData['SEOnoIndex'] = 0;
+    // SEO data
+    $pageData['SEOtitle'] = "";
+    $pageData['SEOkeywords'] = "";
+    $pageData['SEOdescription'] = "";
+    $pageData['SEOnoIndex'] = 0;
 
-        $smarty->assign("pageData", $pageData);
+    $smarty->assign("pageData", $pageData);
 
 
-        // overwrite the template file
-        $smartyTemplateFile = "pagesView.tpl";
+    // overwrite the template file
+    $smartyTemplateFile = "pagesView.tpl";
 }
 
 

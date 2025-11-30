@@ -41,7 +41,7 @@ $attachmentStmt->execute([
 ]);
 $attachmentData = $attachmentStmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$attachmentData["attachmentValue"] || !file_exists(dirname(__FILE__)."/../../uploads/".$attachmentData["attachmentValue"])) {
+if (!$attachmentData["attachmentValue"] || !file_exists(dirname(__FILE__) . "/../../uploads/" . $attachmentData["attachmentValue"])) {
     $image = "noimage.png";
 } else {
     $image = $attachmentData["attachmentValue"];

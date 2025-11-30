@@ -1,6 +1,8 @@
 <?php
 // In case the SEO function does not include template file, then its a 404
-if(!$smartyTemplateFile) { $smartyTemplateFile = "404.tpl"; }
+if (!$smartyTemplateFile) {
+    $smartyTemplateFile = "404.tpl";
+}
 
 // Load only the template-fucntions that is used in the template files.
 $templateFiles = array(
@@ -11,29 +13,26 @@ $templateFiles = array(
 );
 
 foreach ($templateFiles as $key => $templateFile) {
- 
-    if(file_exists($templateDir . $templateFile)) {
-          $fc = file_get_contents($templateDir . $templateFile);
 
-          // Find other template functions to load based on the data in template file.
-          $data = array();
-          preg_match_all('/\$([a-zA-Z0-9]*)/is', $fc, $data, PREG_PATTERN_ORDER);
-          unset($data[0]);
-          $data = $data[1];
-          $data = array_unique($data); // Array is now (1, 2, 3)
+    if (file_exists($templateDir . $templateFile)) {
+        $fc = file_get_contents($templateDir . $templateFile);
 
-          foreach ($data as $templateFunction) {
+        // Find other template functions to load based on the data in template file.
+        $data = array();
+        preg_match_all('/\$([a-zA-Z0-9]*)/is', $fc, $data, PREG_PATTERN_ORDER);
+        unset($data[0]);
+        $data = $data[1];
+        $data = array_unique($data); // Array is now (1, 2, 3)
 
-             $templateFunctionFile = dirname(__FILE__) . "/template-functions/$templateFunction.php";
+        foreach ($data as $templateFunction) {
 
-             if (file_exists($templateFunctionFile)) {
+            $templateFunctionFile = dirname(__FILE__) . "/template-functions/$templateFunction.php";
 
-                  // Include the php file to be used in template..
-                  include_once $templateFunctionFile;
+            if (file_exists($templateFunctionFile)) {
 
+                // Include the php file to be used in template..
+                include_once $templateFunctionFile;
             }
-          }
+        }
     }
 }
-
-?>

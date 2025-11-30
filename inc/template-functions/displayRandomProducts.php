@@ -1,11 +1,4 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/uldtot/wcioShop
- */
-
 $displayRandomProducts = array();
 $stmt = $dbh->prepare("SELECT * FROM {$dbprefix}products WHERE active=1 ORDER BY rand() LIMIT 8");
 $result = $stmt->execute();

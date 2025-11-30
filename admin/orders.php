@@ -1,13 +1,5 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/websitecareio/wcioShop
-* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
- */
- 
- $smartyTemplateFile = "orders.tpl";
+$smartyTemplateFile = "orders.tpl";
 
 // Load index for smarty functions and login valitation
 include_once dirname(__FILE__) . '/index.php';

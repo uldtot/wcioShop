@@ -1,12 +1,4 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/websitecareio/wcioShop
-* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
- */
-
 $smartyTemplateFile = "categories.tpl";
 
 // Load index for smarty functions and login valitation
@@ -17,35 +9,33 @@ $action = $_REQUEST["action"] ?? null;
 $categoryId = $_REQUEST["id"] ?? null;
 
 // If we want to edit a product. Load data
-        if (isset($categoryId) && $action == "delete") {
-                try {
-                    // Prepare the delete query
-                    $deleteQuery = "DELETE FROM {$dbprefix}categories WHERE id = :id";
-                    $deleteStmt = $dbh->prepare($deleteQuery);
-                    $deleteStmt->bindParam(':id', $categoryId);
-                    
-                    // Execute the delete statement
-                    $deleteStmt->execute();
-                    
-                    // Check if any rows were affected
-                    if ($deleteStmt->rowCount() > 0) {
+if (isset($categoryId) && $action == "delete") {
+        try {
+                // Prepare the delete query
+                $deleteQuery = "DELETE FROM {$dbprefix}categories WHERE id = :id";
+                $deleteStmt = $dbh->prepare($deleteQuery);
+                $deleteStmt->bindParam(':id', $categoryId);
+
+                // Execute the delete statement
+                $deleteStmt->execute();
+
+                // Check if any rows were affected
+                if ($deleteStmt->rowCount() > 0) {
                         echo "Category deleted successfully.";
-                    } else {
+                } else {
                         echo "No category found with the specified ID.";
-                    }
-
-                    // Delete permalink data
-
-                    if (isset($categoryId) && $action == "delete") {
-                        $success = deletePermalink($categoryId, 'category');
-                    }
-
-
-                } catch (PDOException $e) {
-                    // Handle any errors
-                    echo "Error: " . $e->getMessage();
                 }
-            }
+
+                // Delete permalink data
+
+                if (isset($categoryId) && $action == "delete") {
+                        $success = deletePermalink($categoryId, 'category');
+                }
+        } catch (PDOException $e) {
+                // Handle any errors
+                echo "Error: " . $e->getMessage();
+        }
+}
 
 
 // If we want to edit a product. Load data
@@ -126,21 +116,20 @@ if (isset($categoryId) && $action == "update") {
 
 
                 // Check if its new or update
-                if($categoryId == 0) {
+                if ($categoryId == 0) {
 
                         // Insert the new category
                         $insertQuery = "INSERT INTO {$dbprefix}categories (name, description) VALUES (:name, :description)";
                         $insertStmt = $dbh->prepare($insertQuery);
                         $insertStmt->bindParam(':name', $categoryName);
                         $insertStmt->bindParam(':description', $categoryDescription);
-                        
+
                         // Execute the insert statement
                         $insertStmt->execute();
 
                         // Get the last inserted ID
                         $categoryId = $dbh->lastInsertId();
-
-                  } else {
+                } else {
 
                         $updateQuery = "UPDATE {$dbprefix}categories SET name = :name, description = :description WHERE id = :id";
                         $updateStmt = $dbh->prepare($updateQuery);
@@ -149,16 +138,15 @@ if (isset($categoryId) && $action == "update") {
                         $updateStmt->bindParam(':id', $categoryId);
                         $updated = $updateStmt->execute();
                         $rowCount = $updateStmt->rowCount();
-                
                 }
 
-                        // Now update the SEO table
-                        // Example usage
-                        $posttype = "category";
-                        // Assuming $categoryName and $categoryId are defined
-                        $fallbackUrl = !empty($categoryName) ? $categoryName : $categoryId;
+                // Now update the SEO table
+                // Example usage
+                $posttype = "category";
+                // Assuming $categoryName and $categoryId are defined
+                $fallbackUrl = !empty($categoryName) ? $categoryName : $categoryId;
 
-                        $saveSuccess = savePermalink($categoryPermalink, $categoryId, $posttype, $categorySEOtitle, $categorySEOdescription, $categorySEOdescription, $categorySEOnoIndex, $fallbackUrl);
+                $saveSuccess = savePermalink($categoryPermalink, $categoryId, $posttype, $categorySEOtitle, $categorySEOdescription, $categorySEOdescription, $categorySEOnoIndex, $fallbackUrl);
         } catch (PDOException $e) {
                 // Rollback the transaction on error
 

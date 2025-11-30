@@ -10,27 +10,25 @@ $templateFiles = array(
 
 foreach ($templateFiles as $key => $templateFile) {
 
-    if(file_exists($templateDir . $templateFile)) {
+    if (file_exists($templateDir . $templateFile)) {
 
-          $fc = file_get_contents($templateDir . $templateFile);
+        $fc = file_get_contents($templateDir . $templateFile);
 
-          $data = array();
-          preg_match_all('/\$([a-zA-Z0-9]*)/is', $fc, $data, PREG_PATTERN_ORDER);
-          unset($data[0]);
-          $data = $data[1];
-          $data = array_unique($data); // Array is now (1, 2, 3)
+        $data = array();
+        preg_match_all('/\$([a-zA-Z0-9]*)/is', $fc, $data, PREG_PATTERN_ORDER);
+        unset($data[0]);
+        $data = $data[1];
+        $data = array_unique($data); // Array is now (1, 2, 3)
 
-          foreach ($data as $templateFunction) {
-            
-             $templateFunctionFile = dirname(__FILE__) . "/template-functions/$templateFunction.php";
+        foreach ($data as $templateFunction) {
 
-             if (file_exists($templateFunctionFile)) {
+            $templateFunctionFile = dirname(__FILE__) . "/template-functions/$templateFunction.php";
 
-                  // Inclkue the php file to be used in template..
-                  include_once $templateFunctionFile;
+            if (file_exists($templateFunctionFile)) {
+
+                // Inclkue the php file to be used in template..
+                include_once $templateFunctionFile;
             }
-          }
+        }
     }
 }
-
-?>

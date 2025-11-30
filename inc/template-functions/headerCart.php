@@ -1,11 +1,10 @@
 <?php
 $cartCount = "0";
-if (isset($_SESSION['cart']))
-{
+if (isset($_SESSION['cart'])) {
 
-    if(count($_SESSION['cart']) > 0) {
+      if (count($_SESSION['cart']) > 0) {
             $cartCount = count($_SESSION['cart']); //how many products
-   }
+      }
 }
 
 $output = array(
@@ -13,4 +12,3 @@ $output = array(
 );
 
 $smarty->assign("headerCart", $output, true); // No cache active
-?>

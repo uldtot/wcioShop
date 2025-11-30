@@ -5,15 +5,15 @@ $wcioShopAdminSettings = array();
 // Check if we need specific settings of just default
 $mainGroup = $_GET["setting"] ?? "";
 
-if($mainGroup) {
-    
-    $stmt = $dbh->prepare("SELECT * FROM {$dbprefix}settings WHERE columnValue = :mainGroup AND columnName = 'wcioShopAdminSettingsMenu' LIMIT 1");
-    $stmt->bindParam(':mainGroup', $mainGroup, PDO::PARAM_STR);
-    $result = $stmt->execute();
-    
-    $dataMain = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    /*
+if ($mainGroup) {
+
+  $stmt = $dbh->prepare("SELECT * FROM {$dbprefix}settings WHERE columnValue = :mainGroup AND columnName = 'wcioShopAdminSettingsMenu' LIMIT 1");
+  $stmt->bindParam(':mainGroup', $mainGroup, PDO::PARAM_STR);
+  $result = $stmt->execute();
+
+  $dataMain = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  /*
     Array
     (
         [id] => 48
@@ -28,7 +28,6 @@ if($mainGroup) {
         [columnValue] => maintenancemode
         [columnDescription] => 
     )*/
-
 }
 
 // Now fetch data
@@ -39,26 +38,23 @@ $result = $stmt->execute();
 
 
 
-  while($data = $stmt->fetch(PDO::FETCH_ASSOC))
-  {
+while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-        $settingMainGroup = $data['settingMainGroup'];
-        $settingSecondaryGroup = $dataMain['settingSecondaryGroup'] ?? $data['settingSecondaryGroup'];
+  $settingMainGroup = $data['settingMainGroup'];
+  $settingSecondaryGroup = $dataMain['settingSecondaryGroup'] ?? $data['settingSecondaryGroup'];
 
-        $wcioShopAdminSettings[$settingMainGroup][$settingSecondaryGroup][] = array
-        (
-              "id" => $data['id'],
-              "autoload" => $data['autoload'],
-              "settingOrder" => $data['settingOrder'],
-              "columnName" => $data['columnName'],
-              "columnNiceName" => $data['columnNiceName'],
-              "settingMainGroup" => $settingMainGroup,
-              "settingSecondaryGroup" => $settingSecondaryGroup,
-              "columnType" => $data['columnType'],
-              "columnValue" => $data['columnValue'],
-              "columnDescription" => $data['columnDescription'],
-        );
-  }
+  $wcioShopAdminSettings[$settingMainGroup][$settingSecondaryGroup][] = array(
+    "id" => $data['id'],
+    "autoload" => $data['autoload'],
+    "settingOrder" => $data['settingOrder'],
+    "columnName" => $data['columnName'],
+    "columnNiceName" => $data['columnNiceName'],
+    "settingMainGroup" => $settingMainGroup,
+    "settingSecondaryGroup" => $settingSecondaryGroup,
+    "columnType" => $data['columnType'],
+    "columnValue" => $data['columnValue'],
+    "columnDescription" => $data['columnDescription'],
+  );
+}
 
 $smarty->assign("wcioShopAdminSettings", $wcioShopAdminSettings);
-?>

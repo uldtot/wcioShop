@@ -70,4 +70,3 @@ if ($isLoginPage) {
     header("Location: /admin/");
     exit;
 }
-

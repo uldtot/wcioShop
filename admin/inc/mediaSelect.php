@@ -1,7 +1,8 @@
 <?php
+
 /** Absolute path to the store directory. */
 if (!defined('ABSPATH')) {
-      define('ABSPATH', __DIR__ . '/../../');
+    define('ABSPATH', __DIR__ . '/../../');
 }
 
 // Load index for smarty functions and login valitation

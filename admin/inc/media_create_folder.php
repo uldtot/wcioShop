@@ -33,4 +33,3 @@ if (!is_dir($newFolderPath)) {
 } else {
     die("Error: Folder already exists.");
 }
-?>

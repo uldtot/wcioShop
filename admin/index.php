@@ -1,20 +1,13 @@
 <?php
-/*
-* wcioShop
-* Version 1.0.0
-* Author: Kim Vinberg <support@websitecare.io>
-* Source: https://github.com/websitecareio/wcioShop
-* License: https://github.com/websitecareio/wcioShop/blob/master/LICENSE
- */
 session_start();
 
 /** Absolute path to the store directory. */
 if (!defined('ABSPATH')) {
-      define('ABSPATH', dirname(__DIR__, 1));
+    define('ABSPATH', dirname(__DIR__, 1));
 }
 
 if (!defined('storeadmin')) {
-      define('storeadmin', true);
+    define('storeadmin', true);
 }
 
 require_once dirname(__FILE__) . '/../inc/db.php'; //connect to database
@@ -23,13 +16,13 @@ require_once dirname(__FILE__) . '/../libs/Smarty.class.php'; //Smarty
 // Permalink function
 // Permalink function
 function savePermalink(
-    $newUrl, 
-    $postId, 
-    $postType, 
-    $seoTitle = '', 
-    $seoKeywords = '', 
-    $seoDescription = '', 
-    $seoNoIndex = 0, 
+    $newUrl,
+    $postId,
+    $postType,
+    $seoTitle = '',
+    $seoKeywords = '',
+    $seoDescription = '',
+    $seoNoIndex = 0,
     $fallbackUrl = ""
 ) {
     global $dbh; // Use the global database handler
@@ -45,7 +38,7 @@ function savePermalink(
     // Base URL without suffix
     $baseUrl = $newUrl;
     $suffix = 0;
-    
+
     // Check for unique URL
     do {
         $checkQuery = "SELECT COUNT(*) FROM {$dbprefix}permalinks WHERE url = :url AND postType = :postType AND postId != :postId";
@@ -60,8 +53,6 @@ function savePermalink(
             $suffix++;
             $newUrl = $baseUrl . '-' . $suffix;
         }
-        
-        
     } while ($count > 0);
 
     // Fetch current values to check if an update is needed
@@ -75,16 +66,18 @@ function savePermalink(
     $currentData = $currentStmt->fetch(PDO::FETCH_ASSOC);
 
     // Only update if there's a difference
-    if (!$currentData || 
-        $currentData['url'] !== $newUrl || 
-        $currentData['SEOtitle'] !== $seoTitle || 
-        $currentData['SEOkeywords'] !== $seoKeywords || 
-        $currentData['SEOdescription'] !== $seoDescription || 
-        $currentData['SEOnoIndex'] != $seoNoIndex) { // Loose comparison for integer
+    if (
+        !$currentData ||
+        $currentData['url'] !== $newUrl ||
+        $currentData['SEOtitle'] !== $seoTitle ||
+        $currentData['SEOkeywords'] !== $seoKeywords ||
+        $currentData['SEOdescription'] !== $seoDescription ||
+        $currentData['SEOnoIndex'] != $seoNoIndex
+    ) { // Loose comparison for integer
 
         // If permalink exists, update it; otherwise, insert a new row
         if ($currentData) {
-        
+
             $updateQuery = "UPDATE {$dbprefix}permalinks 
                             SET url = :url, 
                                 SEOtitle = :seoTitle, 
@@ -130,27 +123,28 @@ function savePermalink(
 
             return $insertStmt->execute(); // Return insert success
         }
-    } 
+    }
 
     // No update necessary; return true (indicating "success" without change)
     return true;
 }
 
-  
-  function deletePermalink($postId, $postType) {
+
+function deletePermalink($postId, $postType)
+{
     global $dbh; // Use the global database handler
     global $dbprefix;
-    
+
     try {
         // Prepare the delete query
         $deleteQuery = "DELETE FROM {$dbprefix}permalinks WHERE postId = :postId AND postType = :postType";
         $deleteStmt = $dbh->prepare($deleteQuery);
         $deleteStmt->bindParam(':postId', $postId);
         $deleteStmt->bindParam(':postType', $postType);
-        
+
         // Execute the delete statement
         $deleted = $deleteStmt->execute();
-        
+
         // Check if any rows were affected
         if ($deleted && $deleteStmt->rowCount() > 0) {
             return true; // Deletion was successful
@@ -165,61 +159,63 @@ function savePermalink(
 }
 
 // Fetch SEO data
-function fetchSeoData($postId, $postType) {
-      global $dbh; // Use the global database handler
-      global $dbprefix;
-      // Prepare the query to fetch SEO data
-      $query = "SELECT SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex FROM {$dbprefix}permalinks WHERE postId = :postId AND postType = :postType";
-      $stmt = $dbh->prepare($query);
-      $stmt->bindParam(':postId', $postId);
-      $stmt->bindParam(':postType', $postType);
-      $stmt->execute();
-      
-      // Fetch the data
-      $seoData = $stmt->fetch(PDO::FETCH_ASSOC);
-      
-      // Return the fetched SEO data or null if not found
-      return $seoData ?: null;
-  }
-  
-  //sanitizeSeoUrl
-  function sanitizeSeoUrl($url) {
-      // Remove any leading or trailing whitespace
-      $url = trim($url);
-      
-      // Define character replacements
-      $charReplacements = [
-          'á' => 'a', 'à' => 'a', 'ä' => 'a', 'â' => 'a', 'å' => 'aa', 'ã' => 'a', 'ā' => 'a',
-          'é' => 'e', 'è' => 'e', 'ë' => 'e', 'ê' => 'e', 'ē' => 'e',
-          'í' => 'i', 'ì' => 'i', 'ï' => 'i', 'î' => 'i', 'ī' => 'i',
-          'ó' => 'o', 'ò' => 'o', 'ö' => 'o', 'ô' => 'o', 'ø' => 'oe', 'õ' => 'o', 'ō' => 'o',
-          'ú' => 'u', 'ù' => 'u', 'ü' => 'u', 'û' => 'u', 'ū' => 'u',
-          'ç' => 'c', 'ñ' => 'n', 'ý' => 'y', 'ÿ' => 'y',
-          'Æ' => 'Ae', 'æ' => 'ae', 'Ø' => 'Oe', 'ø' => 'oe', 'Å' => 'Aa', 'å' => 'aa',
-          'ß' => 'ss', 'þ' => 'th', 'Þ' => 'Th', '&' => '-', ' ' => '-' 
-          // Add more replacements as needed
-      ];
-      
-      // Replace special characters with their ASCII equivalents
-      $url = str_replace(array_keys($charReplacements), array_values($charReplacements), $url);
-      
-      // Convert to lowercase
-      $url = strtolower($url);
-      
-      // Remove any unwanted characters (keep alphanumeric, dashes, underscores, and slashes)
-      $url = preg_replace('/[^a-z0-9\-\/]/', '', $url);
-      
-      // Replace spaces with hyphens
-      $url = preg_replace('/\s+/', '-', $url);
-      
-      // Remove duplicate hyphens
-      $url = preg_replace('/-+/', '-', $url);
-      
-      // Remove trailing hyphens
-      $url = rtrim($url, '-');
-  
-      return $url;
-  }
+function fetchSeoData($postId, $postType)
+{
+    global $dbh; // Use the global database handler
+    global $dbprefix;
+    // Prepare the query to fetch SEO data
+    $query = "SELECT SEOtitle, SEOkeywords, SEOdescription, SEOnoIndex FROM {$dbprefix}permalinks WHERE postId = :postId AND postType = :postType";
+    $stmt = $dbh->prepare($query);
+    $stmt->bindParam(':postId', $postId);
+    $stmt->bindParam(':postType', $postType);
+    $stmt->execute();
+
+    // Fetch the data
+    $seoData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Return the fetched SEO data or null if not found
+    return $seoData ?: null;
+}
+
+//sanitizeSeoUrl
+function sanitizeSeoUrl($url)
+{
+    // Remove any leading or trailing whitespace
+    $url = trim($url);
+
+    // Define character replacements
+    $charReplacements = [
+        'á' => 'a', 'à' => 'a', 'ä' => 'a', 'â' => 'a', 'å' => 'aa', 'ã' => 'a', 'ā' => 'a',
+        'é' => 'e', 'è' => 'e', 'ë' => 'e', 'ê' => 'e', 'ē' => 'e',
+        'í' => 'i', 'ì' => 'i', 'ï' => 'i', 'î' => 'i', 'ī' => 'i',
+        'ó' => 'o', 'ò' => 'o', 'ö' => 'o', 'ô' => 'o', 'ø' => 'oe', 'õ' => 'o', 'ō' => 'o',
+        'ú' => 'u', 'ù' => 'u', 'ü' => 'u', 'û' => 'u', 'ū' => 'u',
+        'ç' => 'c', 'ñ' => 'n', 'ý' => 'y', 'ÿ' => 'y',
+        'Æ' => 'Ae', 'æ' => 'ae', 'Ø' => 'Oe', 'ø' => 'oe', 'Å' => 'Aa', 'å' => 'aa',
+        'ß' => 'ss', 'þ' => 'th', 'Þ' => 'Th', '&' => '-', ' ' => '-'
+        // Add more replacements as needed
+    ];
+
+    // Replace special characters with their ASCII equivalents
+    $url = str_replace(array_keys($charReplacements), array_values($charReplacements), $url);
+
+    // Convert to lowercase
+    $url = strtolower($url);
+
+    // Remove any unwanted characters (keep alphanumeric, dashes, underscores, and slashes)
+    $url = preg_replace('/[^a-z0-9\-\/]/', '', $url);
+
+    // Replace spaces with hyphens
+    $url = preg_replace('/\s+/', '-', $url);
+
+    // Remove duplicate hyphens
+    $url = preg_replace('/-+/', '-', $url);
+
+    // Remove trailing hyphens
+    $url = rtrim($url, '-');
+
+    return $url;
+}
 $smarty = new Smarty; //Start smarty
 // set directory where compiled templates are stored
 
@@ -239,11 +235,11 @@ $stmt = $dbh->prepare("SELECT columnName,columnValue FROM {$dbprefix}settings WH
 $result = $stmt->execute();
 while ($setting = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-      // Assign values to be used in files
-      $_SETTING[$setting['columnName']] = $setting['columnValue'];
+    // Assign values to be used in files
+    $_SETTING[$setting['columnName']] = $setting['columnValue'];
 
-      // Assign values to smarty for use in templates.
-      $smarty->assign('setting' . ucfirst($setting['columnName']) . '', $setting['columnValue']); // Save setting for smarty
+    // Assign values to smarty for use in templates.
+    $smarty->assign('setting' . ucfirst($setting['columnName']) . '', $setting['columnValue']); // Save setting for smarty
 
 }
 
@@ -252,12 +248,12 @@ include_once dirname(__FILE__) . '/inc/validateLogin.php';
 
 if (!isset($smartyTemplateFile) || $smartyTemplateFile == "index.tpl") {
 
-      // Default template file.
-      $smartyTemplateFile = "index.tpl";
+    // Default template file.
+    $smartyTemplateFile = "index.tpl";
 
-      // Load template functions
-      include_once dirname(__FILE__) . '/inc/templateFunctions.php';
+    // Load template functions
+    include_once dirname(__FILE__) . '/inc/templateFunctions.php';
 
-      // Display the page and all its functions
-      $smarty->display($smartyTemplateFile);
+    // Display the page and all its functions
+    $smarty->display($smartyTemplateFile);
 }

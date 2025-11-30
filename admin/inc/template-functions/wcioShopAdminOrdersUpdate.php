@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 $cart_id = $_GET["id"] ?? "";
-if($cart_id == "") {
+if ($cart_id == "") {
       header("Location: /admin/orders/");
 }
 
@@ -15,13 +15,12 @@ $result = $stmt->execute(array(
 
 $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-      $wcioShopAdminOrders = array();
+$wcioShopAdminOrders = array();
 
-      foreach( $data AS $key => $value ) {
+foreach ($data as $key => $value) {
 
-            $wcioShopAdminOrders[$key] = $value;
-
-      }
+      $wcioShopAdminOrders[$key] = $value;
+}
 
 // Get other data
 
@@ -41,56 +40,51 @@ $wcioShopAdminSettings = array();
 $stmt = $dbh->prepare("SELECT settingSecondaryGroup,columnName,columnValue FROM {$dbprefix}settings WHERE settingSecondaryGroup = 'Mail service' AND columnName != 'wcioShopAdminSettingsMenu' ORDER BY settingSecondaryGroup,settingOrder,columnNiceName");
 $result = $stmt->execute();
 
-  while($data = $stmt->fetch(PDO::FETCH_ASSOC))
-  {
+while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-        $settingSecondaryGroup = $data['settingSecondaryGroup'];
+      $settingSecondaryGroup = $data['settingSecondaryGroup'];
 
-        $wcioShopAdminSettings[$data['columnName']] = array
-        (
-              "columnName" => $data['columnName'],
-              "columnValue" => $data['columnValue'],
-        );
-  }
+      $wcioShopAdminSettings[$data['columnName']] = array(
+            "columnName" => $data['columnName'],
+            "columnValue" => $data['columnValue'],
+      );
+}
 
 
 
 
 // Order action update
-if(isset($orderAction) && $orderActionUpdate == "1") {
+if (isset($orderAction) && $orderActionUpdate == "1") {
 
       // Order action send to customer
-      if($orderAction == "send_order_details") {
+      if ($orderAction == "send_order_details") {
 
             $orderActionTo = $wcioShopAdminOrders["email"];
             $orderActionFrom = $_SETTING["storeSaleEmail"];
             $orderActionSubject = "Order notification - Order: $cart_id";
             $orderActionMessage = "Thank you for your order: $cart_id\r\n
             Note: This is not an order confirmation, but just a copy of what we have registered in connection with your order. You will get another e-mail when we have accepted your order.";
-
       }
 
       // Order action send to admin
-      if($orderAction == "send_order_details_admin") {
+      if ($orderAction == "send_order_details_admin") {
 
             $orderActionTo = $_SETTING["storeSaleNotificationEmail"];
             $orderActionFrom = $_SETTING["storeSaleEmail"];
             $orderActionSubject = "New order notification: $cart_id";
             $orderActionMessage = "There is a new order in your store.";
-
       }
 
-      if($wcioShopAdminSettings["storeMailSerivce"]["columnValue"] == "phpmail") {
+      if ($wcioShopAdminSettings["storeMailSerivce"]["columnValue"] == "phpmail") {
 
-            $headers = 'From: '.$orderActionFrom.'' . "\r\n" .
-                        'Reply-To: '.$orderActionFrom.'' . "\r\n" .
-                        'X-Mailer: PHP/' . phpversion();
+            $headers = 'From: ' . $orderActionFrom . '' . "\r\n" .
+                  'Reply-To: ' . $orderActionFrom . '' . "\r\n" .
+                  'X-Mailer: PHP/' . phpversion();
 
             mail($orderActionTo, $orderActionSubject, $orderActionMessage, $headers);
-
-      } else if($wcioShopAdminSettings["storeMailSerivce"]["columnValue"] == "smtp") {
+      } else if ($wcioShopAdminSettings["storeMailSerivce"]["columnValue"] == "smtp") {
             // SMTP
-      /*       use PHPMailer\PHPMailer\PHPMailer;
+            /*       use PHPMailer\PHPMailer\PHPMailer;
             use PHPMailer\PHPMailer\Exception;
 
             require dirname(__FILE__)."../vendor/PHPMailer/PHPMailer/src/Exception.php";
@@ -135,17 +129,15 @@ if(isset($orderAction) && $orderActionUpdate == "1") {
                 echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             }
             */
-
       }
 
       header("Location: /admin/orders/view/?id=$cart_id");
       exit;
-
 }
 
 
 // Order status update
-if(isset($orderStatus) && $orderStatusUpdate == "1") {
+if (isset($orderStatus) && $orderStatusUpdate == "1") {
 
       $allowedStatus = array(
             "pending",
@@ -157,28 +149,27 @@ if(isset($orderStatus) && $orderStatusUpdate == "1") {
             "failed",
       );
 
-      if( !in_array($orderStatus,$allowedStatus) ) {
+      if (!in_array($orderStatus, $allowedStatus)) {
             header("Location: /admin/orders/view/?id=$cart_id");
             exit;
       }
 
       $stmt = $dbh->prepare("UPDATE {$dbprefix}porders SET cart_status=:cart_status WHERE cart_id = :cart_id");
       $result = $stmt->execute(array(
-      	"cart_id" => $cart_id,
+            "cart_id" => $cart_id,
             "cart_status" => $orderStatus
       ));
 
       header("Location: /admin/orders/view/?id=$cart_id");
       exit;
-
 }
 
 // Order admin Notes
-if(isset($orderAdminNotes) && $orderAdminNotesUpdate == "1") {
+if (isset($orderAdminNotes) && $orderAdminNotesUpdate == "1") {
       $stmt = $dbh->prepare("UPDATE {$dbprefix}porders SET AdminNotes = :adminnotes WHERE cart_id = :cart_id");
       $result = $stmt->execute(array(
-      	"adminnotes" => $orderAdminNotes,
-      	"cart_id" => $cart_id,
+            "adminnotes" => $orderAdminNotes,
+            "cart_id" => $cart_id,
       ));
 
       header("Location: /admin/orders/view/?id=$cart_id");

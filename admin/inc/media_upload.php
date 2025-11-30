@@ -18,7 +18,7 @@ if ($fullCurrentPath === false || strpos($fullCurrentPath, $baseDir) !== 0) {
 if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
 
     // Maks størrelse (1000 MB som i dit eksempel)
-    $maxFileSize = 1000 * 1024 * 1024; 
+    $maxFileSize = 1000 * 1024 * 1024;
     if ($_FILES['file']['size'] > $maxFileSize) {
         die("Error: File is too large.");
     }
@@ -32,7 +32,7 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
     }
 
     // Forhindre double-extension angreb (.php.jpg → php-kode skjult)
-    $allowedExtensions = ['jpg','jpeg','png','gif','svg','webp','pdf','txt','zip','csv','doc','docx','xls','xlsx'];
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'pdf', 'txt', 'zip', 'csv', 'doc', 'docx', 'xls', 'xlsx'];
     $ext = strtolower(pathinfo($cleanName, PATHINFO_EXTENSION));
 
     if (!in_array($ext, $allowedExtensions)) {
@@ -58,5 +58,3 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
         exit;
     }
 }
-
-?>
