@@ -5,6 +5,7 @@ if (!defined("ABSPATH")) {
 
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) { //ob start to start fetching data including gzip
     ob_start("ob_gzhandler");
+                                                            }
 
 try {
 
