@@ -61,7 +61,7 @@ $priceData = $priceStmt->fetchAll(PDO::FETCH_ASSOC);
 
 $prices = [];
 foreach ($priceData as $row) {
-    $prices[$row['columnName']] = $row['columnValue'] + 0; // Cast til int/float
+    $prices[$row['columnName']] = (int)$row['columnValue'] + 0; // Cast til int/float
 }
 
 // Get other meta data
