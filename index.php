@@ -41,8 +41,10 @@ while ($setting = $stmt->fetch(PDO::FETCH_ASSOC)) {
 // SEO : Load the current URL from permalinks including meta for this URL
 include_once dirname(__FILE__) . '/inc/seo.php';
 
+
 // If no cache of this page is done, then we need to load all functions etc. to make the cache file.
 $cacheId = $_SETTING['smartyCacheId'] ?? null;
+
 
 if ($smarty->caching && $cacheId) {
 
