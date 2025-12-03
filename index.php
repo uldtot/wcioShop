@@ -18,7 +18,7 @@ $smarty = new Smarty; //Start smarty
 $templateDir       = dirname(__FILE__) . "/templates/default/";
 $smartyTemplateDir = "/templates/default/";
 
-$smarty->force_compile  = true; // Dont force recompile when live
+$smarty->force_compile  = false; // Dont force recompile when live
 $smarty->debugging      = false; // Deactivate when out of dev for test
 
 $smarty->cache_lifetime = 21600; //120
@@ -26,7 +26,7 @@ $smarty->template_dir   = $templateDir; // Template dir
 $smarty->assign('template_dir', $smartyTemplateDir);
 
 // Load all shop settings from databse and assign all with autoload enabled
-$stmt = $dbh->prepare("SELECT columnName,columnValue FROM wcio_se_settings WHERE autoload = 1");
+$stmt = $dbh->prepare("SELECT columnName,columnValue FROM {$dbprefix}settings WHERE autoload = 1");
 $result = $stmt->execute();
 while ($setting = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
@@ -42,11 +42,27 @@ while ($setting = $stmt->fetch(PDO::FETCH_ASSOC)) {
 include_once dirname(__FILE__) . '/inc/seo.php';
 
 // If no cache of this page is done, then we need to load all functions etc. to make the cache file.
-if (!$smarty->isCached($smartyTemplateFile, $cacheName)) {
+$cacheId = $_SETTING['smartyCacheId'] ?? null;
 
-      // Load template functions
+if ($smarty->caching && $cacheId) {
+
+    if (!$smarty->isCached($smartyTemplateFile, $cacheId)) {
+        
+           // Load template functions
       include_once dirname(__FILE__) . '/inc/templateFunctions.php';
-} //end if cache
+      
+    }
 
-// Display the page and all its functions
-$smarty->display($smartyTemplateFile, $cacheName);
+    $smarty->display($smartyTemplateFile, $cacheId);
+
+} else {
+  
+    // Enten caching = false, eller ingen cacheId → vis uden cache
+          // Load template functions
+      include_once dirname(__FILE__) . '/inc/templateFunctions.php';
+    $smarty->display($smartyTemplateFile);
+}
+
+
+
+
