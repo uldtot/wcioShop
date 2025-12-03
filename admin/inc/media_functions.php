@@ -103,10 +103,10 @@ if ($currentFolder === '/uploads') {
 }
 
 // Send media-data til Smarty
-$smarty->assign('filesAndFolders', $filesAndFolders);
-$smarty->assign('currentFolder', $currentFolder);
-$smarty->assign('parentFolder', $parentFolder);
-$smarty->assign('currentId', $pageId);
+$smarty->assign('filesAndFolders', $filesAndFolders ?? "");
+$smarty->assign('currentFolder', $currentFolder ?? "");
+$smarty->assign('parentFolder', $parentFolder ?? "");
+$smarty->assign('currentId', $pageId ?? "");
 
 // er vi i uploads-roden?
 $smarty->assign('isUploadsFolder', $currentFolder === '/uploads');
