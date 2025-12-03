@@ -22,10 +22,10 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $seoTitle = $data["SEOtitle"];
     }
     // Assign metas
-    $smarty->assign("SEOtitle", $seoTitle);
-    $smarty->assign("SEOkeywords", $data["SEOkeywords"]);
-    $smarty->assign("SEOdescription", $data["SEOdescription"]);
-    $smarty->assign("SEOnoIndex", $data["SEOnoIndex"]);
+    $smarty->assign("SEOtitle", $seoTitle ?? "");
+    $smarty->assign("SEOkeywords", $data["SEOkeywords"] ?? "");
+    $smarty->assign("SEOdescription", $data["SEOdescription"] ?? "");
+    $smarty->assign("SEOnoIndex", $data["SEOnoIndex"] ?? "0");
 
     // Assign other data from permalink table	
     $smarty->assign("postType", $data["postType"]);
@@ -66,19 +66,9 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
         'login.tpl',
         'account.tpl',
         'order-view.tpl',
-        'wcioShopLiveSearch.tpl'
+        'template-functions/wcioShopLiveSearch.tpl'
     ];
     
-    unset($data["smartyCache"]); // unset smartyCache from DB for the moment.
-    if ($data["smartyCache"] === "0") {
-
-        // DB siger: ingen cache
-        $smarty->caching = false;
-    } elseif ($data["smartyCache"] === "1") {
-
-        // DB siger: cache på
-        $smarty->caching = true;
-    } else {
 
         // Ingen database-værdi → brug automatisk logik
         if (in_array($smartyTemplateFile, $noCacheTemplates)) {
@@ -86,8 +76,6 @@ while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
         } else {
             $smarty->caching = true;
         }
-    }
-
 
     // Assign SEO data
     $_SETTING["seoArray"] = $data;
