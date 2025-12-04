@@ -1,19 +1,43 @@
 # Mod reqrite
 <IfModule mod_rewrite.c>
 RewriteEngine On
-# Force HTTPS redirect if not https
-RewriteCond %{ENV:HTTPS} off
-RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-
-# Send all traffix to index.php if its not a known file or directory
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteBase /
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
-</IfModule>
 
+# -------------------------------------------------------------
+# 1. Force HTTPS (optional but recommended)
+# -------------------------------------------------------------
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# -------------------------------------------------------------
+# 2. Preserve Authorization header (required for REST APIs)
+#    - Ensures Bearer Token / Basic Auth / JWT headers are passed to PHP
+#    - Must appear before routing rules
+# -------------------------------------------------------------
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# -------------------------------------------------------------
+# 3. Prevent rewrite loops when requesting index.php directly
+# -------------------------------------------------------------
+RewriteRule ^index\.php$ - [L]
+
+# -------------------------------------------------------------
+# 4. If the requested file or directory exists, serve it directly
+#    - Ensures access to PHP tools like make_install.php
+#    - Ensures access to assets (css/js/img/etc)
+# -------------------------------------------------------------
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# -------------------------------------------------------------
+# 5. All other requests are routed into index.php
+#    - This is the core router, similar to WordPress behavior
+# -------------------------------------------------------------
+RewriteRule . /index.php [L]
+
+</IfModule>
 # Error handling
 ErrorDocument 404 /404/
 ErrorDocument 500 /
@@ -58,3 +82,10 @@ Header set Cache-Control "max-age=604800"
         Header append Vary User-Agent env=!dont-vary
     </IfModule>
 </IfModule>
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php74” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php74 .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
