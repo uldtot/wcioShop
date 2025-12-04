@@ -130,6 +130,10 @@ function h($str) {
     return htmlspecialchars((string)$str, ENT_QUOTES, 'UTF-8');
 }
 
+function isValidIdentifier(string $name): bool {
+    // Kun bogstaver, tal og underscore
+    return (bool)preg_match('/^[A-Za-z0-9_]+$/', $name);
+}
 /**
  * Generate a demo value for a settings row (wcioshop_settings style).
  * Uses columnName + some heuristics, like a tiny "AI".
@@ -263,13 +267,32 @@ function generateSettingsDemoValue(array $row): string {
     return $value;
 }
 
+function getTableColumns(mysqli $mysqli, string $table): array {
+    $cols = [];
+    if (!isValidIdentifier($table)) {
+        return $cols;
+    }
+    if ($res = $mysqli->query("SHOW COLUMNS FROM `$table`")) {
+        while ($row = $res->fetch_assoc()) {
+            $cols[] = $row['Field'];
+        }
+    }
+    return $cols;
+}
+
 /**
  * Generate a demo admin user row for a given table (no password).
  * Columns are discovered from SHOW COLUMNS.
  */
 function generateAdminUserDemoRow(mysqli $mysqli, string $table): ?array {
+   
+      if (!isValidIdentifier($table)) {
+        return null;
+    }
+
     $columnsRes = $mysqli->query("SHOW COLUMNS FROM `$table`");
     if (!$columnsRes) return null;
+
 
     $row = [];
     while ($col = $columnsRes->fetch_assoc()) {
@@ -410,6 +433,26 @@ if ($step === 'choose_tables') {
 // STEP 2: Row selection (for real/demo)
 // ======================================================================
 if ($step === 'select_rows') {
+
+// Whitelist tabelnavne mod faktiske tabeller fra DB
+$selectedTables = array_values(array_unique($selectedTables));
+$validSelected = [];
+
+foreach ($selectedTables as $t) {
+    if (!in_array($t, $tables, true)) {
+        continue; // ukendt tabel – ignorer
+    }
+    if (!isValidIdentifier($t)) {
+        continue; // tegn vi ikke vil acceptere
+    }
+    $validSelected[] = $t;
+}
+
+$selectedTables = $validSelected;
+
+if (empty($selectedTables)) {
+    die("<h2>No valid tables selected.</h2>");
+}
 
     $selectedTables = $_POST['tables'] ?? [];
     $datatype       = $_POST['datatype'] ?? [];
@@ -692,6 +735,25 @@ if ($step === 'build_sql') {
     $rowsSelected   = $_POST['rows'] ?? [];
     $demoEdits      = $_POST['demoedit'] ?? [];
 
+$selectedTables = array_values(array_unique($selectedTables));
+$validSelected = [];
+
+foreach ($selectedTables as $t) {
+    if (!in_array($t, $tables, true)) {
+        continue;
+    }
+    if (!isValidIdentifier($t)) {
+        continue;
+    }
+    $validSelected[] = $t;
+}
+
+$selectedTables = $validSelected;
+
+if (empty($selectedTables)) {
+    die("<h2>No valid table selected.</h2>");
+}
+
     if (empty($selectedTables)) {
         die("<h2>No tables selected.</h2>");
     }
@@ -719,48 +781,75 @@ if ($step === 'build_sql') {
             }
         }
 
+    // Hent gyldige kolonner for sikkerhed
+    $validColumns = getTableColumns($mysqli, $table);
+
+
         // --- Data (only if any rows selected) ---
         if (empty($rowsSelected[$table])) {
             continue;
         }
 
-        $rowsForTable = $rowdata[$table] ?? [];
+  $rowsForTable = $rowdata[$table] ?? [];
 
-        foreach ($rowsSelected[$table] as $idx => $on) {
-            if (!isset($rowsForTable[$idx])) {
-                continue;
-            }
-
-            $decoded = json_decode(base64_decode($rowsForTable[$idx]), true);
-            if (!is_array($decoded)) {
-                continue;
-            }
-
-            // If this is a demo-edited settings row, overwrite columnValue with user input
-            if (isset($demoEdits[$table][$idx]) && isset($decoded['columnValue'])) {
-                $decoded['columnValue'] = $demoEdits[$table][$idx];
-            }
-
-            $columns = array_keys($decoded);
-            $values  = array_values($decoded);
-
-            $colsEsc = array_map(fn($c) => '`'.$c.'`', $columns);
-            $valsEsc = array_map(function($v) use ($mysqli) {
-                if ($v === null) {
-                    return "NULL";
-                }
-                return "'" . $mysqli->real_escape_string((string)$v) . "'";
-            }, $values);
-
-            $dataOut .= "INSERT INTO `$table` ("
-                . implode(",", $colsEsc)
-                . ") VALUES ("
-                . implode(",", $valsEsc)
-                . ");\n";
+    foreach ($rowsSelected[$table] as $idx => $on) {
+        if (!isset($rowsForTable[$idx])) {
+            continue;
         }
 
-        $dataOut .= "\n";
+        $decoded = json_decode(base64_decode($rowsForTable[$idx]), true);
+        if (!is_array($decoded)) {
+            continue;
+        }
+
+        // Demo-edits
+        if (isset($demoEdits[$table][$idx]) && isset($decoded['columnValue'])) {
+            $decoded['columnValue'] = $demoEdits[$table][$idx];
+        }
+
+        // Filtrer kolonner: kun tillad dem, der findes i tabellen
+        $filtered = [];
+        foreach ($decoded as $col => $val) {
+            if (!is_string($col)) {
+                continue;
+            }
+            if (!in_array($col, $validColumns, true)) {
+                continue; // ukendt kolonne – smid væk
+            }
+            $filtered[$col] = $val;
+        }
+
+        if (empty($filtered)) {
+            continue;
+        }
+
+        $columns = array_keys($filtered);
+        $values  = array_values($filtered);
+
+        $colsEsc = [];
+        foreach ($columns as $c) {
+            if (!isValidIdentifier($c)) {
+                continue 2; // hele rækken droppes
+            }
+            $colsEsc[] = '`' . $c . '`';
+        }
+
+        $valsEsc = array_map(function($v) use ($mysqli) {
+            if ($v === null) {
+                return "NULL";
+            }
+            return "'" . $mysqli->real_escape_string((string)$v) . "'";
+        }, $values);
+
+        $dataOut .= "INSERT INTO `$table` ("
+            . implode(",", $colsEsc)
+            . ") VALUES ("
+            . implode(",", $valsEsc)
+            . ");\n";
     }
+
+    $dataOut .= "\n";
+}
 
     file_put_contents($schemaFile, $schemaOut);
     file_put_contents($dataFile, $dataOut);
