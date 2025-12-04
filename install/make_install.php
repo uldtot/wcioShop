@@ -347,7 +347,13 @@ function generateAdminUserDemoRow(PDO $pdo, string $table): ?array {
 // 5. Fetch all prefixed tables
 // -------------------------------------------------------------------------
 $tables = [];
-$stmt = $pdo->prepare("SHOW TABLES LIKE :prefix");
+$stmt = $pdo->prepare("
+    SELECT table_name 
+    FROM information_schema.tables 
+    WHERE table_schema = DATABASE()
+      AND table_name LIKE :prefix
+");
+
 $stmt->execute([':prefix' => $dbPrefix . '%']);
 $tables = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
@@ -789,9 +795,13 @@ if ($step === 'build_sql') {
         $mode = $datatype[$table] ?? 'empty';
 
         // --- Schema (always) ---
-        $stmt = $pdo->prepare("SHOW CREATE TABLE `:table`");
-        $stmt->execute(array('table' => $table));
-        $row  = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!preg_match('/^[A-Za-z0-9_]+$/', $table)) {
+    throw new Exception("Invalid table name");
+}
+
+$sql = "SHOW CREATE TABLE `$table`";
+$stmt = $pdo->query($sql);
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!empty($row['Create Table'])) {
             $schemaOut .= $row['Create Table'] . ";\n\n";
