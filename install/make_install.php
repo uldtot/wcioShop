@@ -872,7 +872,7 @@ if ($step === 'build_sql') {
 
     ?>
     <!DOCTYPE html>
-    <html land="en">
+    <html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>WCIO Install Builder – Done</title>
