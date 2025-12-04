@@ -79,14 +79,14 @@ while ($dataCategoryProducts = $stmt->fetch(PDO::FETCH_ASSOC)) {
         }
 
         $displayCategoryProducts[] = array(
-            'prdid' => $dataProducts['id'],
-            'name' => $dataProducts['name'],
+            'prdid' => $dataProducts['id'] ?? "",
+            'name' => $dataProducts['name'] ?? "",
             'price' => $prices,
-            'image' => $image,
-            'discount' => $allData['discount'],
-            'excerpt' => $allData['excerpt'],
-            'stock' => $allData['stock'],
-            'url' => $permalinkData["url"],
+            'image' => $image ?? "",
+            'discount' => $allData['discount'] ?? "",
+            'excerpt' => $allData['excerpt'] ?? "",
+            'stock' => $allData['stock'] ?? "",
+            'url' => $permalinkData["url"] ?? "",
         );
     }
     //while
