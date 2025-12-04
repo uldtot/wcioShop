@@ -70,7 +70,7 @@ Go here for issues or bug reports: https://github.com/websitecareio/wcioShop/iss
 If you want to help, I would like any help I can get.
 
 * Coding help:
-Help in making custom apps like payment gateways, shipping stuff, and accounting sync would be useful. Currently, there is no need for more people to work on the core itself because it's not ready to be used, but any help will be most welcome :) 
+Help in making custom apps like payment gateways, shipping stuff, and accounting sync would be useful. Currently, there is no need for more people to work on the core itself, but any help will be most welcome :) 
 
 * Design:
 If you want to, it could use a pretty store theme that can be downloaded. Must be your own design and code.
@@ -82,7 +82,7 @@ I haven't really looked much into how to translate this yet, will be looked into
 If you want to help test this out, open an issue and I will contact you (not everything is uploaded here yet, so I might have more ready that is not yet visible). IT can be maybe just a specific function or something. 
 
 ## Themes
-There will be a default theme (not pretty, but functional. Check the live demo. You can, of course, create your own easily and do what you want. 
+There is a default theme (not pretty, but functional). You can, of course, create your own easily and do what you want. 
 
 ## Documentation
 There will be made several documentations. All can be found at the link below:
