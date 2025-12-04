@@ -789,7 +789,8 @@ if ($step === 'build_sql') {
         $mode = $datatype[$table] ?? 'empty';
 
         // --- Schema (always) ---
-        $stmt = $pdo->query("SHOW CREATE TABLE `$table`");
+        $stmt = $pdo->prepare("SHOW CREATE TABLE `:table`");
+        $stmt->execute(array('table' => $table));
         $row  = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!empty($row['Create Table'])) {
@@ -871,7 +872,7 @@ if ($step === 'build_sql') {
 
     ?>
     <!DOCTYPE html>
-    <html>
+    <html land="en">
     <head>
         <meta charset="UTF-8">
         <title>WCIO Install Builder – Done</title>
