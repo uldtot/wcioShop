@@ -5,10 +5,7 @@ SonarQube status: https://sonarcloud.io/project/overview?id=uldtot_wcioShop
 
 The status of this project can be seen here (estimated)
 
-**Catalog mode:** ![90%](https://progress-bar.xyz/90)
-
-Almost a functional catalog mode, really just need the products page template to work, and then it can be used.
-
+**Catalog mode:** ![100%](https://progress-bar.xyz/100) 🎉🎉🎉
 
 **Shop mode:** ![10%](https://progress-bar.xyz/10)
 
@@ -44,14 +41,14 @@ Frontend:
 ## 
 Follow Discussions for updates: https://github.com/websitecareio/wcioShop/discussions
 
-## What is wcioShop (IoShop)
+## What is wcioShop
 An e-commerce solution focused on speed and reliability. Long story short, the first version of this system was built in 4 days of nonstop coding (YES I did not sleep for days coding the first version in 2010). 
-This system has been in use since 2010, but has never been made public. This GitHub project will fix that. I will be making a lot of changes to this before adding files to GitHub. If you see this message, the project is not ready for use. 
+This system has been in use since 2010, but has never been made public. This GitHub project will fix that. I will make many changes to this before adding files to GitHub. 
 
 If you want to read the long version of why and how I coded this in 4 days originally, then head over to Discussions 
 
 ## Requirements
-- PHP 8 (Developed on PHP 8.x, might work on older versions)
+- PHP 8 (Developed on PHP 8.4, might work on older versions)
 - Apache 2.4+ web server
 - A valid and working SSL certificate. Any error due to a missing SSL will not be fixed. With the availability of free SSL Let's Encrypt, there is no reason not to have it.
 
