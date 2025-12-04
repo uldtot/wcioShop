@@ -114,13 +114,22 @@ if (!isset($_SESSION['authenticated'])) {
 }
 
 // -------------------------------------------------------------------------
-// 3. DB connection
+// 3. DB connection (PDO, exception mode)
 // -------------------------------------------------------------------------
-$mysqli = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
-if ($mysqli->connect_errno) {
-    die("<h1 style='color:red;'>Database connection failed: " . htmlspecialchars($mysqli->connect_error, ENT_QUOTES) . "</h1>");
+try {
+    $pdo = new PDO(
+        "mysql:host={$dbHost};dbname={$dbName};charset=utf8mb4",
+        $dbUser,
+        $dbPass,
+        [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ]
+    );
+} catch (PDOException $e) {
+    die("<h1 style='color:red;'>Database connection failed: " . htmlspecialchars($e->getMessage(), ENT_QUOTES) . "</h1>");
 }
-$mysqli->set_charset('utf8mb4');
 
 // -------------------------------------------------------------------------
 // 4. Helper functions
@@ -131,9 +140,10 @@ function h($str) {
 }
 
 function isValidIdentifier(string $name): bool {
-    // Kun bogstaver, tal og underscore
+    // Only letters, numbers and underscore
     return (bool)preg_match('/^[A-Za-z0-9_]+$/', $name);
 }
+
 /**
  * Generate a demo value for a settings row (wcioshop_settings style).
  * Uses columnName + some heuristics, like a tiny "AI".
@@ -267,16 +277,25 @@ function generateSettingsDemoValue(array $row): string {
     return $value;
 }
 
-function getTableColumns(mysqli $mysqli, string $table): array {
+/**
+ * Get columns of a table (for safety filtering).
+ */
+function getTableColumns(PDO $pdo, string $table): array {
     $cols = [];
+
     if (!isValidIdentifier($table)) {
         return $cols;
     }
-    if ($res = $mysqli->query("SHOW COLUMNS FROM `$table`")) {
-        while ($row = $res->fetch_assoc()) {
+
+    try {
+        $stmt = $pdo->query("SHOW COLUMNS FROM `$table`");
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $cols[] = $row['Field'];
         }
+    } catch (PDOException $e) {
+        return $cols;
     }
+
     return $cols;
 }
 
@@ -284,18 +303,19 @@ function getTableColumns(mysqli $mysqli, string $table): array {
  * Generate a demo admin user row for a given table (no password).
  * Columns are discovered from SHOW COLUMNS.
  */
-function generateAdminUserDemoRow(mysqli $mysqli, string $table): ?array {
-   
-      if (!isValidIdentifier($table)) {
+function generateAdminUserDemoRow(PDO $pdo, string $table): ?array {
+    if (!isValidIdentifier($table)) {
         return null;
     }
 
-    $columnsRes = $mysqli->query("SHOW COLUMNS FROM `$table`");
-    if (!$columnsRes) return null;
-
+    try {
+        $stmt = $pdo->query("SHOW COLUMNS FROM `$table`");
+    } catch (PDOException $e) {
+        return null;
+    }
 
     $row = [];
-    while ($col = $columnsRes->fetch_assoc()) {
+    while ($col = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $field = $col['Field'];
         $lname = strtolower($field);
 
@@ -317,7 +337,9 @@ function generateAdminUserDemoRow(mysqli $mysqli, string $table): ?array {
         }
     }
 
-    if (empty($row)) return null;
+    if (empty($row)) {
+        return null;
+    }
     return $row;
 }
 
@@ -325,10 +347,9 @@ function generateAdminUserDemoRow(mysqli $mysqli, string $table): ?array {
 // 5. Fetch all prefixed tables
 // -------------------------------------------------------------------------
 $tables = [];
-$res = $mysqli->query("SHOW TABLES LIKE '{$dbPrefix}%'");
-while ($row = $res->fetch_array()) {
-    $tables[] = $row[0];
-}
+$stmt = $pdo->prepare("SHOW TABLES LIKE :prefix");
+$stmt->execute([':prefix' => $dbPrefix . '%']);
+$tables = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
 // -------------------------------------------------------------------------
 // 6. Determine step
@@ -434,31 +455,29 @@ if ($step === 'choose_tables') {
 // ======================================================================
 if ($step === 'select_rows') {
 
-// Whitelist tabelnavne mod faktiske tabeller fra DB
-$selectedTables = array_values(array_unique($selectedTables));
-$validSelected = [];
-
-foreach ($selectedTables as $t) {
-    if (!in_array($t, $tables, true)) {
-        continue; // ukendt tabel – ignorer
-    }
-    if (!isValidIdentifier($t)) {
-        continue; // tegn vi ikke vil acceptere
-    }
-    $validSelected[] = $t;
-}
-
-$selectedTables = $validSelected;
-
-if (empty($selectedTables)) {
-    die("<h2>No valid tables selected.</h2>");
-}
-
     $selectedTables = $_POST['tables'] ?? [];
     $datatype       = $_POST['datatype'] ?? [];
 
     if (empty($selectedTables)) {
         die("<h2>No tables selected.</h2>");
+    }
+
+    // Whitelist table names against actual DB tables
+    $selectedTables = array_values(array_unique($selectedTables));
+    $validSelected = [];
+    foreach ($selectedTables as $t) {
+        if (!in_array($t, $tables, true)) {
+            continue;
+        }
+        if (!isValidIdentifier($t)) {
+            continue;
+        }
+        $validSelected[] = $t;
+    }
+    $selectedTables = $validSelected;
+
+    if (empty($selectedTables)) {
+        die("<h2>No valid tables selected.</h2>");
     }
 
     // Determine if any table actually uses real/demo
@@ -470,12 +489,12 @@ if (empty($selectedTables)) {
         }
     }
 
-    // If no tables need data → skip to SQL generation directly
+    // If no tables need data → go to build_sql with schema-only
     if (!$needRowSelection) {
-        $_POST['step'] = 'build_sql';
+        $step = 'build_sql';
+        $_POST['step']   = 'build_sql';
         $_POST['rowdata'] = [];
-        $_POST['rows'] = [];
-        // fall through to build_sql logic below
+        $_POST['rows']    = [];
     } else {
 
         ?>
@@ -593,10 +612,11 @@ if (empty($selectedTables)) {
                     // SETTINGS TABLES (name contains 'settings')
                     if (stripos($tbl, 'settings') !== false) {
 
-                        $sql = "SELECT * FROM `$tbl` ORDER BY id ASC";
-                        $res = $mysqli->query($sql);
+                        $sql  = "SELECT * FROM `$tbl` ORDER BY id ASC";
+                        $stmt = $pdo->query($sql);
+                        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                        if (!$res || $res->num_rows === 0) {
+                        if (!$rows || count($rows) === 0) {
                             echo "<p class='note'>No rows found in settings table.</p>";
                             continue;
                         }
@@ -613,9 +633,9 @@ if (empty($selectedTables)) {
                         echo "</tr>";
 
                         $i = 0;
-                        while ($row = $res->fetch_assoc()) {
+                        foreach ($rows as $row) {
                             $currentVal = $row['columnValue'] ?? '';
-                            $demoRow   = $row;
+                            $demoRow    = $row;
 
                             if ($mode === 'demo') {
                                 $demoRow['columnValue'] = generateSettingsDemoValue($row);
@@ -650,7 +670,7 @@ if (empty($selectedTables)) {
                     // USERS TABLES (name contains 'user') – demo admin user
                     elseif (stripos($tbl, 'user') !== false && $mode === 'demo') {
 
-                        $demoUser = generateAdminUserDemoRow($mysqli, $tbl);
+                        $demoUser = generateAdminUserDemoRow($pdo, $tbl);
                         if (!$demoUser) {
                             echo "<p class='note'>Could not determine columns for users table, skipping demo row.</p>";
                             continue;
@@ -673,10 +693,11 @@ if (empty($selectedTables)) {
                     // REAL DATA FOR NON-SETTINGS / NON-USERS
                     elseif ($mode === 'real') {
 
-                        $sql = "SELECT * FROM `$tbl`";
-                        $res = $mysqli->query($sql);
+                        $sql  = "SELECT * FROM `$tbl`";
+                        $stmt = $pdo->query($sql);
+                        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                        if (!$res || $res->num_rows === 0) {
+                        if (!$rows || count($rows) === 0) {
                             echo "<p class='note'>No rows found.</p>";
                             continue;
                         }
@@ -686,7 +707,7 @@ if (empty($selectedTables)) {
                         echo "<tr><th>Use</th><th>Row (JSON preview)</th></tr>";
 
                         $i = 0;
-                        while ($row = $res->fetch_assoc()) {
+                        foreach ($rows as $row) {
                             $rowdata[$tbl][$i] = $row;
                             $preview = json_encode($row, JSON_UNESCAPED_UNICODE);
                             echo "<tr>";
@@ -735,27 +756,22 @@ if ($step === 'build_sql') {
     $rowsSelected   = $_POST['rows'] ?? [];
     $demoEdits      = $_POST['demoedit'] ?? [];
 
-$selectedTables = array_values(array_unique($selectedTables));
-$validSelected = [];
-
-foreach ($selectedTables as $t) {
-    if (!in_array($t, $tables, true)) {
-        continue;
+    // Whitelist again for safety
+    $selectedTables = array_values(array_unique($selectedTables));
+    $validSelected = [];
+    foreach ($selectedTables as $t) {
+        if (!in_array($t, $tables, true)) {
+            continue;
+        }
+        if (!isValidIdentifier($t)) {
+            continue;
+        }
+        $validSelected[] = $t;
     }
-    if (!isValidIdentifier($t)) {
-        continue;
-    }
-    $validSelected[] = $t;
-}
-
-$selectedTables = $validSelected;
-
-if (empty($selectedTables)) {
-    die("<h2>No valid table selected.</h2>");
-}
+    $selectedTables = $validSelected;
 
     if (empty($selectedTables)) {
-        die("<h2>No tables selected.</h2>");
+        die("<h2>No valid table selected.</h2>");
     }
 
     $installPath = __DIR__ . "/SQL/";
@@ -773,83 +789,82 @@ if (empty($selectedTables)) {
         $mode = $datatype[$table] ?? 'empty';
 
         // --- Schema (always) ---
-        $res = $mysqli->query("SHOW CREATE TABLE `$table`");
-        if ($res) {
-            $row = $res->fetch_assoc();
-            if (!empty($row['Create Table'])) {
-                $schemaOut .= $row['Create Table'] . ";\n\n";
-            }
+        $stmt = $pdo->query("SHOW CREATE TABLE `$table`");
+        $row  = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!empty($row['Create Table'])) {
+            $schemaOut .= $row['Create Table'] . ";\n\n";
         }
 
-    // Hent gyldige kolonner for sikkerhed
-    $validColumns = getTableColumns($mysqli, $table);
-
+        // Valid columns for safety
+        $validColumns = getTableColumns($pdo, $table);
 
         // --- Data (only if any rows selected) ---
         if (empty($rowsSelected[$table])) {
             continue;
         }
 
-  $rowsForTable = $rowdata[$table] ?? [];
+        $rowsForTable = $rowdata[$table] ?? [];
 
-    foreach ($rowsSelected[$table] as $idx => $on) {
-        if (!isset($rowsForTable[$idx])) {
-            continue;
-        }
-
-        $decoded = json_decode(base64_decode($rowsForTable[$idx]), true);
-        if (!is_array($decoded)) {
-            continue;
-        }
-
-        // Demo-edits
-        if (isset($demoEdits[$table][$idx]) && isset($decoded['columnValue'])) {
-            $decoded['columnValue'] = $demoEdits[$table][$idx];
-        }
-
-        // Filtrer kolonner: kun tillad dem, der findes i tabellen
-        $filtered = [];
-        foreach ($decoded as $col => $val) {
-            if (!is_string($col)) {
+        foreach ($rowsSelected[$table] as $idx => $on) {
+            if (!isset($rowsForTable[$idx])) {
                 continue;
             }
-            if (!in_array($col, $validColumns, true)) {
-                continue; // ukendt kolonne – smid væk
+
+            $decoded = json_decode(base64_decode($rowsForTable[$idx]), true);
+            if (!is_array($decoded)) {
+                continue;
             }
-            $filtered[$col] = $val;
+
+            // Demo-edits for settings
+            if (isset($demoEdits[$table][$idx]) && isset($decoded['columnValue'])) {
+                $decoded['columnValue'] = $demoEdits[$table][$idx];
+            }
+
+            // Filter columns: only those that actually exist in the table
+            $filtered = [];
+            foreach ($decoded as $col => $val) {
+                if (!is_string($col)) {
+                    continue;
+                }
+                if (!in_array($col, $validColumns, true)) {
+                    continue;
+                }
+                $filtered[$col] = $val;
+            }
+
+            if (empty($filtered)) {
+                continue;
+            }
+
+            $columns = array_keys($filtered);
+            $values  = array_values($filtered);
+
+            // Validate identifiers
+            $colsEsc = [];
+            foreach ($columns as $c) {
+                if (!isValidIdentifier($c)) {
+                    continue 2; // drop entire row
+                }
+                $colsEsc[] = '`' . $c . '`';
+            }
+
+            $valsEsc = array_map(function($v) use ($pdo) {
+                if ($v === null) {
+                    return "NULL";
+                }
+                return $pdo->quote((string)$v);
+            }, $values);
+
+            $dataOut .= "INSERT INTO `$table` ("
+                . implode(",", $colsEsc)
+                . ") VALUES ("
+                . implode(",", $valsEsc)
+                . ");\n";
         }
 
-        if (empty($filtered)) {
-            continue;
-        }
-
-        $columns = array_keys($filtered);
-        $values  = array_values($filtered);
-
-        $colsEsc = [];
-        foreach ($columns as $c) {
-            if (!isValidIdentifier($c)) {
-                continue 2; // hele rækken droppes
-            }
-            $colsEsc[] = '`' . $c . '`';
-        }
-
-        $valsEsc = array_map(function($v) use ($mysqli) {
-            if ($v === null) {
-                return "NULL";
-            }
-            return "'" . $mysqli->real_escape_string((string)$v) . "'";
-        }, $values);
-
-        $dataOut .= "INSERT INTO `$table` ("
-            . implode(",", $colsEsc)
-            . ") VALUES ("
-            . implode(",", $valsEsc)
-            . ");\n";
+        $dataOut .= "\n";
     }
-
-    $dataOut .= "\n";
-}
 
     file_put_contents($schemaFile, $schemaOut);
     file_put_contents($dataFile, $dataOut);
