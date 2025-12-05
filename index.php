@@ -11,9 +11,9 @@ if (!defined('storeadmin')) {
 }
 
 require_once dirname(__FILE__) . '/inc/db.php'; // Connect to database
-require_once dirname(__FILE__) . '/libs/Smarty.class.php'; //Smarty
+require_once dirname(__FILE__) . '/vendor/autoload.php'; //Smarty
 
-$smarty = new Smarty; //Start smarty
+$smarty = new \Smarty\Smarty; //Start smarty
 
 $templateDir       = dirname(__FILE__) . "/templates/default/";
 $smartyTemplateDir = "/templates/default/";
@@ -22,8 +22,10 @@ $smarty->force_compile  = false; // Dont force recompile when live
 $smarty->debugging      = false; // Deactivate when out of dev for test
 
 $smarty->cache_lifetime = 21600; //120
-$smarty->template_dir   = $templateDir; // Template dir
+$smarty->setTemplateDir($templateDir);
 $smarty->assign('template_dir', $smartyTemplateDir);
+
+$smarty->registerPlugin('modifier', '_', '_');
 
 // Load all shop settings from databse and assign all with autoload enabled
 $stmt = $dbh->prepare("SELECT columnName,columnValue FROM {$dbprefix}settings WHERE autoload = 1");

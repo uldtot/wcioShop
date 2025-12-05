@@ -11,7 +11,7 @@ if (!defined('storeadmin')) {
 }
 
 require_once dirname(__FILE__) . '/../inc/db.php'; //connect to database
-require_once dirname(__FILE__) . '/../libs/Smarty.class.php'; //Smarty
+require_once dirname(__FILE__) . '/../vendor/autoload.php'; //Smarty
 
 // Permalink function
 // Permalink function
@@ -216,7 +216,8 @@ function sanitizeSeoUrl($url)
 
     return $url;
 }
-$smarty = new Smarty; //Start smarty
+
+$smarty = new \Smarty\Smarty; //Start smarty //Start smarty
 // set directory where compiled templates are stored
 
 $templateDir       = dirname(__FILE__) . "/../templates/admin/";
@@ -226,9 +227,13 @@ $smartyTemplateDir = "/../templates/admin/";
 $smarty->force_compile  = true; // Force admin to always recompile
 $smarty->debugging      = false; //Deactivate when out of dev for test
 
-$smarty->template_dir   = $templateDir; //Template dir
+$smarty->setTemplateDir($templateDir);
 $smarty->assign('template_dir', $smartyTemplateDir);
 $smarty->setCompileDir(dirname(__FILE__) . '/../templates_c');
+
+
+
+$smarty->registerPlugin('modifier', '_', '_');
 
 // Load all shop settings from databse
 $stmt = $dbh->prepare("SELECT columnName,columnValue FROM {$dbprefix}settings WHERE autoload = 1");
