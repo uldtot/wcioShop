@@ -17,17 +17,16 @@ while($setting = $stmt->fetch( PDO::FETCH_ASSOC )) {
 $output = "";
 
 if($_SETTING[$pluginSlug."Active"] == "1") {
-$output = "<div style=\"text-align: center;
+$output = "<div style=\"    text-align: center;
     font-weight: bold;
     margin: 0px;
-    font-size: 27px;
-    position: fixed;
+    font-size: 16px;
+    position: relative;
     width: 100%;
     background: #000;
     color: #fff;
-    z-index: 1;\">".$_SETTING[$pluginSlug."Message"]."</div><style>header.section-header {
-    padding-top: 40px;
-}</style>";
+    z-index: 1;
+    margin-bottom: -15px;\">".$_SETTING[$pluginSlug."Message"]."</div>";
 }
 $smarty->assign("maintenanceMode", $output);
 ?>
