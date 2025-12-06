@@ -3,102 +3,252 @@
 <header class="section-header">
 
 <section class="header-main border-bottom">
-	<div class="container">
-<div class="row align-items-center">
-	<div class="col-lg-4 col-4">
-		<a href="/">
-			<h3 class="storeName">{$settingStoreName}</h3> <!-- brand-wrap.// -->
-			<span class="storeSlogan">{$settingStoreSlogan}</span> <!-- brand-wrap.// -->
-		</a>
-	</div>
+    <div class="container">
 
-	<div class="col-lg-4 col-sm-12">
-		<form action="#" class="search" _lpchecked="1">
-			<div class="input-group w-100">
-			    <input type="text" class="form-control" placeholder="{_('Search')}" onkeyup="showResult(this.value)">
-			  <div id="livesearch"></div>
-			    <div class="input-group-append">
-			      <button class="btn btn-primary" type="submit">
-			        <i class="fa fa-search"></i>
-			      </button>
-			    </div>
-		    </div>
-		</form> <!-- search-wrap .end// -->
+        <!-- ROW 1: LOGO – SEARCH DESKTOP – MENU/CART -->
+        <div class="row align-items-center">
 
+            <!-- LOGO -->
+            <div class="col-6 col-lg-4 mb-2">
+                <div class="p-2 d-flex align-items-center">
+                    <a href="/" class="d-flex flex-column">
+                        <h3 class="storeName mb-0">{$settingStoreName}</h3>
+                        <span class="storeSlogan small">{$settingStoreSlogan}</span>
+                    </a>
+                </div>
+            </div>
 
-		<script type="text/javascript">
-		function showResult(str) {
-  if (str.length<=3) {
-    document.getElementById("livesearch").innerHTML="";
-    document.getElementById("livesearch").style.border="0px";
-    return;
-  }
-  var xmlhttp=new XMLHttpRequest();
-  xmlhttp.onreadystatechange=function() {
-    if (this.readyState==4 && this.status==200) {
-      document.getElementById("livesearch").innerHTML=this.responseText;
+            <!-- SEARCH DESKTOP -->
+            <div class="col-lg-4 d-none d-lg-block mb-2">
+                <div class="p-2 search-wrapper">
+                    <form class="search position-relative">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="{_('Search')}" onkeyup="showResult(this)">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="livesearch-box"></div>
+                </div>
+            </div>
 
-	if(this.responseText.trim() != "") {
-      	document.getElementById("livesearch").style.border="1px solid #A5ACB2";
-	}
+            <!-- MENU + CART -->
+            <div class="col-6 col-lg-4 mb-2">
+                <div class="p-2 d-flex justify-content-end align-items-center">
 
-    }
-  }
-  xmlhttp.open("GET","/liveSearch/?q="+str,true);
-  xmlhttp.send();
-}
-		</script>
+                    {if isset($settingStoreCatalogMode)}
+                    {if $settingStoreCatalogMode != "1"}
+                    <a href="/cart/" class="icon icon-sm rounded-circle border position-relative mr-3">
+                        <i class="fa fa-shopping-cart"></i>
+                        <span class="badge badge-pill badge-danger notify position-absolute" style="top:-8px; right:-8px;">
+                            {nocache}{if isset($headerCart.numberOfItems)}{if $headerCart.numberOfItems!="0"}{$headerCart.numberOfItems}{/if}{/if}{/nocache}
+                        </span>
+                    </a>
+                    {/if}
+                    {/if}
 
-		<style>
-		div#livesearch {
-		position: absolute;
-		width: 100%;
-		top: 46px;
-		background: #fff;
-		border-radius: 5px;
-		padding: 8px;
-		z-index:1;
-		}
-		</style>
+                    <button class="navbar-toggler d-lg-none" type="button">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                </div>
+            </div>
+
+        </div> <!-- END ROW 1 -->
 
 
-	</div>
+        <!--  MOBILE MENU RIGHT UNDER BUTTON  -->
+        <div id="mobile_nav_container" class="mobile-nav-container d-lg-none">
+            <div id="mobile_nav" class="mobile-nav">
+                <ul class="navbar-nav">
+                    {section name=category loop=$navigationStyleCategories}
+                        {if $navigationStyleCategories[category].url != ""}
+                        <li class="nav-item categoryId-{$navigationStyleCategories[category].id}">
+                            <a class="nav-link" href="{$navigationStyleCategories[category].url}">
+                                {$navigationStyleCategories[category].name}
+                            </a>
+                        </li>
+                        {/if}
+                    {/section}
+                </ul>
+            </div>
+        </div>
 
-	{if isset($settingStoreCatalogMode)}
-    	{if $settingStoreCatalogMode != "1"}
-    	<div class="col-lg-4 col-sm-6 col-12">
-    		<div class="widgets-wrap float-md-right">
-    			<div class="widget-header  mr-3">
-    				<a href="/cart/" class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></a>
-    				<span class="badge badge-pill badge-danger notify">{nocache}{if isset($headerCart.numberOfItems)}{if $headerCart.numberOfItems != "0"}{$headerCart.numberOfItems}{/if}{/if}{/nocache}</span>
-    			</div>
-    		</div> <!-- widgets-wrap.// -->
-    	</div> <!-- col.// -->
-    	{/if}
-	{/if}
-</div> <!-- row.// -->
-	</div> <!-- container.// -->
-</section> <!-- header-main .// -->
+        <!-- SEARCH MOBILE -->
+        <div class="row d-lg-none">
+            <div class="col-12 mb-0">
+                <div class="search-wrapper">
+                    <form class="search position-relative">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="{_('Search')}" onkeyup="showResult(this)">
+                            
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="livesearch-box"></div>
+                </div>
+            </div>
+        </div>
 
-<nav class="navbar navbar-main navbar-expand-lg navbar-light">
+    </div>
+</section>
+
+
+<!--  DESKTOP NAVIGATION MENU  -->
+<nav class="navbar navbar-main navbar-expand-lg navbar-light d-none d-lg-block">
   <div class="container">
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav" aria-controls="main_nav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="main_nav">
+    <div class="collapse navbar-collapse show" id="main_nav_desktop">
       <ul class="navbar-nav">
-	  {section name=category loop=$navigationStyleCategories}
-	  	{if $navigationStyleCategories[category].url != ""}
-			  <li class="nav-item categoryId-{$navigationStyleCategories[category].id}">
-			    <a class="nav-link" href="{$navigationStyleCategories[category].url}">{$navigationStyleCategories[category].name}</a>
-			  </li>
-	  	{/if}
-	  {/section}
+        {section name=category loop=$navigationStyleCategories}
+            {if $navigationStyleCategories[category].url != ""}
+            <li class="nav-item categoryId-{$navigationStyleCategories[category].id}">
+                <a class="nav-link" href="{$navigationStyleCategories[category].url}">
+                    {$navigationStyleCategories[category].name}
+                </a>
+            </li>
+            {/if}
+        {/section}
       </ul>
-    </div> <!-- collapse .// -->
-  </div> <!-- container .// -->
+    </div>
+  </div>
 </nav>
 
-</header> <!-- section-header.// -->
+</header>
+
+
+
+<style>
+
+/* Livesearch styling */
+.livesearch-box {
+    display: none;
+    position: absolute;
+    top: 42px;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 8px;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.search-wrapper {
+    position: relative;
+}
+
+/* Mobile menu animation */
+.mobile-nav-container {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+}
+
+.mobile-nav-container.show {
+    max-height: 400px;
+    opacity: 1;
+}
+
+.mobile-nav {
+    background: #fff;
+    padding: 10px 0;
+    border-radius: 5px;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+
+/* Ensure image container never exceeds 33% */
+.livesearch-item .item-image {
+    flex: 0 0 33%;   /* max 33% width */
+    max-width: 33%;
+}
+
+/* Make image responsive within container */
+.livesearch-item img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+/* Optional: keep layout clean */
+.livesearch-item .item-info {
+    flex: 1;
+    min-width: 0; /* IMPORTANT so long titles wrap properly */
+}
+
+
+@media (max-width: 991px) {
+    .section-header .search {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+</style>
+
+
+
+<script>
+/* Mobile menu toggle */
+document.querySelector('.navbar-toggler').addEventListener('click', function(){
+    document.getElementById('mobile_nav_container').classList.toggle('show');
+});
+</script>
+
+
+
+<script>
+/* Shared livesearch for BOTH desktop + mobile */
+let searchTimeout = null;
+
+function showResult(inputEl) {
+
+    const wrapper = inputEl.closest(".search-wrapper");
+    const resultBox = wrapper.querySelector(".livesearch-box");
+    const str = inputEl.value;
+
+    clearTimeout(searchTimeout);
+
+    if (str.length <= 2) {
+        resultBox.style.display = "none";
+        resultBox.innerHTML = "";
+        return;
+    }
+
+    searchTimeout = setTimeout(() => {
+
+        resultBox.style.display = "block";
+        resultBox.innerHTML = "<div style='padding:5px;'>Søger...</div>";
+
+        fetch("/liveSearch/?q=" + encodeURIComponent(str))
+            .then(res => res.text())
+            .then(data => {
+                if (data.trim() !== "") {
+                    resultBox.innerHTML = data;
+                    resultBox.style.display = "block";
+                } else {
+                    resultBox.style.display = "none";
+                    resultBox.innerHTML = "";
+                }
+            })
+            .catch(err => {
+                resultBox.innerHTML = "<div style='color:red;'>Fejl i søgning</div>";
+                resultBox.style.display = "block";
+                console.error(err);
+            });
+
+    }, 200);
+}
+</script>
