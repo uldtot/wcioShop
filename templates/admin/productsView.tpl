@@ -6,15 +6,15 @@
     <div class="card card-body">
         <h1>Edit product</h1>
 
-<div>
+        <div>
 
-   <!-- Button to open modal upload  -->
-   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#primaryImageModal">
-    Select images and files
-</button>
+            <!-- Button to open modal upload  -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#primaryImageModal">
+                Select images and files
+            </button>
 
 
-</div>       
+        </div>
 
         <form method="post" action="/admin/products.php">
             <input type="hidden" name="action" value="update">
@@ -22,7 +22,8 @@
 
             <label class="active"></label>
 
-            <input type="checkbox" name="active" data-toggle="toggle" {if $productData.active=="1" }checked{/if}> Active<br>
+            <input type="checkbox" name="active" data-toggle="toggle" {if $productData.active=="1" }checked{/if}>
+            Active<br>
 
             <label for="name">Name</label>
             <input type="text" name="name" class="form-control" value="{$productData.name}"><br>
@@ -49,9 +50,14 @@
             <input type="text" name="sku" class="form-control" value="{$productData.sku|default:''}"
                 placeholder="Example: 5901234123457"><br>
 
+            <label for="name">Stock</label>
+            <input type="text" name="sku" class="form-control" value="{$productData.stock|default:'1'}"
+                placeholder="Example: 1"><br>
 
-                <label for="name">Weight ({$settingStoreWeightType})</label>
-                <input type="text" name="weight" class="form-control" value="{$productData.weight|default:''}"><br>
+
+
+            <label for="name">Weight ({$settingStoreWeightType})</label>
+            <input type="text" name="weight" class="form-control" value="{$productData.weight|default:''}"><br>
 
             <div style="border: 1px solid #cecece;padding: 20px;margin-bottom:20px;">
                 <h2>Prices</h2>
@@ -143,7 +149,7 @@
                 </table>
                 <!--Table-->
 
-             
+
             </div>
 
 
@@ -155,174 +161,175 @@
 
 
     </div>
-    
-    
-    
-    
-<!-- Primary Image Modal -->
-<div class="modal fade" id="primaryImageModal" tabindex="-1" role="dialog" aria-labelledby="primaryImageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="primaryImageModalLabel">Select files</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {include file='mediaSelect.tpl'}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+
+
+    <!-- Primary Image Modal -->
+    <div class="modal fade" id="primaryImageModal" tabindex="-1" role="dialog" aria-labelledby="primaryImageModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="primaryImageModalLabel">Select files</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {include file='mediaSelect.tpl'}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
     <!-- JavaScript til filtrering og modal -->
-<script>
-    document.getElementById('fileSearch').addEventListener('input', function () {
-        var searchQuery = this.value.toLowerCase();
-        var fileRows = document.querySelectorAll('.file-row');
+    <script>
+        document.getElementById('fileSearch').addEventListener('input', function () {
+            var searchQuery = this.value.toLowerCase();
+            var fileRows = document.querySelectorAll('.file-row');
 
-        fileRows.forEach(function(row) {
-            var fileName = row.querySelector('td').textContent.toLowerCase();
-            if (fileName.includes(searchQuery)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+            fileRows.forEach(function (row) {
+                var fileName = row.querySelector('td').textContent.toLowerCase();
+                if (fileName.includes(searchQuery)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         });
-    });
 
-    // Event listener for knapperne
-document.querySelectorAll('.make-primary-btn').forEach(function(button) {
-    button.addEventListener('click', function() {
-        var fileName = this.getAttribute('data-file');
-        var currentFolder = this.getAttribute('data-currentFolder');
-        var action = this.getAttribute('data-action');
-        var id =  this.getAttribute('data-id');
+        // Event listener for knapperne
+        document.querySelectorAll('.make-primary-btn').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var fileName = this.getAttribute('data-file');
+                var currentFolder = this.getAttribute('data-currentFolder');
+                var action = this.getAttribute('data-action');
+                var id = this.getAttribute('data-id');
 
-        // Send AJAX request to /admin/inc/mediaSelect.php
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/admin/inc/mediaSelect.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.status === 'success') {
-                    // Skift tekst på knappen for at vise 'Remove as Primary' eller 'Make Primary'
-                    if (action === 'makePrimary') {
-                        button.textContent = 'Remove as Primary';
-                        button.setAttribute('data-action', 'removePrimary');
+                // Send AJAX request to /admin/inc/mediaSelect.php
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/admin/inc/mediaSelect.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                            // Switch text on button 'Remove as Primary' or 'Make Primary'
+                            if (action === 'makePrimary') {
+                                button.textContent = 'Remove as Primary';
+                                button.setAttribute('data-action', 'removePrimary');
+                            } else {
+                                button.textContent = 'Make Primary';
+                                button.setAttribute('data-action', 'makePrimary');
+                            }
+                            alert(response.message);
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
                     } else {
-                        button.textContent = 'Make Primary';
-                        button.setAttribute('data-action', 'makePrimary');
+                        alert('Error: ' + xhr.statusText);
                     }
-                    alert(response.message);
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            } else {
-                alert('Error: ' + xhr.statusText);
-            }
-        };
+                };
 
-        xhr.onerror = function() {
-            alert('Request failed');
-        };
+                xhr.onerror = function () {
+                    alert('Request failed');
+                };
 
-        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action) + '&id=' + encodeURIComponent(id));
-    });
-});
+                xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action) + '&id=' + encodeURIComponent(id));
+            });
+        });
 
-// Event listener for knapperne til 'Make Gallery'
-document.querySelectorAll('.make-gallery-btn').forEach(function(button) {
-    button.addEventListener('click', function() {
-        var fileName = this.getAttribute('data-file');
-        var currentFolder = this.getAttribute('data-currentFolder');
-        var action = this.getAttribute('data-action');
-        var id =  this.getAttribute('data-id');
-        
-        // Send AJAX request to /admin/inc/mediaSelect.php
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/admin/inc/mediaSelect.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.status === 'success') {
-                    // Skift tekst på knappen for at vise 'Remove from Gallery' eller 'Make Gallery'
-                    if (action === 'makeGallery') {
-                        button.textContent = 'Remove from Gallery';
-                        button.setAttribute('data-action', 'removeGallery');
+        // Event listener for 'Make Gallery' buttons
+        document.querySelectorAll('.make-gallery-btn').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var fileName = this.getAttribute('data-file');
+                var currentFolder = this.getAttribute('data-currentFolder');
+                var action = this.getAttribute('data-action');
+                var id = this.getAttribute('data-id');
+
+                // Send AJAX request to /admin/inc/mediaSelect.php
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/admin/inc/mediaSelect.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                            // Switch text on button 'Remove from Gallery' or 'Make Gallery'
+                            if (action === 'makeGallery') {
+                                button.textContent = 'Remove from Gallery';
+                                button.setAttribute('data-action', 'removeGallery');
+                            } else {
+                                button.textContent = 'Make Gallery';
+                                button.setAttribute('data-action', 'makeGallery');
+                            }
+                            alert(response.message);
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
                     } else {
-                        button.textContent = 'Make Gallery';
-                        button.setAttribute('data-action', 'makeGallery');
+                        alert('Error: ' + xhr.statusText);
                     }
-                    alert(response.message);
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            } else {
-                alert('Error: ' + xhr.statusText);
-            }
-        };
+                };
 
-        xhr.onerror = function() {
-            alert('Request failed');
-        };
+                xhr.onerror = function () {
+                    alert('Request failed');
+                };
 
-        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action) + '&id=' + encodeURIComponent(id));
-    });
-});
+                xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action) + '&id=' + encodeURIComponent(id));
+            });
+        });
 
-// Event listener for knapperne til 'Make Additional'
-document.querySelectorAll('.make-additional-btn').forEach(function(button) {
-    button.addEventListener('click', function() {
-        var fileName = this.getAttribute('data-file');
-        var currentFolder = this.getAttribute('data-currentFolder');
-        var action = this.getAttribute('data-action');
-        var id =  this.getAttribute('data-id');
-        
-        // Send AJAX request to /admin/inc/mediaSelect.php
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/admin/inc/mediaSelect.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.status === 'success') {
-                    // Skift tekst på knappen for at vise 'Remove from Additional' eller 'Make Additional'
-                    if (action === 'makeAdditional') {
-                        button.textContent = 'Remove from Additional';
-                        button.setAttribute('data-action', 'removeAdditional');
+        // Event listener for button 'Make Additional'
+        document.querySelectorAll('.make-additional-btn').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var fileName = this.getAttribute('data-file');
+                var currentFolder = this.getAttribute('data-currentFolder');
+                var action = this.getAttribute('data-action');
+                var id = this.getAttribute('data-id');
+
+                // Send AJAX request to /admin/inc/mediaSelect.php
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/admin/inc/mediaSelect.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                           // Switch text on button 'Remove from Additional' or 'Make Additional'
+                            if (action === 'makeAdditional') {
+                                button.textContent = 'Remove from Additional';
+                                button.setAttribute('data-action', 'removeAdditional');
+                            } else {
+                                button.textContent = 'Make Additional';
+                                button.setAttribute('data-action', 'makeAdditional');
+                            }
+                            alert(response.message);
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
                     } else {
-                        button.textContent = 'Make Additional';
-                        button.setAttribute('data-action', 'makeAdditional');
+                        alert('Error: ' + xhr.statusText);
                     }
-                    alert(response.message);
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            } else {
-                alert('Error: ' + xhr.statusText);
-            }
-        };
+                };
 
-        xhr.onerror = function() {
-            alert('Request failed');
-        };
+                xhr.onerror = function () {
+                    alert('Request failed');
+                };
 
-        xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action) + '&id=' + encodeURIComponent(id));
-    });
-});
+                xhr.send('fileName=' + encodeURIComponent(fileName) + '&currentFolder=' + encodeURIComponent(currentFolder) + '&action=' + encodeURIComponent(action) + '&id=' + encodeURIComponent(id));
+            });
+        });
 
 
-</script>
-    
+    </script>
+
     {include file='template-parts/footer.tpl'}
