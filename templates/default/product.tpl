@@ -98,28 +98,31 @@
 {/if}
 
 <div class="row mt-3 align-items-center">
-	{if isset($settingStoreCatalogMode)}
-		{if $settingStoreCatalogMode != "1"}
+
+
 			<div class="col">
-			<span class="price h4">$815.00</span>
+			<span class="stock">{if $settingStoreCatalogMode == "1" && $settingStoreCatalogModeShowStock == "1"}{$wcioDisplayProduct.stock} available{else}{$wcioDisplayProduct.stock} available{/if}</span><br>
+			<span class="price h4">
+			    {if $settingCurrencyPlacement == "left"}{$settingCurrencySymbol}{/if}
+			    {if $settingStoreCatalogMode == "1" && $settingStoreCatalogModeShowPrices == "1"}{$wcioDisplayProduct.price}{else}{$wcioDisplayProduct.price}{/if}
+			    {if $settingCurrencyPlacement == "right"}{$settingCurrencySymbol}{/if}
+			    </span>
 		</div> <!-- col.// -->
 		<div class="col text-left">
 
-			<select class="form-control mb-3 mt-3">
+
+			<!--<select class="form-control mb-3 mt-3">
 		  		<option> 1 </option>
 		  		<option> 2 </option>
 		  		<option> 3 </option>
-		  	</select>
+		  	</select>-->
 			
-			<a href="#" class="btn  btn-light"> <i class="fas fa-heart"></i>  </a>
-			<a href="#" class="btn  btn-light"> <i class="fa fa-folder-plus"></i>  </a>
+		
 		</div> <!-- col.// -->
-			{else}	
+	
 			
 		
-		
-		{/if}
-	{/if}
+
 </div> <!-- row.// -->
 
 </article> <!-- product-info-aside .// -->
