@@ -51,7 +51,7 @@
                 placeholder="Example: 5901234123457"><br>
 
             <label for="name">Stock</label>
-            <input type="text" name="sku" class="form-control" value="{$productData.stock|default:'1'}"
+            <input type="text" name="stock" class="form-control" value="{$productData.stock|default:'1'}"
                 placeholder="Example: 1"><br>
 
 
@@ -63,21 +63,18 @@
                 <h2>Prices</h2>
                 <p>Price is the normal price of your product. If your product is on sale, enter something in the "Sale
                     price" field. If this field is empty or 0, it will use the normal price.</p>
-                {foreach from=$wcioShopAdminCurrenciesArray key=k item=i}
-                {assign var=price value="price_{$i}"}
-                {assign var=salePrice value="salePrice_{$i}"}
+             
 
                 <div class="row">
                     <div class="col-md-6 mt-6">
-                        {$i} Price <input type="number" name="price_{$i}" class="form-control"
-                            value="{$productData.{$price}|default:'0'}"><br>
+                        Price <input type="number" name="price" class="form-control"
+                            value="{$productData.price|default:'0'}"><br>
                     </div>
                     <div class="col-md-6 mt-6">
-                        {$i} Sale price <input type="number" name="salePrice_{$i}" class="form-control"
-                            value="{$productData.{$salePrice}|default:''}"><br>
+                        Sale price <input type="number" name="salePrice" class="form-control"
+                            value="{$productData.salePrice|default:''}"><br>
                     </div>
                 </div>
-                {/foreach}
 
             </div>
 
